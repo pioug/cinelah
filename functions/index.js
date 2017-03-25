@@ -1,8 +1,26 @@
-var functions = require('firebase-functions');
+const functions = require('firebase-functions');
+const {
+  getCathayJson,
+  getFilmgardeJson,
+  getGVJson,
+  getShawJson,
+  getWeJson
+} = require('./scraper.js');
 
-// Start writing Firebase Functions
-// https://firebase.google.com/functions/write-firebase-functions
 
-exports.helloWorld = functions.https.onRequest((request, response) => {
- response.send("Hello from Firebase!");
-});
+function send(parseFn) {
+  return functions.https.onRequest(function(req, res) {
+    return parseFn()
+      .then(function(json) {
+        return res.send(json);
+      });
+  });
+}
+
+module.exports = {
+  cathay: send(getCathayJson),
+  filmgarde: send(getFilmgardeJson),
+  gv: send(getGVJson),
+  shaw: send(getShawJson),
+  we: send(getWeJson)
+};

@@ -2,8 +2,12 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "dependencies": {
+    "axios": "0.15.3",
+    "cheerio": "0.22.0",
     "firebase-admin": "^4.1.2",
-    "firebase-functions": "^0.5"
+    "firebase-functions": "^0.5",
+    "moment": "2.18.0",
+    "phantom": "4.0.1"
   },
   "private": true
 }
