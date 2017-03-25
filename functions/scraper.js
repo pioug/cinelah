@@ -3,39 +3,54 @@ const cheerio = require('cheerio');
 const moment = require('moment');
 const phantom = require('phantom');
 const url = require('url');
-const fs = require('fs');
-
-const TIMEOUT_AFTER_CLOSING = 1000;
 
 module.exports = {
   getCathayJson,
-  getFilmgardeJson, // NOK
-  getGVJson, // NOK
-  getShawJson, // NOK
+  getFilmgardeJson,
+  getGVJson,
+  getShawJson,
   getWeJson
 };
 
 const SHAW = 'http://m.shaw.sg/';
 
-function getShawMobileDates() {
+function getShawJson() {
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
       return instance.createPage()
         .then(function(page) {
           return page.open(SHAW)
             .then(function() {
-              const content = page.property('content');
-              page.close();
-              return content;
+              return page.property('content');
+            })
+            .then(function(content) {
+              const dates = parseShawMobileDates(content);
+              return dates.reduce(function(res, date) {
+                return res.then(function() {
+                  const promise = new Promise(resolve => {
+                    page.on('onLoadFinished', function() {
+                      page.off('onLoadFinished');
+                      resolve(page.property('content'));
+                    });
+                  });
+
+                  page.evaluate(function(date) {
+                    document.querySelector('#globalform').ddlShowDate.value = date;
+                    return document.querySelector('[type=\"submit\"]').click();
+                  }, date.date);
+
+                  return promise;
+                })
+                .then(function(content) {
+                  date.cinemas = parseShawMobileDay(content);
+                  return dates;
+                });
+              }, Promise.resolve());
             });
         })
         .then(function(content) {
           instance.exit();
-          return new Promise(function(resolve) {
-            setTimeout(function() {
-              resolve(content);
-            }, TIMEOUT_AFTER_CLOSING);
-          });
+          return content;
         });
     });
 }
@@ -51,39 +66,6 @@ function parseShawMobileDates(page) {
     .get();
 }
 
-function getShawMobileDay({ date }) {
-  return phantom.create(['--load-images=no'])
-    .then(function(instance) {
-      return instance.createPage()
-        .then(function(page) {
-          return page.open(SHAW)
-            .then(function() {
-              return page.evaluate(function(date) {
-                document.querySelector('#globalform').ddlShowDate.value = date;
-                return document.querySelector('[type=\"submit\"]').click();
-              }, date);
-            })
-            .then(function() {
-              return new Promise(resolve => {
-                page.on('onLoadFinished', function(status) {
-                  const content = page.property('content');
-                  page.close();
-                  resolve(content);
-                });
-              });
-            });
-        })
-        .then(function(content) {
-          instance.exit();
-          return new Promise(function(resolve) {
-            setTimeout(function() {
-              resolve(content);
-            }, TIMEOUT_AFTER_CLOSING);
-          });
-        });
-    });
-}
-
 function parseShawMobileDay(page) {
   const $ = cheerio.load(page);
   return $('.persist-area')
@@ -91,7 +73,6 @@ function parseShawMobileDay(page) {
       return {
         name: $('.floatingHeader .category.cplex.header', el).text(),
         date: $('.floatingHeader .showdate', el).text(),
-        address: $('.floatingHeader #address', el).text(),
         movies: $('.filminfo')
           .map(function(i, el) {
             return {
@@ -112,23 +93,6 @@ function parseShawMobileDay(page) {
     .get();
 }
 
-function getShawJson() {
-  return getShawMobileDates()
-    .then(parseShawMobileDates)
-    .then(function(results) {
-      return results.reduce(function(res, date) {
-        return res.then(function() {
-          return getShawMobileDay(date)
-            .then(parseShawMobileDay)
-            .then(function(cinemas) {
-              date.cinemas = cinemas;
-              return Promise.resolve(results)
-            });
-        })
-      }, Promise.resolve())
-    });
-}
-
 const CATHAY = 'http://www.cathaycineplexes.com.sg/showtimes/';
 
 function getCathay() {
@@ -145,11 +109,7 @@ function getCathay() {
         })
         .then(function(content) {
           instance.exit();
-          return new Promise(function(resolve) {
-            setTimeout(function() {
-              resolve(content);
-            }, TIMEOUT_AFTER_CLOSING);
-          });
+          return content;
         });
     });
 }
@@ -184,10 +144,10 @@ function parseCathay(page) {
                   };
                 })
                 .get()
-            }
+            };
           })
           .get()
-      }
+      };
     })
     .get();
 }
@@ -206,18 +166,12 @@ function getGVCinemas() {
         .then(function(page) {
           return page.open(GV_CINEMAS)
             .then(function() {
-              const content = page.property('content');
-              page.close();
-              return content;
+              return page.property('content');
             });
         })
         .then(function(content) {
           instance.exit();
-          return new Promise(function(resolve) {
-            setTimeout(function() {
-              resolve(content);
-            }, TIMEOUT_AFTER_CLOSING);
-          });
+          return content;
         });
     });
 }
@@ -252,17 +206,16 @@ function parseGVCinemas(page) {
 function getGVCinemaRequests(cinemas) {
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
-      return cinemas.reduce(function(res, cinema) {
-        return res.then(function() {
-          console.log('start', cinema.url);
-          return instance.createPage()
-            .then(function(page) {
-              const promise =  new Promise(function(resolve, reject) {
-                page.on('onResourceRequested', function(request, network) {
+      return instance.createPage()
+        .then(function(page) {
+          return cinemas.reduce(function(res, cinema) {
+            return res.then(function() {
+              const promise = new Promise(function(resolve) {
+                page.on('onResourceRequested', function(request) {
                   if (!request.url.includes('session')) {
                     return;
                   }
-                  page.close();
+                  page.off('onResourceRequested');
                   cinema.request = request;
                   resolve(cinemas);
                 });
@@ -270,16 +223,12 @@ function getGVCinemaRequests(cinemas) {
               page.open(cinema.url).catch(() => {});
               return promise;
             });
+          }, Promise.resolve())
+          .then(function(requests) {
+            instance.exit();
+            return requests;
+          });
         });
-      }, Promise.resolve())
-      .then(function(requests) {
-        instance.exit();
-        return new Promise(function(resolve) {
-          setTimeout(function() {
-            resolve(requests);
-          }, TIMEOUT_AFTER_CLOSING);
-        });
-      });
     });
 }
 
@@ -295,8 +244,22 @@ function parseGVCinemaJSON(json) {
           url: `https://www.gv.com.sg/GVSeatSelection#/cinemaId/${json.id}/filmCode/${film.filmCd}/showDate/${ddmmyyyy}/showTime/${date.time24}/hallNumber/${date.hallNumber}`
         };
       })
-    }
+    };
+  });
+}
+
+function replayGVCinemaRequest(cinema) {
+  return axios.post(cinema.request.url, cinema.request.postData, {
+    headers: cinema.request.headers.reduce(function(res, item) {
+      res[item.name] = item.value;
+      return res;
+    }, {})
   })
+    .then(function(response) {
+      delete cinema.request;
+      cinema.movies = parseGVCinemaJSON(response.data.data[0]);
+      return cinema;
+    });
 }
 
 function getGVJson() {
@@ -304,43 +267,49 @@ function getGVJson() {
   .then(parseGVCinemas)
   .then(getGVCinemaRequests)
   .then(function(cinemas) {
-    return Promise.all(cinemas.map(function(cinema) {
-      return axios.post(cinema.request.url, cinema.request.postData, {
-        headers: cinema.request.headers.reduce(function(res, item) {
-            res[item.name] = item.value;
-            return res;
-          }, {})
-        })
-        .then(function(response) {
-          delete cinema.request;
-          cinema.movies = parseGVCinemaJSON(response.data.data[0]);
-          return cinema;
-        });
-    }));
+    return Promise.all(cinemas.map(replayGVCinemaRequest));
   });
 }
 
 const FILMGARDE = 'http://tickets.fgcineplex.com.sg/visInternetTicketing/';
 
-function getFilmgardeDates() {
+function getFilmgardeJson() {
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
       return instance.createPage()
         .then(function(page) {
           return page.open(FILMGARDE)
             .then(function() {
-              const content = page.property('content');
-              page.close();
-              return content;
+              return page.property('content');
+            })
+            .then(function(content) {
+              const dates = parseFilmgardeDates(content);
+              return dates.reduce(function(res, date) {
+                return res.then(function() {
+                  const promise = new Promise(resolve => {
+                    page.on('onLoadFinished', function() {
+                      page.off('onLoadFinished');
+                      resolve(page.property('content'));
+                    });
+                  });
+
+                  page.evaluate(function(date) {
+                    document.querySelector('[name="ddlFilterDate"]').value = date;
+                    return document.querySelector('[name="ddlFilterDate"]').onchange();
+                  }, date.date);
+
+                  return promise;
+                })
+                .then(function(content) {
+                  date.cinemas = parseFilmgardeDay(content);
+                  return dates;
+                });
+              }, Promise.resolve());
             });
         })
         .then(function(content) {
           instance.exit();
-          return new Promise(function(resolve) {
-            setTimeout(function() {
-              resolve(content);
-            }, TIMEOUT_AFTER_CLOSING);
-          });
+          return content;
         });
     });
 }
@@ -354,39 +323,6 @@ function parseFilmgardeDates(page) {
       };
     })
     .get();
-}
-
-function getFilmgardeDay({ date }) {
-  return phantom.create(['--load-images=no'])
-    .then(function(instance) {
-      return instance.createPage()
-        .then(function(page) {
-          return page.open(FILMGARDE)
-            .then(function() {
-              return page.evaluate(function(date) {
-                document.querySelector('[name="ddlFilterDate"]').value = date;
-                return document.querySelector('[name="ddlFilterDate"]').onchange();
-              }, date);
-            })
-            .then(function() {
-              return new Promise(resolve => {
-                page.on('onLoadFinished', function(status) {
-                  const content = page.property('content');
-                  page.close();
-                  resolve(content);
-                });
-              });
-            });
-        })
-        .then(function(content) {
-          instance.exit();
-          return new Promise(function(resolve) {
-            setTimeout(function() {
-              resolve(content);
-            }, TIMEOUT_AFTER_CLOSING);
-          });
-        });
-    });
 }
 
 function parseFilmgardeDay(page) {
@@ -417,23 +353,6 @@ function parseFilmgardeDay(page) {
     .get();
 }
 
-function getFilmgardeJson() {
-  return getFilmgardeDates()
-    .then(parseFilmgardeDates)
-    .then(function(results) {
-      return results.reduce(function(res, date) {
-        return res.then(function() {
-          return getFilmgardeDay(date)
-            .then(parseFilmgardeDay)
-            .then(function(cinemas) {
-              date.cinemas = cinemas;
-              return Promise.resolve(results)
-            });
-        })
-      }, Promise.resolve())
-    });
-}
-
 const WE_CINEMAS = 'https://www.wecinemas.com.sg/buy-ticket.aspx';
 
 function getWe() {
@@ -443,18 +362,12 @@ function getWe() {
         .then(function(page) {
           return page.open(WE_CINEMAS)
             .then(function() {
-              const content = page.property('content');
-              page.close();
-              resolve(content);
+              return page.property('content');
             });
         })
         .then(function(content) {
           instance.exit();
-          return new Promise(function(resolve) {
-            setTimeout(function() {
-              resolve(content);
-            }, TIMEOUT_AFTER_CLOSING);
-          });
+          return content;
         });
     });
 }
@@ -486,7 +399,7 @@ function parseWe(page) {
                   };
                 })
                 .get()
-              };
+            };
           })
           .get()
       };

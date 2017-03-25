@@ -9,5 +9,10 @@
     "moment": "2.18.0",
     "phantom": "4.0.1"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "eslint": "3.18.0",
+    "eslint-config-bandlab-base": "1.5.0",
+    "eslint-plugin-unicorn": "2.1.0"
+  }
 }
