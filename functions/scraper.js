@@ -249,41 +249,37 @@ function parseGVCinemas(page) {
   }
 }
 
-function getGVCinema(url) {
+function getGVCinemaRequests(cinemas) {
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
-      return instance.createPage()
-        .then(function(page) {
-          page.open(url).catch(() => {});
-          return new Promise(function(resolve, reject) {
-            page.on('onResourceRequested', function(request, network) {
-              if (!request.url.includes('session')) {
-                return;
-              }
-              page.close();
-              instance.exit();
-              resolve(request);
+      return cinemas.reduce(function(res, cinema) {
+        return res.then(function() {
+          console.log('start', cinema.url);
+          return instance.createPage()
+            .then(function(page) {
+              const promise =  new Promise(function(resolve, reject) {
+                page.on('onResourceRequested', function(request, network) {
+                  if (!request.url.includes('session')) {
+                    return;
+                  }
+                  page.close();
+                  cinema.request = request;
+                  resolve(cinemas);
+                });
+              });
+              page.open(cinema.url).catch(() => {});
+              return promise;
             });
-          });
-        })
-        .then(function(request) {
-          return axios.post(request.url, request.postData, {
-            headers: request.headers.reduce(function(res, item) {
-                res[item.name] = item.value;
-                return res;
-              }, {})
-            });
-        })
-        .then(function(response) {
-          return response.data.data[0];
-        })
-        .then(function(content) {
-          return new Promise(function(resolve) {
-            setTimeout(function() {
-              resolve(content);
-            }, TIMEOUT_AFTER_CLOSING);
-          });
         });
+      }, Promise.resolve())
+      .then(function(requests) {
+        instance.exit();
+        return new Promise(function(resolve) {
+          setTimeout(function() {
+            resolve(requests);
+          }, TIMEOUT_AFTER_CLOSING);
+        });
+      });
     });
 }
 
@@ -306,18 +302,21 @@ function parseGVCinemaJSON(json) {
 function getGVJson() {
   return getGVCinemas()
   .then(parseGVCinemas)
+  .then(getGVCinemaRequests)
   .then(function(cinemas) {
-    return cinemas.reduce(function(res, cinema) {
-      return res
-        .then(function() {
-          return getGVCinema(cinema.url)
+    return Promise.all(cinemas.map(function(cinema) {
+      return axios.post(cinema.request.url, cinema.request.postData, {
+        headers: cinema.request.headers.reduce(function(res, item) {
+            res[item.name] = item.value;
+            return res;
+          }, {})
         })
-        .then(parseGVCinemaJSON)
-        .then(function(movies) {
-          cinema.movies = movies;
-          return Promise.resolve(cinemas);
+        .then(function(response) {
+          delete cinema.request;
+          cinema.movies = parseGVCinemaJSON(response.data.data[0]);
+          return cinema;
         });
-    }, Promise.resolve());
+    }));
   });
 }
 
