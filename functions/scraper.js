@@ -72,8 +72,7 @@ function parseShawMobileDay(page) {
     .map(function(i, el) {
       return {
         name: $('.floatingHeader .category.cplex.header', el).text(),
-        date: $('.floatingHeader .showdate', el).text(),
-        movies: $('.filminfo')
+        movies: $('.filminfo', el)
           .map(function(i, el) {
             return {
               title: $('.filmtitle', el).text(),
@@ -236,12 +235,16 @@ function parseGVCinemaJSON(json) {
   return json.films.map(function(film) {
     return {
       title: film.filmTitle,
-      timings: film.dates[0].times.map(function(date) {
-        var ddmmyyyy = moment(new Date(date.midnightDate)).format('DD-MM-YYYY');
+      dates: film.dates.map(function({ date, times }) {
+        var ddmmyyyy = moment(new Date(date)).format('DD-MM-YYYY');
         return {
-          day: ddmmyyyy,
-          time: date.time12,
-          url: `https://www.gv.com.sg/GVSeatSelection#/cinemaId/${json.id}/filmCode/${film.filmCd}/showDate/${ddmmyyyy}/showTime/${date.time24}/hallNumber/${date.hallNumber}`
+          date: ddmmyyyy,
+          timings: times.map(function(timing) {
+            return {
+              time: timing.time12,
+              url: `https://www.gv.com.sg/GVSeatSelection#/cinemaId/${json.id}/filmCode/${film.filmCd}/showDate/${ddmmyyyy}/showTime/${timing.time24}/hallNumber/${timing.hallNumber}`
+            };
+          })
         };
       })
     };

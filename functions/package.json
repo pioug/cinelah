@@ -2,6 +2,7 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "dependencies": {
+    "@google-cloud/storage": "0.8.0",
     "axios": "0.15.3",
     "cheerio": "0.22.0",
     "firebase-admin": "^4.1.2",
