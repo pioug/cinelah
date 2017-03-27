@@ -4,6 +4,7 @@
   "dependencies": {
     "@google-cloud/storage": "0.8.0",
     "axios": "0.15.3",
+    "case": "1.5.1",
     "cheerio": "0.22.0",
     "firebase-admin": "^4.1.2",
     "firebase-functions": "^0.5",

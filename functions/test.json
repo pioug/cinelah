@@ -1,0 +1,1622 @@
+[
+  {
+    "title": "A Silent Voice (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43670&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43756&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43761&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43766&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "CHiPs (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "6:35PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43662&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43663&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:20AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43710&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "11:45AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43725&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "7:05PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43728&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43729&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:20AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43715&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "11:45AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43730&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "7:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43733&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43734&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:20AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43720&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "11:45AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43735&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "7:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43738&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43739&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Disney's Beauty And The Beast (First Class)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "12:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43477&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43478&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43480&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "12:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43481&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43482&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43484&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "12:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43485&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43486&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43488&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "12:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43489&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43490&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43492&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Disney's Beauty And The Beast (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "12:25PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43655&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43686&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:35PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43665&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43656&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43687&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43671&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "5:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43657&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43688&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43672&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43658&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43689&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43673&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:20AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43800&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "10:50AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43755&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "12:25PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43711&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43801&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:35PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43741&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "2:05PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43726&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43712&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43802&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43757&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:35PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43772&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "5:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43713&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43803&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43758&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43714&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43804&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43759&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:20AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43805&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "10:50AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43760&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "12:25PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43716&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43806&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:35PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43746&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "2:05PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43731&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43717&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43807&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43762&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:35PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43777&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "5:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43718&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43808&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43763&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43719&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43809&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43764&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:20AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43810&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "10:50AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43765&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "12:25PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43721&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43811&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:35PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43751&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "2:05PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43736&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43722&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43812&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43767&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:35PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43782&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "5:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43723&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43813&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43768&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43724&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43814&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43769&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Kong: Skull Island (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "4:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43651&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:15AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43695&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43697&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43699&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:15AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43700&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43702&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43704&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:15AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43705&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43707&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43709&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Life (First Class)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "6:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43479&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "6:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43483&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "6:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43487&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "6:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43491&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Life (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "12:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43675&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43666&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43652&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "7:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43678&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43668&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43679&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:20AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43740&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "12:05PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43770&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "2:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43771&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43742&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43743&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "7:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43773&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43744&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43774&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:20AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43745&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "12:05PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43775&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "2:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43776&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43747&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43748&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "7:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43778&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43749&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43779&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:20AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43750&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "12:05PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43780&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "2:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43781&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43752&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43753&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "7:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43783&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43754&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "9:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43784&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Logan (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "6:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43683&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "4:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43787&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "4:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43792&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "4:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43797&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Power Rangers (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "12:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43691&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43650&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "2:25PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43887&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:25PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43692&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:05PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43891&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:05PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43693&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43694&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:15AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43815&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "12:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43816&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43696&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43817&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:35PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43892&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "5:55PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43818&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43698&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43819&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:15AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43820&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "12:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43821&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43701&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43822&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43893&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "5:55PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43823&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43703&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43824&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:15AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43825&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "12:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43826&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43706&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43827&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:40PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43894&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "5:55PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43828&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43708&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43829&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Suddenly 20 (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "3:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43682&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43684&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:50AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43785&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43786&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43789&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:50AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43790&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43791&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43794&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "10:50AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43795&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43796&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43799&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "The Boss Baby (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "2:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43660&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "4:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43677&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43667&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Vampire Cleanup Department (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-26",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "1:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43681&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-27",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "6:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43788&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-28",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "6:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43793&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-29",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "6:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43798&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Ghost In The Shell (First Class)",
+    "dates": [
+      {
+        "date": "2017-03-30",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "3:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43896&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43897&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-31",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "3:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43898&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43899&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "10:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43900&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-04-01",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "3:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43901&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43902&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "10:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43903&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-04-02",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "3:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43904&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43905&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-04-03",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "3:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43906&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43907&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-04-04",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "3:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43908&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43909&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-04-05",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "3:00PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43910&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:20PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43911&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Ghost In The Shell (Digital)",
+    "dates": [
+      {
+        "date": "2017-03-30",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:10AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43846&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43847&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43848&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43849&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43850&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-03-31",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:10AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43851&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43852&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43853&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43854&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43855&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "11:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43856&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-04-01",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:10AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43857&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43858&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43859&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43860&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43861&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "11:15PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43862&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-04-02",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:10AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43863&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43864&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43865&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43866&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43867&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-04-03",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:10AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43868&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43869&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43870&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43871&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43872&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-04-04",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:10AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43873&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43874&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43875&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43876&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43877&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2017-04-05",
+        "cinemas": [
+          {
+            "name": "WE Cinemas, Clementi",
+            "timings": [
+              {
+                "time": "11:10AM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43878&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "1:30PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43879&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "3:50PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43880&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "6:10PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43881&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              },
+              {
+                "time": "8:45PM",
+                "url": "http://tickets.wecinemas.com.sg/Ticketing/visSelectSeats.aspx?cinemacode=5001&txtSessionId=43882&args7=78F9C95434406353FDCE1E99790FFDA322645"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

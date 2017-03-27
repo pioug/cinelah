@@ -121,7 +121,7 @@ function parseCathay(page) {
     .map(function(i, el) {
       return {
         name: $('.M_movietitle', el).text().trim() || 'PLATINUM MOVIE SUITES',
-        day: $('.tabbers', el)
+        dates: $('.tabbers', el)
           .map(function(i, el) {
             return {
               date: $(`#${$(el).attr('aria-labelledby')} .smalldate`, $(el).parent()).text(),
