@@ -1,8 +1,10 @@
-const cathay = require('./cathay.json');
-const filmgarde = require('./filmgarde.json');
-const gv = require('./gv.json');
-const shaw = require('./shaw.json');
-const we = require('./we.json');
+const {
+  cathay,
+  filmgarde,
+  gv,
+  shaw,
+  we
+} = require('./data.json');
 
 const fs = require('fs');
 const moment = require('moment');

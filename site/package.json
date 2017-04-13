@@ -1,0 +1,13 @@
+{
+  "name": "cinelah-site",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "dependencies": {
+    "babel-plugin-transform-react-jsx": "6.23.0",
+    "babel-preset-env": "1.2.2",
+    "babelify": "7.3.0",
+    "budo": "9.4.7",
+    "preact": "7.2.1"
+  }
+}

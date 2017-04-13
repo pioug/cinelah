@@ -248,6 +248,9 @@ function parseGVCinemaJSON(json) {
         };
       })
     };
+  })
+  .filter(function({ title }) {
+    return title === 'Zen Zone 2017*';
   });
 }
 

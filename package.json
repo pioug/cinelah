@@ -1,0 +1,9 @@
+{
+  "name": "cinelah",
+  "scripts": {
+    "deploy": "firebase deploy"
+  },
+  "dependencies": {
+    "firebase-tools": "3.6.0"
+  }
+}

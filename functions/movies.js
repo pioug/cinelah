@@ -1,13 +1,14 @@
-const cathay = require('./cathay.json');
-const filmgarde = require('./filmgarde.json');
-const gv = require('./gv.json');
-const shaw = require('./shaw.json');
-const we = require('./we.json');
+const {
+  cathay,
+  filmgarde,
+  gv,
+  shaw,
+  we
+} = require('./data.json');
 
 const fs = require('fs');
 const moment = require('moment');
-const Case = require('case');
-const { dateFormat } = require('./formatter.js');
+const { dateFormat, formatTitle } = require('./formatter.js');
 
 function getCathayMovies(json) {
   const hash = json.reduce(function(a, { name, dates }) {
@@ -214,31 +215,47 @@ function getMovies() {
 // fs.writeFileSync('test.json', gstr(getGvMovies(gv)));
 // fs.writeFileSync('test.json', gstr(getShawMovies(shaw)));
 // fs.writeFileSync('test.json', gstr(getWeMovies(we)));
-fs.writeFileSync('movies.json', gstr(getMovies()));
+// fs.writeFileSync('movies.json', gstr(getMovies()));
 
 function gstr(ob) {
-  return JSON.stringify(ob, null, 2);
+  return JSON.stringify(ob, null, 0);
 }
 
-getMovies()
-  .map(function({ title }) {
-    title = title
-      .toLowerCase()
-      .replace(/\`/g, '\'')
-      .replace(/\[/g, '(')
-      .replace(/\]/g, ')')
-      .replace(/\s*\:/gi, ':')
-      .replace(/PG(\d*)/gi, '')
-      .replace(/NC(\d+)/gi, '')
-      .replace(/M(\d+)/gi, '')
-      .replace(/\([^)]*\)/g, '')
-      .replace(/\*/g, '')
-      .trim();
-    return Case.title(title);
-  })
-  .sort(function(a, b) {
-    if (a < b) return -1;
-    if (a > b) return 1;
-    return 0;
-  })
-  .map(i => console.log(i));
+Promise.all(getMovies().map(function(movie) {
+  return formatTitle(movie.title)
+    .then(function(title) {
+      movie.title = title;
+      return movie;
+    });
+}))
+  .then(function(movies) {
+    const total = movies.reduce(function(a, { title, dates }) {
+
+      dates.reduce(function(b, { date, cinemas }) {
+
+        cinemas.reduce(function(c, { name, timings }) {
+          a = [...a, ...timings.map(function({ time, url }) {
+            return {
+              movie: title,
+              cinema: name,
+              date,
+              time,
+              url
+            };
+          })];
+          return c;
+        }, []);
+
+        return b;
+      }, []);
+
+      return a;
+    }, [])
+      .sort(function(a, b) {
+        return a.movie < b.movie ? -1 :
+          a.movie > b.movie ? 1 :
+          0;
+      });
+
+    fs.writeFileSync('movies.json', gstr(total));
+  });

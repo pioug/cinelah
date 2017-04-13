@@ -1,35 +1,14 @@
-const cathay = require('./cathay.json');
-const filmgarde = require('./filmgarde.json');
-const gv = require('./gv.json');
-const shaw = require('./shaw.json');
-const we = require('./we.json');
-
-// const {
-//   getCathayJson,
-//   getFilmgardeJson,
-//   getGVJson,
-//   getShawJson,
-//   getWeJson
-// } = require('./scraper.js');
+const {
+  cathay,
+  filmgarde,
+  gv,
+  shaw,
+  we
+} = require('./data.json');
 
 const fs = require('fs');
 const moment = require('moment');
 const { dateFormat } = require('./formatter.js');
-
-// Promise.all([
-//   getCathayJson(),
-//   getFilmgardeJson(),
-//   getGVJson(),
-//   getShawJson(),
-//   getWeJson()
-// ])
-//   .then(function([cathay, filmgarde, gv, shaw, we]) {
-//     fs.writeFileSync('cathay.json', JSON.stringify(cathay, null, 2));
-//     fs.writeFileSync('filmgarde.json', JSON.stringify(filmgarde, null, 2));
-//     fs.writeFileSync('gv.json', JSON.stringify(gv, null, 2));
-//     fs.writeFileSync('shaw.json', JSON.stringify(shaw, null, 2));
-//     fs.writeFileSync('we.json', JSON.stringify(we, null, 2));
-//   });
 
 const days = [0, 1, 2, 3, 4, 5, 6].map(function(item) {
   return getDay(moment().add(item, 'd'));
