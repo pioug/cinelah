@@ -4,6 +4,6 @@
     "deploy": "firebase deploy"
   },
   "dependencies": {
-    "firebase-tools": "3.6.0"
+    "firebase-tools": "3.6.1"
   }
 }
