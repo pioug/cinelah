@@ -11,6 +11,8 @@ const {
   getWeJson
 } = require('./scraper.js');
 
+const { getShowtimes } = require('./showtimes.js');
+
 function send(parseFn) {
   return functions.https.onRequest(function(req, res) {
     return parseFn()
@@ -21,7 +23,7 @@ function send(parseFn) {
 }
 
 const update = functions.https.onRequest(function(req, res) {
-  return Promise.all([
+  Promise.all([
     getCathayJson(),
     getFilmgardeJson(),
     getGVJson(),
@@ -29,21 +31,18 @@ const update = functions.https.onRequest(function(req, res) {
     getWeJson()
   ])
     .then(function([cathay, filmgarde, gv, shaw, we]) {
-      return Promise.all([
-        storeInBucket(cathay, 'cathay'),
-        storeInBucket(filmgarde, 'filmgarde'),
-        storeInBucket(gv, 'gv'),
-        storeInBucket(shaw, 'shaw'),
-        storeInBucket(we, 'we')
-      ])
+      return getShowtimes({
+        cathay,
+        filmgarde,
+        gv,
+        shaw,
+        we
+      });
+    })
+    .then(function(showtimes) {
+      return storeInBucket(showtimes, 'showtimes')
         .then(function() {
-          return res.send({
-            cathay,
-            filmgarde,
-            gv,
-            shaw,
-            we
-          });
+          return res.send(showtimes);
         });
     });
 });

@@ -7,13 +7,9 @@ const TMDB_API_KEY = 'bd09ff783d37c8e5a07b105ab39a7503';
 
 module.exports = {
   dateFormat: 'YYYY-MM-DD',
-  formatTiming,
+  timeFormat: 'HH:mm',
   formatTitle: memoize(formatTitle)
 };
-
-function formatTiming(str) {
-  return str;
-}
 
 function formatTitle(str) {
   str = str

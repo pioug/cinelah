@@ -3,6 +3,7 @@ const cheerio = require('cheerio');
 const moment = require('moment');
 const phantom = require('phantom');
 const url = require('url');
+const { dateFormat, timeFormat } = require('./formatter');
 
 module.exports = {
   getCathayJson,
@@ -59,8 +60,10 @@ function parseShawMobileDates(page) {
   const $ = cheerio.load(page);
   return $('#ddlShowDate option')
     .map(function(i, el) {
+      const date = $(el).attr('value');
+      const formattedDate = moment(date, 'M/DD/YYYY').format(dateFormat);
       return {
-        date: $(el).attr('value')
+        date: formattedDate
       };
     })
     .get();
@@ -79,7 +82,7 @@ function parseShawMobileDay(page) {
               timings: $('.filmshowtime a', el)
                 .map(function(i, el) {
                   return {
-                    time: $(el).text(),
+                    time: moment($(el).text(), 'k:mmA').format(timeFormat),
                     url: url.resolve(SHAW, $(el).attr('href'))
                   };
                 })
@@ -102,8 +105,10 @@ function getCathay() {
           return page.open(CATHAY)
             .then(function() {
               const content = page.property('content');
-              page.close();
-              return content;
+              return page.close()
+                .then(function() {
+                  return content;
+                });
             });
         })
         .then(function(content) {
@@ -123,8 +128,10 @@ function parseCathay(page) {
         name: $('.M_movietitle', el).text().trim() || 'PLATINUM MOVIE SUITES',
         dates: $('.tabbers', el)
           .map(function(i, el) {
+            const date = $(`#${$(el).attr('aria-labelledby')} .smalldate`, $(el).parent()).text();
+            const formattedDate = moment(date, 'DD MMM').format(dateFormat);
             return {
-              date: $(`#${$(el).attr('aria-labelledby')} .smalldate`, $(el).parent()).text(),
+              date: formattedDate,
               movies: $('.movie-container', el)
                 .filter(function(i, el) {
                   return $('.mobileLink', el).text();
@@ -166,6 +173,12 @@ function getGVCinemas() {
           return page.open(GV_CINEMAS)
             .then(function() {
               return page.property('content');
+            })
+            .then(function(content) {
+              return page.close()
+                .then(function() {
+                  return content;
+                });
             });
         })
         .then(function(content) {
@@ -215,6 +228,7 @@ function getGVCinemaRequests(cinemas) {
                     return;
                   }
                   page.off('onResourceRequested');
+                  page.stop();
                   cinema.request = request;
                   resolve(cinemas);
                 });
@@ -224,8 +238,11 @@ function getGVCinemaRequests(cinemas) {
             });
           }, Promise.resolve())
           .then(function(requests) {
-            instance.exit();
-            return requests;
+            return page.close()
+              .then(function() {
+                instance.exit();
+                return requests;
+              });
           });
         });
     });
@@ -236,12 +253,12 @@ function parseGVCinemaJSON(json) {
     return {
       title: film.filmTitle,
       dates: film.dates.map(function({ date, times }) {
-        var ddmmyyyy = moment(new Date(date)).format('DD-MM-YYYY');
+        var ddmmyyyy = moment(new Date(date)).format(dateFormat);
         return {
           date: ddmmyyyy,
           timings: times.map(function(timing) {
             return {
-              time: timing.time12,
+              time: moment(timing.time24, 'kkmm').format(timeFormat),
               url: `https://www.gv.com.sg/GVSeatSelection#/cinemaId/${json.id}/filmCode/${film.filmCd}/showDate/${ddmmyyyy}/showTime/${timing.time24}/hallNumber/${timing.hallNumber}`
             };
           })
@@ -250,7 +267,7 @@ function parseGVCinemaJSON(json) {
     };
   })
   .filter(function({ title }) {
-    return title === 'Zen Zone 2017*';
+    return title !== 'Zen Zone 2017*';
   });
 }
 
@@ -324,8 +341,10 @@ function parseFilmgardeDates(page) {
   const $ = cheerio.load(page);
   return $('#ddlFilterDate option')
     .map(function(i, el) {
+      const date = $(el).attr('value');
+      const formattedDate = moment(date, 'DD MMM').format(dateFormat);
       return {
-        date: $(el).attr('value')
+        date: formattedDate
       };
     })
     .get();
@@ -388,8 +407,10 @@ function parseWe(page) {
         name: $(el).text().trim(),
         dates: $('.showtime-date-con', $(el).closest('table'))
           .map(function(i, el) {
+            const date = $('.showtime-date', el).text();
+            const formattedDate = moment(date, 'D MMMM YYYY, dddd').format(dateFormat);
             return {
-              date: $('.showtime-date', el).text(),
+              date: formattedDate,
               movies: $('h3', $(el).closest('table'))
                 .map(function(i, el) {
                   return {
@@ -397,7 +418,7 @@ function parseWe(page) {
                     timings: $('.showtimes-but', $(el).closest('tr').next().next().next())
                       .map(function(i, el) {
                         return {
-                          time: $(el).text(),
+                          time: moment($(el).text(), 'k:mmA').format(timeFormat),
                           url: url.resolve(WE_CINEMAS, $('a', el).attr('href'))
                         };
                       })

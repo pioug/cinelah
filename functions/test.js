@@ -6,6 +6,8 @@ const {
   getWeJson
 } = require('./scraper.js');
 
+const { getShowtimes } = require('./showtimes.js');
+
 const fs = require('fs');
 
 Promise.all([
@@ -16,13 +18,16 @@ Promise.all([
   getWeJson()
 ])
   .then(function([cathay, filmgarde, gv, shaw, we]) {
-    fs.writeFileSync('data.json', gstr({
+    return getShowtimes({
       cathay,
       filmgarde,
       gv,
       shaw,
       we
-    }));
+    });
+  })
+  .then(function(json) {
+    fs.writeFileSync('showtimes.json', gstr(json));
   });
 
 function gstr(ob) {
