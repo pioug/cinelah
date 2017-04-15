@@ -4,10 +4,19 @@
   "description": "",
   "private": true,
   "dependencies": {
-    "babel-plugin-transform-react-jsx": "6.23.0",
-    "babel-preset-env": "1.2.2",
-    "babelify": "7.3.0",
-    "budo": "9.4.7",
-    "preact": "7.2.1"
+    "lodash.kebabcase": "4.1.1",
+    "moment": "2.18.1",
+    "preact": "8.1.0",
+    "preact-router": "2.4.5"
+  },
+  "devDependencies": {
+    "babel-core": "6.24.1",
+    "babel-loader": "6.4.1",
+    "babel-plugin-transform-react-jsx": "6.24.1",
+    "babel-preset-env": "1.4.0",
+    "css-loader": "0.28.0",
+    "style-loader": "0.16.1",
+    "webpack": "2.4.1",
+    "webpack-dev-server": "2.4.2"
   }
 }

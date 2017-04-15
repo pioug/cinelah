@@ -48,7 +48,7 @@ const update = functions.https.onRequest(function(req, res) {
 });
 
 function storeInBucket(json, name) {
-  fs.writeFileSync(`/tmp/${name}.json`, JSON.stringify(json), null, 2);
+  fs.writeFileSync(`/tmp/${name}.json`, JSON.stringify(json));
   return bucket.upload(`/tmp/${name}.json`, {
     destination: `${name}.json`,
     gzip: true,

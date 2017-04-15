@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const moment = require('moment');
 const phantom = require('phantom');
 const url = require('url');
-const { dateFormat, timeFormat } = require('./formatter');
+const { dateFormat, formatCinema, timeFormat } = require('./formatter');
 
 module.exports = {
   getCathayJson,
@@ -16,6 +16,7 @@ module.exports = {
 const SHAW = 'http://m.shaw.sg/';
 
 function getShawJson() {
+  console.info('getShawJson started...');
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
       return instance.createPage()
@@ -33,12 +34,12 @@ function getShawJson() {
                       page.off('onLoadFinished');
                       resolve(page.property('content'));
                     });
-                  });
 
-                  page.evaluate(function(date) {
-                    document.querySelector('#globalform').ddlShowDate.value = date;
-                    return document.querySelector('[type=\"submit\"]').click();
-                  }, date.date);
+                    page.evaluate(function(date) {
+                      document.querySelector('#globalform').ddlShowDate.value = date;
+                      return document.querySelector('[type=\"submit\"]').click();
+                    }, date.formDate);
+                  });
 
                   return promise;
                 })
@@ -51,6 +52,7 @@ function getShawJson() {
         })
         .then(function(content) {
           instance.exit();
+          console.info('getShawJson finished');
           return content;
         });
     });
@@ -63,7 +65,8 @@ function parseShawMobileDates(page) {
       const date = $(el).attr('value');
       const formattedDate = moment(date, 'M/DD/YYYY').format(dateFormat);
       return {
-        date: formattedDate
+        date: formattedDate,
+        formDate: date
       };
     })
     .get();
@@ -74,7 +77,7 @@ function parseShawMobileDay(page) {
   return $('.persist-area')
     .map(function(i, el) {
       return {
-        name: $('.floatingHeader .category.cplex.header', el).text(),
+        name: formatCinema($('.floatingHeader .category.cplex.header', el).text()),
         movies: $('.filminfo', el)
           .map(function(i, el) {
             return {
@@ -98,23 +101,11 @@ function parseShawMobileDay(page) {
 const CATHAY = 'http://www.cathaycineplexes.com.sg/showtimes/';
 
 function getCathay() {
-  return phantom.create(['--load-images=no'])
-    .then(function(instance) {
-      return instance.createPage()
-        .then(function(page) {
-          return page.open(CATHAY)
-            .then(function() {
-              const content = page.property('content');
-              return page.close()
-                .then(function() {
-                  return content;
-                });
-            });
-        })
-        .then(function(content) {
-          instance.exit();
-          return content;
-        });
+  console.info('getCathay started...');
+  return axios.get(CATHAY)
+    .then(function(res) {
+      console.info('getCathay finished');
+      return res.data;
     });
 }
 
@@ -123,13 +114,12 @@ function parseCathay(page) {
     normalizeWhitespace: true
   });
   return $('.tabs')
-    .map(function(i, el) {
+    .map(function(i, a) {
       return {
-        name: $('.M_movietitle', el).text().trim() || 'PLATINUM MOVIE SUITES',
-        dates: $('.tabbers', el)
+        dates: $('.tabbers', a)
           .map(function(i, el) {
-            const date = $(`#${$(el).attr('aria-labelledby')} .smalldate`, $(el).parent()).text();
-            const formattedDate = moment(date, 'DD MMM').format(dateFormat);
+            const date = $(`[value=${$(el).attr('id')}]`).eq(0).text().split(',')[1].trim();
+            const formattedDate = moment(date, 'D MMM').format(dateFormat);
             return {
               date: formattedDate,
               movies: $('.movie-container', el)
@@ -138,6 +128,7 @@ function parseCathay(page) {
                 })
                 .map(function(i, el) {
                   return {
+                    name: formatCinema($('.M_movietitle', a).text().trim() || $('.mobileLink', el).prevAll('strong').text().trim()),
                     title: $('.mobileLink', el).text(),
                     timings: $('.cine_time', el)
                       .map(function(i, el) {
@@ -166,6 +157,7 @@ function getCathayJson() {
 const GV_CINEMAS = 'https://www.gv.com.sg/GVCinemas';
 
 function getGVCinemas() {
+  console.info('getGVCinemas started...');
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
       return instance.createPage()
@@ -183,6 +175,7 @@ function getGVCinemas() {
         })
         .then(function(content) {
           instance.exit();
+          console.info('getGVCinemas finished');
           return content;
         });
     });
@@ -190,24 +183,13 @@ function getGVCinemas() {
 
 function parseGVCinemas(page) {
   const $ = cheerio.load(page);
-  return [... parseList(), ... parseCards()];
+  return parseList();
 
   function parseList() {
     return $('.cinemas-list li')
       .map(function(i, el) {
         return {
-          name: $(el).text(),
-          url: url.resolve(GV_CINEMAS, $('a', el).attr('href'))
-        };
-      })
-      .get();
-  }
-
-  function parseCards() {
-    return $('.brand-cinemas-list .col-lg-4')
-      .map(function(i, el) {
-        return {
-          name: $('.heading img', el).attr('alt'),
+          name: formatCinema($(el).text()),
           url: url.resolve(GV_CINEMAS, $('a', el).attr('href'))
         };
       })
@@ -253,12 +235,13 @@ function parseGVCinemaJSON(json) {
     return {
       title: film.filmTitle,
       dates: film.dates.map(function({ date, times }) {
-        var ddmmyyyy = moment(new Date(date)).format(dateFormat);
+        const ddmmyyyy = moment(new Date(date)).format('DD-MM-YYYY');
+        const yyyymdd = moment(new Date(date)).format(dateFormat);
         return {
-          date: ddmmyyyy,
+          date: yyyymdd,
           timings: times.map(function(timing) {
             return {
-              time: moment(timing.time24, 'kkmm').format(timeFormat),
+              time: moment(timing.time12, 'kk:mmA').format(timeFormat),
               url: `https://www.gv.com.sg/GVSeatSelection#/cinemaId/${json.id}/filmCode/${film.filmCd}/showDate/${ddmmyyyy}/showTime/${timing.time24}/hallNumber/${timing.hallNumber}`
             };
           })
@@ -297,6 +280,7 @@ function getGVJson() {
 const FILMGARDE = 'http://tickets.fgcineplex.com.sg/visInternetTicketing/';
 
 function getFilmgardeJson() {
+  console.info('getFilmgardeJson started...');
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
       return instance.createPage()
@@ -332,6 +316,7 @@ function getFilmgardeJson() {
         })
         .then(function(content) {
           instance.exit();
+          console.info('getFilmgardeJson finished');
           return content;
         });
     });
@@ -357,7 +342,7 @@ function parseFilmgardeDay(page) {
   return $('.ShowtimesCinemaRow')
     .map(function(i, el) {
       return {
-        name: $(el).text().trim(),
+        name: formatCinema($(el).text().trim()),
         movies: $(el).nextUntil('.ShowtimesCinemaRow')
           .map(function(i, el) {
             return {
@@ -381,19 +366,11 @@ function parseFilmgardeDay(page) {
 const WE_CINEMAS = 'https://www.wecinemas.com.sg/buy-ticket.aspx';
 
 function getWe() {
-  return phantom.create(['--load-images=no'])
-    .then(function(instance) {
-      return instance.createPage()
-        .then(function(page) {
-          return page.open(WE_CINEMAS)
-            .then(function() {
-              return page.property('content');
-            });
-        })
-        .then(function(content) {
-          instance.exit();
-          return content;
-        });
+  console.info('getWe started...');
+  return axios.get(WE_CINEMAS)
+    .then(function(res) {
+      console.info('getWe finished');
+      return res.data;
     });
 }
 
@@ -404,7 +381,7 @@ function parseWe(page) {
   return $('#DataListCinemas h2')
     .map(function(i, el) {
       return {
-        name: $(el).text().trim(),
+        name: formatCinema($(el).text().trim()),
         dates: $('.showtime-date-con', $(el).closest('table'))
           .map(function(i, el) {
             const date = $('.showtime-date', el).text();

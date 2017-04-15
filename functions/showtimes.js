@@ -5,11 +5,11 @@ module.exports = {
 };
 
 function getCathayMovies(json) {
-  const hash = json.reduce(function(a, { name, dates }) {
+  const hash = json.reduce(function(a, { dates }) {
 
     dates.reduce(function(b, { date, movies }) {
 
-      movies.reduce(function(c, { title, timings }) {
+      movies.reduce(function(c, { name, title, timings }) {
         a[title] = a[title] || {};
         a[title].dates = a[title].dates || {};
         a[title].dates[date] = a[title].dates[date] || [];
@@ -199,6 +199,7 @@ function getMovies({ cathay, filmgarde, gv, shaw, we }) {
 }
 
 function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
+  console.info('getShowtimes started...');
   return Promise.all(getMovies({ cathay, filmgarde, gv, shaw, we }).map(function(movie) {
     return formatTitle(movie.title)
       .then(function(title) {
@@ -207,7 +208,7 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
       });
   }))
   .then(function(movies) {
-    return movies.reduce(function(a, { title, dates }) {
+    const showtimes = movies.reduce(function(a, { title, dates }) {
 
       dates.reduce(function(b, { date, cinemas }) {
 
@@ -234,6 +235,9 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
           a.movie > b.movie ? 1 :
           0;
       });
+
+    console.info('getShowtimes finished');
+    return showtimes;
   });
 }
 
