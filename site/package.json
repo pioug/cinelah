@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
+  "scripts": {
+    "server": "webpack-dev-server"
+  },
   "dependencies": {
     "lodash.kebabcase": "4.1.1",
     "moment": "2.18.1",
