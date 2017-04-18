@@ -11,11 +11,15 @@ class Cinelah extends Component {
     fetch('https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json')
       .then(body => body.json())
       .then(showtimes => {
-        showtimes = showtimes.map(function(showtime) {
-          showtime.movieId = kebabCase(showtime.movie);
-          showtime.cinemaId = kebabCase(showtime.cinema);
-          return showtime;
-        });
+        showtimes = showtimes
+          .filter(function({ date, time }) {
+            return moment(`${date} ${time}`).isAfter();
+          })
+          .map(function(showtime) {
+            showtime.movieId = kebabCase(showtime.movie);
+            showtime.cinemaId = kebabCase(showtime.cinema);
+            return showtime;
+          });
         this.setState({ showtimes });
       });
   }
