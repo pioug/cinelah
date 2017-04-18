@@ -1,8 +1,7 @@
-const path = require('path');
 module.exports = {
   entry: [
     './index.js',
-    './style.css'
+    './style.scss'
   ],
   output: {
     filename: 'bundle.js'
@@ -20,9 +19,9 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
     ],
   }
-}
+};
