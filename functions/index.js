@@ -47,5 +47,5 @@ function storeInBucket(json, name) {
 }
 
 module.exports = {
-  scrapeShowtimes,
+  scrapeShowtimes
 };

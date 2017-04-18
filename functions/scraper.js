@@ -215,7 +215,7 @@ function getGVCinemaRequests(cinemas) {
                   resolve(cinemas);
                 });
               });
-              page.open(cinema.url).catch(() => {});
+              page.open(cinema.url);
               return promise;
             });
           }, Promise.resolve())
