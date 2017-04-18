@@ -96,7 +96,7 @@ function formatTitle(originalStr) {
       }
     })
     .then(function(clean) {
-      console.info(`formatTitle ${originalStr} to ${clean}`);
+      // console.info(`formatTitle ${originalStr} to ${clean}`);
       return clean;
     });
 }

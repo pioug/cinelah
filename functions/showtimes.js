@@ -199,7 +199,7 @@ function getMovies({ cathay, filmgarde, gv, shaw, we }) {
 }
 
 function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
-  console.info('getShowtimes started...');
+  console.info('getShowtimes started');
   return Promise.all(getMovies({ cathay, filmgarde, gv, shaw, we }).map(function(movie) {
     return formatTitle(movie.title)
       .then(function(title) {

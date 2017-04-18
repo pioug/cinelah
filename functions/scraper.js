@@ -16,7 +16,7 @@ module.exports = {
 const SHAW = 'http://m.shaw.sg/';
 
 function getShawJson() {
-  console.info('getShawJson started...');
+  console.info('getShawJson started');
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
       return instance.createPage()
@@ -51,9 +51,11 @@ function getShawJson() {
             });
         })
         .then(function(content) {
-          instance.exit();
-          console.info('getShawJson finished');
-          return content;
+          return instance.exit()
+            .then(function() {
+              console.info('getShawJson finished');
+              return content;
+            });
         });
     });
 }
@@ -101,10 +103,8 @@ function parseShawMobileDay(page) {
 const CATHAY = 'http://www.cathaycineplexes.com.sg/showtimes/';
 
 function getCathay() {
-  console.info('getCathay started...');
   return axios.get(CATHAY)
     .then(function(res) {
-      console.info('getCathay finished');
       return res.data;
     });
 }
@@ -150,82 +150,69 @@ function parseCathay(page) {
 }
 
 function getCathayJson() {
+  console.info('getCathay started');
   return getCathay()
-    .then(parseCathay);
+    .then(parseCathay)
+    .then(function(json) {
+      console.info('getCathay finished');
+      return json;
+    })
+    .catch(function(err) {
+      console.error('getCathay failed');
+      return Promise.reject(err);
+    });
 }
 
 const GV_CINEMAS = 'https://www.gv.com.sg/GVCinemas';
 
-function getGVCinemas() {
-  console.info('getGVCinemas started...');
+function getGVCinemaRequests() {
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
       return instance.createPage()
         .then(function(page) {
-          return page.open(GV_CINEMAS)
-            .then(function() {
-              return page.property('content');
+          const promise = new Promise(function(resolve, reject) {
+            page.on('onResourceRequested', function(request) {
+              if (!request.url.includes('cinemasbytype')) {
+                return;
+              }
+              page.off('onResourceRequested');
+              page.stop();
+              resolve(request);
+            });
+            page.open(GV_CINEMAS)
+              .then(reject);
+          });
+          return promise
+            .then(replayGVCinemasRequest)
+            .then(function(cinemas) {
+              return cinemas.reduce(function(res, cinema) {
+                return res.then(function() {
+                  const promise = new Promise(function(resolve, reject) {
+                    page.on('onResourceRequested', function(request) {
+                      if (!request.url.includes('session')) {
+                        return;
+                      }
+                      page.off('onResourceRequested');
+                      page.stop();
+                      cinema.request = request;
+                      resolve(cinemas);
+                    });
+                    page.open(cinema.url)
+                      .then(reject);
+                  });
+                  return promise;
+                });
+              }, Promise.resolve());
             })
             .then(function(content) {
               return page.close()
                 .then(function() {
+                  return instance.exit();
+                })
+                .then(function() {
                   return content;
                 });
             });
-        })
-        .then(function(content) {
-          instance.exit();
-          console.info('getGVCinemas finished');
-          return content;
-        });
-    });
-}
-
-function parseGVCinemas(page) {
-  const $ = cheerio.load(page);
-  return parseList();
-
-  function parseList() {
-    return $('.cinemas-list li')
-      .map(function(i, el) {
-        return {
-          name: formatCinema($(el).text()),
-          url: url.resolve(GV_CINEMAS, $('a', el).attr('href'))
-        };
-      })
-      .get();
-  }
-}
-
-function getGVCinemaRequests(cinemas) {
-  return phantom.create(['--load-images=no'])
-    .then(function(instance) {
-      return instance.createPage()
-        .then(function(page) {
-          return cinemas.reduce(function(res, cinema) {
-            return res.then(function() {
-              const promise = new Promise(function(resolve) {
-                page.on('onResourceRequested', function(request) {
-                  if (!request.url.includes('session')) {
-                    return;
-                  }
-                  page.off('onResourceRequested');
-                  page.stop();
-                  cinema.request = request;
-                  resolve(cinemas);
-                });
-              });
-              page.open(cinema.url);
-              return promise;
-            });
-          }, Promise.resolve())
-          .then(function(requests) {
-            return page.close()
-              .then(function() {
-                instance.exit();
-                return requests;
-              });
-          });
         });
     });
 }
@@ -254,6 +241,23 @@ function parseGVCinemaJSON(json) {
   });
 }
 
+function replayGVCinemasRequest(request) {
+  return axios.post(request.url, request.postData, {
+    headers: request.headers.reduce(function(res, item) {
+      res[item.name] = item.value;
+      return res;
+    }, {})
+  })
+    .then(function({ data: { data } }) {
+      return data.map(function({ name, id }) {
+        return {
+          name: name,
+          url: `https://www.gv.com.sg/GVCinemaDetails#/cinema/${id}`
+        };
+      });
+    });
+}
+
 function replayGVCinemaRequest(cinema) {
   return axios.post(cinema.request.url, cinema.request.postData, {
     headers: cinema.request.headers.reduce(function(res, item) {
@@ -269,18 +273,25 @@ function replayGVCinemaRequest(cinema) {
 }
 
 function getGVJson() {
-  return getGVCinemas()
-  .then(parseGVCinemas)
-  .then(getGVCinemaRequests)
+  console.info('getGVJson started');
+  return getGVCinemaRequests()
   .then(function(cinemas) {
     return Promise.all(cinemas.map(replayGVCinemaRequest));
+  })
+  .then(function(json) {
+    console.info('getGVJson finished');
+    return json;
+  })
+  .catch(function(err) {
+    console.error('getGVJson failed');
+    return Promise.reject(err);
   });
 }
 
 const FILMGARDE = 'http://tickets.fgcineplex.com.sg/visInternetTicketing/';
 
 function getFilmgardeJson() {
-  console.info('getFilmgardeJson started...');
+  console.info('getFilmgardeJson started');
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
       return instance.createPage()
@@ -315,10 +326,16 @@ function getFilmgardeJson() {
             });
         })
         .then(function(content) {
-          instance.exit();
-          console.info('getFilmgardeJson finished');
-          return content;
+          return instance.exit()
+            .then(function() {
+              console.info('getFilmgardeJson finished');
+              return content;
+            });
         });
+    })
+    .catch(function(err) {
+      console.error('getFilmgardeJson failed');
+      return Promise.reject(err);
     });
 }
 
@@ -366,10 +383,8 @@ function parseFilmgardeDay(page) {
 const WE_CINEMAS = 'https://www.wecinemas.com.sg/buy-ticket.aspx';
 
 function getWe() {
-  console.info('getWe started...');
   return axios.get(WE_CINEMAS)
     .then(function(res) {
-      console.info('getWe finished');
       return res.data;
     });
 }
@@ -412,6 +427,15 @@ function parseWe(page) {
 }
 
 function getWeJson() {
+  console.info('getWe started');
   return getWe()
-    .then(parseWe);
+    .then(parseWe)
+    .then(function(json) {
+      console.info('getWe finished');
+      return json;
+    })
+    .catch(function(err) {
+      console.error('getWe failed');
+      return Promise.reject(err);
+    });
 }
