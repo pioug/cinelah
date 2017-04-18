@@ -8,7 +8,7 @@ import { timeFormat } from '../functions/formatter.js';
 class Cinelah extends Component {
   constructor() {
     super()
-    fetch('/showtimes.json')
+    fetch('https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json')
       .then(body => body.json())
       .then(showtimes => {
         showtimes = showtimes.map(function(showtime) {

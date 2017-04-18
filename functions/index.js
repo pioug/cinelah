@@ -10,19 +10,9 @@ const {
   getShawJson,
   getWeJson
 } = require('./scraper.js');
-
 const { getShowtimes } = require('./showtimes.js');
 
-function send(parseFn) {
-  return functions.https.onRequest(function(req, res) {
-    return parseFn()
-      .then(function(json) {
-        res.send(json);
-      });
-  });
-}
-
-const update = functions.https.onRequest(function(req, res) {
+const scrapeShowtimes = functions.https.onRequest(function(req, res) {
   Promise.all([
     getCathayJson(),
     getFilmgardeJson(),
@@ -57,10 +47,5 @@ function storeInBucket(json, name) {
 }
 
 module.exports = {
-  cathay: send(getCathayJson),
-  filmgarde: send(getFilmgardeJson),
-  gv: send(getGVJson), // 512 MB
-  shaw: send(getShawJson), // 512 MB
-  update,
-  we: send(getWeJson)
+  scrapeShowtimes,
 };

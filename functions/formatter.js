@@ -3,14 +3,12 @@ const cheerio = require('cheerio');
 const memoize = require('lodash.memoize');
 const Case = require('case');
 
-const manifest = require('./manifest.json');
 const TMDB_API_KEY = 'bd09ff783d37c8e5a07b105ab39a7503';
 
 module.exports = {
   dateFormat: 'YYYY-MM-DD',
   formatCinema,
   formatTitle: memoize(formatTitle),
-  manifest,
   timeFormat: 'HH:mm'
 };
 
@@ -49,10 +47,6 @@ function formatCinema(originalStr) {
 }
 
 function formatTitle(originalStr) {
-  if (manifest[originalStr]) {
-    return Promise.resolve(manifest[originalStr]);
-  }
-
   let cleanStr = originalStr
     .replace(/Dining\sSet\*/g, '')
     .replace(/Fans\`\sSc\*/g, '')
@@ -78,7 +72,6 @@ function formatTitle(originalStr) {
     cleanStr = 'Trolls';
   }
 
-  console.info(`formatTitle ${originalStr} ...`);
   return searchTitleOnTmbd(cleanStr)
     .then(function(response) {
       if (!response.data.total_results) {
@@ -103,7 +96,7 @@ function formatTitle(originalStr) {
       }
     })
     .then(function(clean) {
-      manifest[originalStr] = clean;
+      console.info(`formatTitle ${originalStr} to ${clean}`);
       return clean;
     });
 }
