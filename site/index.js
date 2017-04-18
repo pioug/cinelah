@@ -1,5 +1,5 @@
 import { h, render, Component } from 'preact';
-import { Router, route } from 'preact-router';
+import { Router } from 'preact-router';
 import kebabCase from 'lodash.kebabcase';
 import moment from 'moment';
 
@@ -7,7 +7,7 @@ import { timeFormat } from '../functions/formatter.js';
 
 class Cinelah extends Component {
   constructor() {
-    super()
+    super();
     fetch('https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json')
       .then(body => body.json())
       .then(showtimes => {
@@ -17,7 +17,7 @@ class Cinelah extends Component {
           return showtime;
         });
         this.setState({ showtimes });
-      })
+      });
   }
   render(children, { showtimes = [] }) {
     return (
@@ -41,11 +41,11 @@ class Cinelah extends Component {
 
 render(<Cinelah />, document.body);
 
-function Home({ showtimes }) {
+function Home() {
   return <div>Welcome</div>;
-};
+}
 
-function Movies({ id, showtimes }) {
+function Movies({ showtimes }) {
   const movieMap = showtimes
     .reduce(function(set, { movie, movieId }) {
       set.set(movie, { movie, movieId });
@@ -53,10 +53,10 @@ function Movies({ id, showtimes }) {
     }, new Map());
   const movies = Array.from(movieMap.values())
     .map(function({ movie, movieId }) {
-      return <div><a href={`/movies/${movieId}`}>{movie}</a></div>
+      return <div><a href={`/movies/${movieId}`}>{movie}</a></div>;
     });
   return <div>{movies}</div>;
-};
+}
 
 function Movie({ id, showtimes }) {
   const movieShowtimes = showtimes
@@ -106,7 +106,7 @@ function Movie({ id, showtimes }) {
               if (a > b) return 1;
               return 0;
             })
-            .map(function({ url, cinema, time }) {
+            .map(function({ url, time }) {
               return <div><a href={url}>{time}</a></div>;
             });
           return (
@@ -124,9 +124,9 @@ function Movie({ id, showtimes }) {
       );
     });
   return <div>{list}</div>;
-};
+}
 
-function Cinemas({ id, showtimes }) {
+function Cinemas({ showtimes }) {
   const cinemaMap = showtimes
     .reduce(function(set, { cinema, cinemaId }) {
       set.set(cinema, { cinema, cinemaId });
@@ -141,11 +141,11 @@ function Cinemas({ id, showtimes }) {
       return 0;
     })
     .map(function({ cinema, cinemaId }) {
-      return <div><a href={`/cinemas/${cinemaId}`}>{cinema}</a></div>
+      return <div><a href={`/cinemas/${cinemaId}`}>{cinema}</a></div>;
     });
 
   return <div>{cinemas}</div>;
-};
+}
 
 function Cinema({ id, showtimes }) {
   const cinemaShowtimes = showtimes
@@ -195,7 +195,7 @@ function Cinema({ id, showtimes }) {
               if (a > b) return 1;
               return 0;
             })
-            .map(function({ url, time}) {
+            .map(function({ url, time }) {
               return <div><a href={url}>{time}</a></div>;
             });
           return (
@@ -213,4 +213,4 @@ function Cinema({ id, showtimes }) {
       );
     });
   return <div>{list}</div>;
-};
+}

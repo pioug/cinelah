@@ -5,14 +5,29 @@
     "es6": true,
     "node": true
   },
+  "plugins": [
+    "react"
+  ],
   "parserOptions": {
     "ecmaVersion": 8,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "rules": {
-    "no-multi-spaces": [2],
+    "no-multi-spaces": 2,
+    "no-unused-vars": [2, {
+      "varsIgnorePattern": "^h$"
+    }],
     "one-var-declaration-per-line": ["error", "always"],
+    "react/jsx-uses-vars": 2,
     "space-before-blocks": ["error", "always"],
     "space-before-function-paren": [2, "never"]
+  },
+  "settings": {
+    "react": {
+      "pragma": "h"
+    }
   }
 }

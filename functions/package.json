@@ -12,10 +12,5 @@
     "moment": "2.18.1",
     "phantom": "4.0.2"
   },
-  "private": true,
-  "devDependencies": {
-    "eslint": "3.19.0",
-    "eslint-config-bandlab-base": "1.5.0",
-    "eslint-plugin-unicorn": "2.1.1"
-  }
+  "private": true
 }
