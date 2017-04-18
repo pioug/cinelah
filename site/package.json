@@ -7,8 +7,8 @@
     "server": "webpack-dev-server"
   },
   "dependencies": {
+    "date-fns": "1.28.3",
     "lodash.kebabcase": "4.1.1",
-    "moment": "2.18.1",
     "preact": "8.1.0",
     "preact-router": "2.4.5"
   },

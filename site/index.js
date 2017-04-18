@@ -1,9 +1,8 @@
 import { h, render, Component } from 'preact';
 import { Router } from 'preact-router';
 import kebabCase from 'lodash.kebabcase';
-import moment from 'moment';
-
-import { timeFormat } from '../functions/formatter.js';
+import isAfter from 'date-fns/is_after';
+import addDays from 'date-fns/add_days';
 
 class Cinelah extends Component {
   constructor() {
@@ -11,9 +10,10 @@ class Cinelah extends Component {
     fetch('https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json')
       .then(body => body.json())
       .then(showtimes => {
+        const now = new Date();
         showtimes = showtimes
           .filter(function({ date, time }) {
-            return moment(`${date} ${time}`).isAfter();
+            return isAfter(`${date} ${time}`, now);
           })
           .map(function(showtime) {
             showtime.movieId = kebabCase(showtime.movie);
@@ -95,19 +95,19 @@ function Movie({ id, showtimes }) {
           const showtimesByCinemaEls = showtimes
             .sort(function(a, b) {
               if (parseInt(a.time) < 6) {
-                a = moment(a.time, timeFormat).add(24, 'h').format('x');
+                a = addDays(`${a.date} ${a.time}`, 1);
               } else {
-                a = moment(a.time, timeFormat).format('x');
+                a = addDays(`${a.date} ${a.time}`, 0);
               }
 
               if (parseInt(b.time) < 6) {
-                b = moment(b.time, timeFormat).add(24, 'h').format('x');
+                b = addDays(`${b.date} ${b.time}`, 1);
               } else {
-                b = moment(b.time, timeFormat).format('x');
+                b = addDays(`${b.date} ${b.time}`, 0);
               }
 
-              if (a < b) return -1;
-              if (a > b) return 1;
+              if (isAfter(b, a)) return -1;
+              if (isAfter(a, b)) return 1;
               return 0;
             })
             .map(function({ url, time }) {
@@ -184,19 +184,19 @@ function Cinema({ id, showtimes }) {
           const showtimesByCinemaEls = showtimes
             .sort(function(a, b) {
               if (parseInt(a.time) < 6) {
-                a = moment(a.time, timeFormat).add(24, 'h').format('x');
+                a = addDays(`${a.date} ${a.time}`, 1);
               } else {
-                a = moment(a.time, timeFormat).format('x');
+                a = addDays(`${a.date} ${a.time}`, 0);
               }
 
               if (parseInt(b.time) < 6) {
-                b = moment(b.time, timeFormat).add(24, 'h').format('x');
+                b = addDays(`${b.date} ${b.time}`, 1);
               } else {
-                b = moment(b.time, timeFormat).format('x');
+                b = addDays(`${b.date} ${b.time}`, 0);
               }
 
-              if (a < b) return -1;
-              if (a > b) return 1;
+              if (isAfter(b, a)) return -1;
+              if (isAfter(a, b)) return 1;
               return 0;
             })
             .map(function({ url, time }) {
