@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "server": "webpack-dev-server"
+    "server": "webpack-dev-server",
+    "build": "NODE_ENV=production webpack -p"
   },
   "dependencies": {
     "date-fns": "1.28.3",
@@ -16,6 +17,7 @@
     "babel-core": "6.24.1",
     "babel-loader": "6.4.1",
     "babel-plugin-transform-react-jsx": "6.24.1",
+    "babel-preset-babili": "0.0.12",
     "babel-preset-env": "1.4.0",
     "css-loader": "0.28.0",
     "node-sass": "4.5.2",
