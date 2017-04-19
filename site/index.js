@@ -1,29 +1,31 @@
 import { h, render, Component } from 'preact';
 import { Router } from 'preact-router';
-import kebabCase from 'lodash.kebabcase';
 import isAfter from 'date-fns/is_after';
 import addDays from 'date-fns/add_days';
 
 class Cinelah extends Component {
-  constructor() {
-    super();
+  componentDidMount() {
     fetch('https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json')
       .then(body => body.json())
-      .then(showtimes => {
+      .then(({ cinemas, movies, showtimes }) => {
         const now = new Date();
         showtimes = showtimes
           .filter(function({ date, time }) {
             return isAfter(`${date} ${time}`, now);
           })
           .map(function(showtime) {
-            showtime.movieId = kebabCase(showtime.movie);
-            showtime.cinemaId = kebabCase(showtime.cinema);
-            return showtime;
+            return Object.assign({}, showtime,
+              {
+                movie: movies[showtime.movie].title,
+                movieId: showtime.movie,
+                cinema: cinemas[showtime.cinema].name,
+                cinemaId: showtime.cinema
+              });
           });
-        this.setState({ showtimes });
+        this.setState({ cinemas, movies, showtimes });
       });
   }
-  render(children, { showtimes = [] }) {
+  render(children, { showtimes = [], cinemas = {}, movies = {} }) {
     return (
       <main>
         <nav>
@@ -33,9 +35,9 @@ class Cinelah extends Component {
         </nav>
         <Router>
           <Home path="/" showtimes={showtimes} />
-          <Movies path="/movies/" showtimes={showtimes} />
+          <Movies path="/movies/" movies={movies} />
           <Movie path="/movies/:id" showtimes={showtimes} />
-          <Cinemas path="/cinemas/" showtimes={showtimes} />
+          <Cinemas path="/cinemas/" cinemas={cinemas} />
           <Cinema path="/cinemas/:id" showtimes={showtimes} />
         </Router>
       </main>
@@ -49,20 +51,23 @@ function Home() {
   return <div>Welcome</div>;
 }
 
-function Movies({ showtimes }) {
-  const movieMap = showtimes
-    .reduce(function(set, { movie, movieId }) {
-      set.set(movie, { movie, movieId });
-      return set;
-    }, new Map());
-  const movies = Array.from(movieMap.values())
-    .map(function({ movie, movieId }) {
-      return <div><a href={`/movies/${movieId}`}>{movie}</a></div>;
+function Movies({ movies }) {
+  const moviesEls = Object.keys(movies)
+    .map(function(id) {
+      return {
+        id: id,
+        title: movies[id].title
+      };
+    })
+    .map(function({ id, title }) {
+      return <div><a href={`/movies/${id}`}>{title}</a></div>;
     });
-  return <div>{movies}</div>;
+
+  return <div>{moviesEls}</div>;
 }
 
 function Movie({ id, showtimes }) {
+  console.log(id, showtimes);
   const movieShowtimes = showtimes
     .filter(function({ movieId }) {
       return id === movieId;
@@ -130,25 +135,26 @@ function Movie({ id, showtimes }) {
   return <div>{list}</div>;
 }
 
-function Cinemas({ showtimes }) {
-  const cinemaMap = showtimes
-    .reduce(function(set, { cinema, cinemaId }) {
-      set.set(cinema, { cinema, cinemaId });
-      return set;
-    }, new Map());
-  const cinemas = Array.from(cinemaMap.values())
+function Cinemas({ cinemas = {} }) {
+  const cinemaEls = Object.keys(cinemas)
+    .map(function(id) {
+      return {
+        id: id,
+        name: cinemas[id].name
+      };
+    })
     .sort(function(a, b) {
-      a = a.cinema.toLowerCase();
-      b = b.cinema.toLowerCase();
+      a = a.name.toLowerCase();
+      b = b.name.toLowerCase();
       if (a < b) return -1;
       if (a > b) return 1;
       return 0;
     })
-    .map(function({ cinema, cinemaId }) {
-      return <div><a href={`/cinemas/${cinemaId}`}>{cinema}</a></div>;
+    .map(function({ id, name }) {
+      return <div><a href={`/cinemas/${id}`}>{name}</a></div>;
     });
 
-  return <div>{cinemas}</div>;
+  return <div>{cinemaEls}</div>;
 }
 
 function Cinema({ id, showtimes }) {
