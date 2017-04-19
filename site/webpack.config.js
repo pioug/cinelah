@@ -1,3 +1,5 @@
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 module.exports = {
   entry: [
     './index.js',
@@ -10,7 +12,7 @@ module.exports = {
     host: '0.0.0.0',
     historyApiFallback: true,
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -20,8 +22,13 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: process.env.NODE_ENV === 'production' ?
+          ExtractTextPlugin.extract({ use: ['css-loader', 'sass-loader'] }) :
+          ['style-loader', 'css-loader', 'sass-loader']
       },
     ],
-  }
+  },
+  plugins: [
+    new ExtractTextPlugin('styles.css')
+  ]
 };
