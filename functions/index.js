@@ -11,6 +11,7 @@ const {
   getWeJson
 } = require('./scraper.js');
 const { getShowtimes } = require('./showtimes.js');
+const { normalizeShowtimes } = require('./formatter.js');
 
 const scrapeShowtimes = functions.https.onRequest(function(req, res) {
   Promise.all([
@@ -30,9 +31,10 @@ const scrapeShowtimes = functions.https.onRequest(function(req, res) {
       });
     })
     .then(function(showtimes) {
-      return storeInBucket(showtimes, 'showtimes')
+      const normalizedShowtimes = normalizeShowtimes(showtimes);
+      return storeInBucket(normalizedShowtimes, 'showtimes')
         .then(function() {
-          return res.send(showtimes);
+          return res.send(normalizedShowtimes);
         });
     });
 });

@@ -7,6 +7,7 @@ const {
 } = require('./scraper.js');
 
 const { getShowtimes } = require('./showtimes.js');
+const { normaliseShowtimes } = require('./formatter.js');
 
 const fs = require('fs');
 
@@ -27,9 +28,10 @@ Promise.all([
     });
   })
   .then(function(json) {
-    fs.writeFileSync('../site/showtimes.json', gstr(json));
+    fs.writeFileSync('./showtimes.json', gstr(normaliseShowtimes(json)));
   });
 
 function gstr(obj) {
   return JSON.stringify(obj, null, 2);
 }
+

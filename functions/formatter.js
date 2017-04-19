@@ -1,7 +1,8 @@
 const axios = require('axios');
-const cheerio = require('cheerio');
-const memoize = require('lodash.memoize');
 const Case = require('case');
+const cheerio = require('cheerio');
+const kebabCase = require('lodash.kebabcase');
+const memoize = require('lodash.memoize');
 
 const TMDB_API_KEY = 'bd09ff783d37c8e5a07b105ab39a7503';
 
@@ -9,6 +10,7 @@ module.exports = {
   dateFormat: 'YYYY-MM-DD',
   formatCinema,
   formatTitle: memoize(formatTitle),
+  normalizeShowtimes: normalizeShowtimes,
   timeFormat: 'HH:mm'
 };
 
@@ -133,3 +135,37 @@ function searchTitleOnImdbViaDDG(str) {
          .trim();
     });
 }
+
+function normalizeShowtimes(json) {
+  const movies = json.reduce(function(res, { movie }) {
+    const id = kebabCase(movie);
+    res[id] = {
+      id,
+      title: movie
+    };
+    return res;
+  }, {});
+  const cinemas = json.reduce(function(res, { cinema }) {
+    const id = kebabCase(cinema);
+    res[id] = {
+      id,
+      name: cinema
+    };
+    return res;
+  }, {});
+  const showtimes = json.map(function({ cinema, movie, url, date, time }) {
+    return {
+      cinema: kebabCase(cinema),
+      movie: kebabCase(movie),
+      url,
+      date,
+      time
+    };
+  });
+  return {
+    movies,
+    cinemas,
+    showtimes
+  };
+}
+
