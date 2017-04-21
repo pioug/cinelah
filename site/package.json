@@ -10,7 +10,7 @@
   "dependencies": {
     "date-fns": "1.28.3",
     "preact": "8.1.0",
-    "preact-router": "2.4.5"
+    "preact-router": "2.5.1"
   },
   "devDependencies": {
     "babel-core": "6.24.1",
