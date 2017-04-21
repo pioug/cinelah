@@ -1,3 +1,4 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
     './style.scss'
   ],
   output: {
-    filename: 'bundle.js'
+    filename: '../public/bundle.js'
   },
   devServer: {
     host: '0.0.0.0',
@@ -16,7 +17,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.js$/,
         use: ['babel-loader'],
         exclude: /node_modules/
       },
@@ -29,6 +30,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new ExtractTextPlugin('styles.css')
+    new ExtractTextPlugin('../public/style.css'),
+    new CopyWebpackPlugin([
+      { from: 'index.html', to: '../public/index.html' },
+    ])
   ]
 };
