@@ -251,7 +251,7 @@ function replayGVCinemasRequest(request) {
     .then(function({ data: { data } }) {
       return data.map(function({ name, id }) {
         return {
-          name: name,
+          name: formatCinema(name),
           url: `https://www.gv.com.sg/GVCinemaDetails#/cinema/${id}`
         };
       });
