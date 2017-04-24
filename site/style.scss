@@ -19,7 +19,13 @@ body {
   padding: 0;
 }
 
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .movie-tile {
+  align-items: flex-end;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

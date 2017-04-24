@@ -69,7 +69,7 @@ function Movies({ movies }) {
       );
     });
 
-  return <div>{moviesEls}</div>;
+  return <div class="movies">{moviesEls}</div>;
 }
 
 function Movie({ id, showtimes }) {
