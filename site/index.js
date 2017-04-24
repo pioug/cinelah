@@ -3,9 +3,13 @@ import { Router } from 'preact-router';
 import isAfter from 'date-fns/is_after';
 import addDays from 'date-fns/add_days';
 
+import './style.scss';
+
+const BUCKET = 'https://storage.googleapis.com/cinelah-92dbb.appspot.com';
+
 class Cinelah extends Component {
   componentDidMount() {
-    fetch('https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json')
+    fetch(`${BUCKET}/showtimes.json`)
       .then(body => body.json())
       .then(({ cinemas, movies, showtimes }) => {
         const now = new Date();
@@ -29,12 +33,11 @@ class Cinelah extends Component {
     return (
       <main>
         <nav>
-          <a href="/">Home</a>
           <a href="/movies">Movies</a>
           <a href="/cinemas">Cinemas</a>
         </nav>
         <Router>
-          <Home path="/" showtimes={showtimes} />
+          <Movies path="/" movies={movies} />
           <Movies path="/movies/" movies={movies} />
           <Movie path="/movies/:id" showtimes={showtimes} />
           <Cinemas path="/cinemas/" cinemas={cinemas} />
@@ -47,10 +50,6 @@ class Cinelah extends Component {
 
 render(<Cinelah />, document.body);
 
-function Home() {
-  return <div>Welcome</div>;
-}
-
 function Movies({ movies }) {
   const moviesEls = Object.keys(movies)
     .map(function(id) {
@@ -60,7 +59,14 @@ function Movies({ movies }) {
       };
     })
     .map(function({ id, title }) {
-      return <div><a href={`/movies/${id}`}>{title}</a></div>;
+      const style = {
+        backgroundImage: `url(${BUCKET}/movies/${id}/backdrop.jpg)`
+      };
+      return (
+        <a href={`/movies/${id}`} class="movie-tile" style={style}>
+          <h2>{title}</h2>
+        </a>
+      );
     });
 
   return <div>{moviesEls}</div>;

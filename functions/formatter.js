@@ -10,6 +10,7 @@ module.exports = {
   dateFormat: 'YYYY-MM-DD',
   formatCinema,
   formatTitle: memoize(formatTitle),
+  getMovie,
   normalizeShowtimes: normalizeShowtimes,
   timeFormat: 'HH:mm'
 };
@@ -94,7 +95,10 @@ function formatTitle(originalStr) {
     })
     .catch(function(err) {
       if (err.message === 'No results on TMDB') {
-        return searchTitleOnImdbViaDDG(cleanStr);
+        return searchTitleOnImdbViaDDG(cleanStr)
+          .then(function(response) {
+            return getMovieOnImdbPage(response.data);
+          });
       }
     })
     .then(function(clean) {
@@ -119,21 +123,44 @@ function searchTitleOnTmbd(str) {
     });
 }
 
+function getMovieOnTmdb(id) {
+  return axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}`)
+    .then(function(response) {
+      const baseImageUrl = 'https://image.tmdb.org/t/p/w500';
+      response.data.poster_path = response.data.poster_path && `${baseImageUrl}${response.data.poster_path}`;
+      response.data.backdrop_path = response.data.backdrop_path && `${baseImageUrl}${response.data.backdrop_path}`;
+      return response;
+    })
+    .catch(function(err) {
+      if (err.response && err.response.status === 429) {
+        return new Promise(function(resolve) {
+          setTimeout(function() {
+            resolve(getMovieOnTmdb(id));
+          }, 10000);
+        });
+      } else {
+        console.error(err);
+        return Promise.reject(err);
+      }
+    });
+}
+
 function searchTitleOnImdbViaDDG(str) {
-  return axios.get(`https://duckduckgo.com/?q=!ducky+${str} 2017+site%3Aimdb.com`)
+  return axios.get(`http://www.google.com/search?q=${str} imdb.com&btnI`)
     .then(function(response) {
       var [id] = response.data.match(/tt\d+/);
       return axios.get(`http://www.imdb.com/title/${id}/`);
-    })
-    .then(function(response) {
-      const $ = cheerio.load(response.data);
-      return $('h1[itemprop="name"]')
-         .children()
-         .remove()
-         .end()
-         .text()
-         .trim();
     });
+}
+
+function getMovieOnImdbPage(page) {
+  const $ = cheerio.load(page);
+  return $('h1[itemprop="name"]')
+     .children()
+     .remove()
+     .end()
+     .text()
+     .trim();
 }
 
 function normalizeShowtimes(json) {
@@ -169,3 +196,47 @@ function normalizeShowtimes(json) {
   };
 }
 
+function getPosterOnImdbPage(page) {
+  const $ = cheerio.load(page, {
+    normalizeWhitespace: true
+  });
+  return axios.get(`http://www.imdb.com${$('.poster a').eq(0).attr('href')}`)
+    .then(function(response) {
+      const id = response.config.url.split('/')[6].split('?')[0];
+      const start = 'window.IMDbReactInitialState.push(';
+      const end = '"isModal":false}}';
+      const json = eval(`(${response.data.substr(response.data.indexOf(start) + start.length, response.data.indexOf(end) - response.data.indexOf(start) - start.length + end.length)})`);  // eslint-disable-line no-eval
+      return json.mediaviewer.galleries[response.config.url.split('/')[4]].allImages.find(img => img.id === id).src;
+    });
+}
+
+function getMovie(title) {
+  return searchTitleOnTmbd(title)
+    .then(function({ data }) {
+      if (data.results.length) {
+        return getMovieOnTmdb(data.results[0].id);
+      } else {
+        return searchTitleOnImdbViaDDG(title)
+          .then(function(response) {
+            return getPosterOnImdbPage(response.data);
+          })
+          .then(function(poster_path) {
+            return {
+              data: {
+                title,
+                poster_path
+              }
+            };
+          });
+      }
+    })
+    .then(function({ data: movie }) {
+      return Promise.all([
+        movie,
+        movie.poster_path && axios.get(movie.poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
+        movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
+      ]);
+    });
+}
+
+getMovie('fate furious');

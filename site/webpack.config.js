@@ -3,11 +3,12 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: [
-    './index.js',
-    './style.scss'
+    './index.js'
   ],
   output: {
-    filename: '../public/bundle.js'
+    filename: process.env.NODE_ENV === 'production' ?
+      '../public/bundle.js' :
+      'bundle.js'
   },
   devServer: {
     host: '0.0.0.0',
