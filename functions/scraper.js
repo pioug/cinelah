@@ -65,7 +65,7 @@ function parseShawMobileDates(page) {
   return $('#ddlShowDate option')
     .map(function(i, el) {
       const date = $(el).attr('value');
-      const formattedDate = moment(date, 'M/DD/YYYY').format(dateFormat);
+      const formattedDate = moment(date, 'M/DD/YYYY').utcOffset('+08:00').format(dateFormat);
       return {
         date: formattedDate,
         formDate: date
@@ -119,7 +119,7 @@ function parseCathay(page) {
         dates: $('.tabbers', a)
           .map(function(i, el) {
             const date = $(`[value=${$(el).attr('id')}]`).eq(0).text().split(',')[1].trim();
-            const formattedDate = moment(date, 'D MMM').format(dateFormat);
+            const formattedDate = moment(date, 'D MMM').utcOffset('+08:00').format(dateFormat);
             return {
               date: formattedDate,
               movies: $('.movie-container', el)
@@ -222,8 +222,8 @@ function parseGVCinemaJSON(json) {
     return {
       title: film.filmTitle,
       dates: film.dates.map(function({ date, times }) {
-        const ddmmyyyy = moment(new Date(date)).format('DD-MM-YYYY');
-        const yyyymdd = moment(new Date(date)).format(dateFormat);
+        const ddmmyyyy = moment(date).utcOffset('+08:00').format('DD-MM-YYYY');
+        const yyyymdd = moment(date).utcOffset('+08:00').format(dateFormat);
         return {
           date: yyyymdd,
           timings: times.map(function(timing) {
@@ -344,7 +344,7 @@ function parseFilmgardeDates(page) {
   return $('#ddlFilterDate option')
     .map(function(i, el) {
       const date = $(el).attr('value');
-      const formattedDate = moment(date, 'DD MMM').format(dateFormat);
+      const formattedDate = moment(date, 'DD MMM').utcOffset('+08:00').format(dateFormat);
       return {
         date: formattedDate
       };
@@ -400,7 +400,7 @@ function parseWe(page) {
         dates: $('.showtime-date-con', $(el).closest('table'))
           .map(function(i, el) {
             const date = $('.showtime-date', el).text();
-            const formattedDate = moment(date, 'D MMMM YYYY, dddd').format(dateFormat);
+            const formattedDate = moment(date, 'D MMMM YYYY, dddd').utcOffset('+08:00').format(dateFormat);
             return {
               date: formattedDate,
               movies: $('h3', $(el).closest('table'))
