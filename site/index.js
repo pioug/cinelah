@@ -1,5 +1,6 @@
 import { h, render, Component } from 'preact';
-import { Router } from 'preact-router';
+import Router from 'preact-router';
+import Match from 'preact-router/match';
 import isAfter from 'date-fns/is_after';
 import addDays from 'date-fns/add_days';
 
@@ -30,14 +31,19 @@ class Cinelah extends Component {
       });
   }
   render(children, { showtimes = [], cinemas = {}, movies = {} }) {
+    const nav = function({ path }) {
+      const link = path.includes('movies') || path === '/' ?
+        <a href="/cinemas">C</a> :
+        <a href="/movies">M</a>;
+      return <nav>{link}</nav>;
+    };
     return (
       <main>
-        <nav>
-          <a href="/movies">Movies</a>
-          <a href="/cinemas">Cinemas</a>
-        </nav>
+        <Match>
+          {nav}
+        </Match>
         <Router>
-          <Movies path="/" movies={movies} />
+          <Movies default movies={movies} />
           <Movies path="/movies/" movies={movies} />
           <Movie path="/movies/:id" showtimes={showtimes} />
           <Cinemas path="/cinemas/" cinemas={cinemas} />
@@ -73,7 +79,6 @@ function Movies({ movies }) {
 }
 
 function Movie({ id, showtimes }) {
-  console.log(id, showtimes);
   const movieShowtimes = showtimes
     .filter(function({ movieId }) {
       return id === movieId;

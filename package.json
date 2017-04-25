@@ -1,7 +1,8 @@
 {
   "name": "cinelah",
   "scripts": {
-    "deploy": "firebase deploy"
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:hosting": "cd site && npm run build && cd .. && firebase deploy --only hosting"
   },
   "dependencies": {
     "eslint": "3.19.0",

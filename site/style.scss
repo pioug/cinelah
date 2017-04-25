@@ -26,7 +26,7 @@ body {
 
 .movie-tile {
   align-items: flex-end;
-  background-position: center;
+  background-position: center -30px;
   background-repeat: no-repeat;
   background-size: cover;
   display: inline-flex;
@@ -44,7 +44,7 @@ body {
   }
 
   &:before {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-image: linear-gradient(to top right, rgba(#000, 0.6), transparent);
     content: '';
     height: 100%;
     left: 0;
@@ -67,4 +67,25 @@ body {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+nav {
+  bottom: 32px;
+  position: fixed;
+  right: 32px;
+  z-index: 2;
+
+  a {
+    background-image: radial-gradient(ellipse farthest-side at 0 bottom, #FF4459, #FF9842);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 34px;
+    font-weight: bolder;
+    line-height: 64px;
+    display: block;
+    height: 64px;
+    text-align: center;
+    text-shadow: 0 0 2px rgba(#000, 0.5);
+    width: 64px;
+  }
 }

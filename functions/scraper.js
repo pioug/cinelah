@@ -134,7 +134,7 @@ function parseCathay(page) {
                       .map(function(i, el) {
                         return {
                           time: $(el).text(),
-                          url: url.resolve(SHAW, $(el).attr('href'))
+                          url: url.resolve(CATHAY, $(el).attr('data-href'))
                         };
                       })
                       .get()
