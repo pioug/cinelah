@@ -156,7 +156,7 @@ function Movie({ id, showtimes }) {
               return 0;
             })
             .map(function({ url, time }) {
-              return <div><a href={url}>{time}</a></div>;
+              return <a href={url} class="time">{time}</a>;
             });
           return (
             <article>

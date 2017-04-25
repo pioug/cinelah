@@ -64,6 +64,19 @@ body {
   }
 }
 
+.time {
+  background-image: radial-gradient(ellipse at -100% 100%, #6A73FB, #6DA2FC);
+  border-radius: 3px;
+  color: #fff;
+  display: inline-block;
+  font-feature-settings: 'tnum';
+  margin-bottom: 4px;
+  margin-right: 4px;
+  min-width: 50px;
+  padding: 6px;
+  text-align: center;
+}
+
 a {
   text-decoration: none;
   color: inherit;
@@ -77,7 +90,7 @@ nav {
 
   a {
     align-items: center;
-    background-image: radial-gradient(ellipse farthest-side at 0 bottom, #FF4459, #FF9842);
+    background-image: radial-gradient(ellipse at 0 bottom, #FF4459, #FF9842);
     border-radius: 50%;
     color: #fff;
     display: flex;
