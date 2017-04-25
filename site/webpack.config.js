@@ -28,7 +28,7 @@ module.exports = {
         use: process.env.NODE_ENV === 'production' ?
           ExtractTextPlugin.extract({ use: ['css-loader', 'sass-loader'] }) :
           ['style-loader', 'css-loader', 'sass-loader']
-      },
+      }
     ],
   },
   plugins: [

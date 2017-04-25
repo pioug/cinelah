@@ -70,22 +70,27 @@ a {
 }
 
 nav {
-  bottom: 32px;
+  bottom: 24px;
   position: fixed;
-  right: 32px;
+  right: 24px;
   z-index: 2;
 
   a {
+    align-items: center;
     background-image: radial-gradient(ellipse farthest-side at 0 bottom, #FF4459, #FF9842);
     border-radius: 50%;
     color: #fff;
+    display: flex;
     font-size: 34px;
     font-weight: bolder;
-    line-height: 64px;
-    display: block;
     height: 64px;
+    justify-content: center;
     text-align: center;
     text-shadow: 0 0 2px rgba(#000, 0.5);
     width: 64px;
+  }
+
+  svg {
+    height: 40px;
   }
 }

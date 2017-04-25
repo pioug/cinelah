@@ -8,6 +8,25 @@ import './style.scss';
 
 const BUCKET = 'https://storage.googleapis.com/cinelah-92dbb.appspot.com';
 
+const scrollTops = [];
+
+const pushState = history.pushState;
+
+history.pushState = function(a, b, url) {
+  scrollTops.push(document.body.scrollTop);
+  pushState.call(history, a, b, url);
+  if (url.indexOf('#') < 0) {
+    scrollTo(0, 0);
+  }
+  console.log(scrollTops);
+};
+
+window.onpopstate = function() {
+  setTimeout(function() {
+    document.body.scrollTop = scrollTops.pop();
+  });
+};
+
 class Cinelah extends Component {
   componentDidMount() {
     fetch(`${BUCKET}/showtimes.json`)
@@ -33,8 +52,18 @@ class Cinelah extends Component {
   render(children, { showtimes = [], cinemas = {}, movies = {} }) {
     const nav = function({ path }) {
       const link = path.includes('movies') || path === '/' ?
-        <a href="/cinemas">C</a> :
-        <a href="/movies">M</a>;
+        <a href="/cinemas">
+          <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            <path d="M0 0h24v24H0z" fill="none"/>
+          </svg>
+        </a> :
+        <a href="/movies">
+          <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+            <path d="M0 0h24v24H0z" fill="none"/>
+          </svg>
+        </a>;
       return <nav>{link}</nav>;
     };
     return (
