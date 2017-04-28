@@ -66,11 +66,14 @@ class Cinelah extends Component {
         </a>;
       return <nav>{link}</nav>;
     };
+
+    const header = function({ path }) {
+      return <header>{path}</header>;
+    };
     return (
       <main>
-        <Match>
-          {nav}
-        </Match>
+        <Match>{header}</Match>
+        <Match>{nav}</Match>
         <Router>
           <Movies default movies={movies} />
           <Movies path="/movies/" movies={movies} />
@@ -118,6 +121,7 @@ function Movie({ id, showtimes }) {
       res.set(showtime.date, date);
       return res;
     }, new Map());
+
   const list = Array.from(movieShowtimes.keys())
     .sort(function(a, b) {
       if (a < b) return -1;
@@ -135,6 +139,11 @@ function Movie({ id, showtimes }) {
         }, new Map());
 
       const list = Array.from(showtimesByCinema.keys())
+        .sort(function(a, b) {
+          if (a < b) return -1;
+          if (a > b) return 1;
+          return 0;
+        })
         .map(function(cinema) {
           const { showtimes } = showtimesByCinema.get(cinema);
           const showtimesByCinemaEls = showtimes
@@ -155,12 +164,12 @@ function Movie({ id, showtimes }) {
               if (isAfter(a, b)) return 1;
               return 0;
             })
-            .map(function({ url, time }) {
-              return <a href={url} class="time">{time}</a>;
+            .map(function(showtime) {
+              return <Time showtime={showtime} />;
             });
           return (
             <article>
-              <h1>{cinema}</h1>
+              <h2>{cinema}</h2>
               <div>{showtimesByCinemaEls}</div>
             </article>
           );
@@ -245,12 +254,12 @@ function Cinema({ id, showtimes }) {
               if (isAfter(a, b)) return 1;
               return 0;
             })
-            .map(function({ url, time }) {
-              return <div><a href={url}>{time}</a></div>;
+            .map(function(showtime) {
+              return <Time showtime={showtime} />;
             });
           return (
             <article>
-              <h1>{movie}</h1>
+              <h2>{movie}</h2>
               <div>{showtimesByCinemaEls}</div>
             </article>
           );
@@ -263,4 +272,8 @@ function Cinema({ id, showtimes }) {
       );
     });
   return <div>{list}</div>;
+}
+
+function Time({ showtime = {} }) {
+  return <a class="time" href={showtime.url}>{showtime.time}</a>;
 }
