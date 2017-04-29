@@ -54,6 +54,7 @@ function formatTitle(originalStr) {
     .replace(/Dining\sSet\*/g, '')
     .replace(/Fans\`\sSc\*/g, '')
     .replace(/Kids\sFlix \–/g, '')
+    .replace(/Mums\ \&\ Babies\ /, '')
     .replace(/the\smovie/gi, '')
     .replace(/\`/g, '\'')
     .replace(/\[/g, '(')
@@ -69,11 +70,8 @@ function formatTitle(originalStr) {
     .replace(/\([^)]*\)/g, '')
     .replace(/\*/g, '')
     .trim();
-  cleanStr = Case.title(cleanStr);
 
-  if (originalStr.includes('Mums & Babies – Trolls')) {
-    cleanStr = 'Trolls';
-  }
+  cleanStr = Case.title(cleanStr);
 
   return searchTitleOnTmbd(cleanStr)
     .then(function(response) {
@@ -102,7 +100,7 @@ function formatTitle(originalStr) {
       }
     })
     .then(function(clean) {
-      // console.info(`formatTitle ${originalStr} to ${clean}`);
+      console.info(`formatTitle ${originalStr} to ${clean}`);
       return clean;
     });
 }
@@ -238,5 +236,3 @@ function getMovie(title) {
       ]);
     });
 }
-
-getMovie('fate furious');
