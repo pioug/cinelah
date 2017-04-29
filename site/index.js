@@ -68,7 +68,21 @@ class Cinelah extends Component {
     };
 
     const header = function({ path }) {
-      return <header>{path}</header>;
+      const title = getTitle(path);
+      return <header>{title}</header>;
+
+      function getTitle(url) {
+        const id = url.split('/').pop();
+
+        switch (true) {
+          case id && /movies\/+/gi.test(url):
+            return movies[id] && movies[id].title;
+          case id && /cinemas\/+/gi.test(url):
+            return cinemas[id] && cinemas[id].name;
+          default:
+            return 'Cinelah.sg';
+        }
+      }
     };
     return (
       <main>
@@ -101,8 +115,9 @@ function Movies({ movies }) {
         backgroundImage: `url(${BUCKET}/movies/${id}/backdrop.jpg)`
       };
       return (
-        <a href={`/movies/${id}`} class="movie-tile" style={style}>
-          <h2>{title}</h2>
+        <a href={`/movies/${id}`} class="movie-tile">
+          <div style={style}></div>
+          <span>{title}</span>
         </a>
       );
     });
