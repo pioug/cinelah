@@ -383,9 +383,21 @@ function parseFilmgardeDay(page) {
 const WE_CINEMAS = 'https://www.wecinemas.com.sg/buy-ticket.aspx';
 
 function getWe() {
-  return axios.get(WE_CINEMAS)
-    .then(function(res) {
-      return res.data;
+  return phantom.create(['--load-images=no'])
+    .then(function(instance) {
+      return instance.createPage()
+        .then(function(page) {
+          return page.open(WE_CINEMAS)
+            .then(function() {
+              return page.property('content');
+            });
+        })
+        .then(function(content) {
+          return instance.exit()
+            .then(function() {
+              return content;
+            });
+        });
     });
 }
 
