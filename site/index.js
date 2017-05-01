@@ -43,7 +43,8 @@ class Cinelah extends Component {
                 movie: movies[showtime.movie].title,
                 movieId: showtime.movie,
                 cinema: cinemas[showtime.cinema].name,
-                cinemaId: showtime.cinema
+                cinemaId: showtime.cinema,
+                rating: movies[showtime.movie].rating
               });
           });
         this.setState({ cinemas, movies, showtimes });
@@ -69,6 +70,7 @@ class Cinelah extends Component {
 
     const header = function({ path }) {
       const title = getTitle(path);
+      document.title = title;
       return <header>{title}</header>;
 
       function getTitle(url) {
@@ -92,7 +94,7 @@ class Cinelah extends Component {
           <Movies default movies={movies} />
           <Movies path="/movies/" movies={movies} />
           <Movie path="/movies/:id" showtimes={showtimes} />
-          <Cinemas path="/cinemas/" cinemas={cinemas} />
+          <Cinemas path="/cinemas/" cinemas={cinemas} movies={movies} />
           <Cinema path="/cinemas/:id" showtimes={showtimes} />
         </Router>
       </main>
@@ -193,10 +195,16 @@ function Movie({ id, showtimes }) {
             .map(function(showtime) {
               return <Time showtime={showtime} />;
             });
+          const [group, name] = cinema.split(' - ');
           return (
-            <article>
-              <h2>{cinema}</h2>
-              <div>{showtimesByCinemaEls}</div>
+            <article class="cinema-times">
+              <div class="cinema-tile">
+                <div class="cinema-tile-description-column-1">
+                  <div class="cinema-tile-description-rating">{group}</div>
+                </div>
+                <div class="cinema-tile-description-title">{name}</div>
+              </div>
+              <div class="times">{showtimesByCinemaEls}</div>
             </article>
           );
         });
@@ -213,23 +221,32 @@ function Movie({ id, showtimes }) {
 function Cinemas({ cinemas = {} }) {
   const cinemaEls = Object.keys(cinemas)
     .map(function(id) {
+      const [group, name] = cinemas[id].name.split(' - ');
       return {
-        id: id,
-        name: cinemas[id].name
+        id,
+        group,
+        name
       };
     })
     .sort(function(a, b) {
-      a = a.name.toLowerCase();
-      b = b.name.toLowerCase();
+      a = a.group.toLowerCase() + a.name.toLowerCase();
+      b = b.group.toLowerCase() + b.name.toLowerCase();
       if (a < b) return -1;
       if (a > b) return 1;
       return 0;
     })
-    .map(function({ id, name }) {
-      return <div><a href={`/cinemas/${id}`}>{name}</a></div>;
+    .map(function({ id, group, name }) {
+      return (
+        <a class="cinema-tile" href={`/cinemas/${id}`}>
+          <div class="cinema-tile-description-column-1">
+            <div class="cinema-tile-description-rating">{group}</div>
+          </div>
+          <div class="cinema-tile-description-title">{name}</div>
+        </a>
+      );
     });
 
-  return <div>{cinemaEls}</div>;
+  return <div class="cinemas">{cinemaEls}</div>;
 }
 
 function Cinema({ id, showtimes }) {
@@ -243,6 +260,7 @@ function Cinema({ id, showtimes }) {
       res.set(showtime.date, date);
       return res;
     }, new Map());
+
   const list = Array.from(cinemaShowtimes.keys())
     .sort(function(a, b) {
       if (a < b) return -1;
@@ -253,7 +271,8 @@ function Cinema({ id, showtimes }) {
       const { showtimes } = cinemaShowtimes.get(date);
       const showtimesByMovie = showtimes
         .reduce(function(res, showtime) {
-          const movie = res.get(showtime.movie) || { movie: showtime.movie, showtimes: [] };
+          const movie = res.get(showtime.movie) || { movie: showtime.movie, movieId: showtime.movieId, rating: showtime.rating, showtimes: [] };
+
           movie.showtimes.push(showtime);
           res.set(showtime.movie, movie);
           return res;
@@ -261,7 +280,7 @@ function Cinema({ id, showtimes }) {
 
       const list = Array.from(showtimesByMovie.keys())
         .map(function(movie) {
-          const { showtimes } = showtimesByMovie.get(movie);
+          const { showtimes, movieId, rating } = showtimesByMovie.get(movie);
           const showtimesByCinemaEls = showtimes
             .sort(function(a, b) {
               if (parseInt(a.time) < 6) {
@@ -283,10 +302,28 @@ function Cinema({ id, showtimes }) {
             .map(function(showtime) {
               return <Time showtime={showtime} />;
             });
+
+          const style = {
+            backgroundImage: `url(${BUCKET}/movies/${movieId}/backdrop.jpg)`
+          };
+
           return (
-            <article>
-              <h2>{movie}</h2>
-              <div>{showtimesByCinemaEls}</div>
+            <article class="movie-times">
+              <div class="movie-tile">
+                <div class="movie-tile-poster" style={style}></div>
+                <div class="movie-tile-description">
+                  <div class="movie-tile-description-title">{movie}</div>
+                  {!!rating && <div class="movie-tile-description-rating">
+                    <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                    </svg>
+                    {rating}
+                  </div>}
+                </div>
+              </div>
+              <div class="times">{showtimesByCinemaEls}</div>
             </article>
           );
         });
