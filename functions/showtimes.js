@@ -1,4 +1,4 @@
-const { formatTitle } = require('./formatter.js');
+const { getRating, formatTitle } = require('./formatter.js');
 
 module.exports = {
   getShowtimes
@@ -204,11 +204,15 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
     return formatTitle(movie.title)
       .then(function(title) {
         movie.title = title;
+        return getRating(title);
+      })
+      .then(function(rating) {
+        movie.rating = rating;
         return movie;
       });
   }))
   .then(function(movies) {
-    const showtimes = movies.reduce(function(a, { title, dates }) {
+    const showtimes = movies.reduce(function(a, { title, rating, dates }) {
 
       dates.reduce(function(b, { date, cinemas }) {
 
@@ -216,6 +220,7 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
           a = [...a, ...timings.map(function({ time, url }) {
             return {
               movie: title,
+              rating,
               cinema: name,
               date,
               time: time,

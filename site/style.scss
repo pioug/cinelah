@@ -60,14 +60,10 @@ h1 {
     content: '';
     left: 90px;
     position: absolute;
-    right: 0;
+    right: 12px;
   }
 
-  span {
-    font-weight: normal;
-  }
-
-  div {
+  .movie-tile-poster {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -75,6 +71,27 @@ h1 {
     height: 48px;
     margin-right: 16px;
     min-width: 64px;
+  }
+
+  .movie-tile-description-title {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .movie-tile-description-rating {
+    align-items: center;
+    display: inline-flex;
+    background-color: rgba(#000, 0.2);
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 2px 4px;
+
+    svg {
+      fill: #FFCB00;
+      height: 12px;
+      margin-right: 4px;
+      width: 12px;
+    }
   }
 }
 
@@ -121,3 +138,4 @@ nav {
     height: 40px;
   }
 }
+

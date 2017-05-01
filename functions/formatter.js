@@ -11,6 +11,7 @@ module.exports = {
   formatCinema,
   formatTitle: memoize(formatTitle),
   getMovie,
+  getRating: memoize(getRating),
   normalizeShowtimes: normalizeShowtimes,
   timeFormat: 'HH:mm'
 };
@@ -93,14 +94,14 @@ function formatTitle(originalStr) {
     })
     .catch(function(err) {
       if (err.message === 'No results on TMDB') {
-        return searchTitleOnImdbViaDDG(cleanStr)
+        return searchTitleOnImdbViaGoogle(cleanStr)
           .then(function(response) {
             return getMovieOnImdbPage(response.data);
           });
       }
     })
     .then(function(clean) {
-      console.info(`formatTitle ${originalStr} to ${clean}`);
+      // console.info(`formatTitle ${originalStr} to ${clean}`);
       return clean;
     });
 }
@@ -143,7 +144,7 @@ function getMovieOnTmdb(id) {
     });
 }
 
-function searchTitleOnImdbViaDDG(str) {
+function searchTitleOnImdbViaGoogle(str) {
   return axios.get(`http://www.google.com/search?q=${str} imdb.com&btnI`)
     .then(function(response) {
       var [id] = response.data.match(/tt\d+/);
@@ -162,11 +163,12 @@ function getMovieOnImdbPage(page) {
 }
 
 function normalizeShowtimes(json) {
-  const movies = json.reduce(function(res, { movie }) {
+  const movies = json.reduce(function(res, { movie, rating }) {
     const id = kebabCase(movie);
     res[id] = {
       id,
-      title: movie
+      title: movie,
+      rating: rating
     };
     return res;
   }, {});
@@ -214,7 +216,7 @@ function getMovie(title) {
       if (data.results.length) {
         return getMovieOnTmdb(data.results[0].id);
       } else {
-        return searchTitleOnImdbViaDDG(title)
+        return searchTitleOnImdbViaGoogle(title)
           .then(function(response) {
             return getPosterOnImdbPage(response.data);
           })
@@ -235,4 +237,18 @@ function getMovie(title) {
         movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
       ]);
     });
+}
+
+function getRating(title) {
+  return searchTitleOnImdbViaGoogle(title)
+    .then(function(response) {
+      return getRatingOnImdbPage(response.data);
+    });
+}
+
+function getRatingOnImdbPage(page) {
+  const $ = cheerio.load(page, {
+    normalizeWhitespace: true
+  });
+  return parseFloat($('[itemprop="ratingValue"]').text()) || null;
 }

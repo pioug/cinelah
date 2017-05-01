@@ -29,7 +29,7 @@ window.onpopstate = function() {
 
 class Cinelah extends Component {
   componentDidMount() {
-    fetch(`${BUCKET}/showtimes.json`)
+    fetch(`${BUCKET}/showtimes.json?v=0`)
       .then(body => body.json())
       .then(({ cinemas, movies, showtimes }) => {
         const now = new Date();
@@ -107,17 +107,28 @@ function Movies({ movies }) {
     .map(function(id) {
       return {
         id: id,
-        title: movies[id].title
+        title: movies[id].title,
+        rating: movies[id].rating
       };
     })
-    .map(function({ id, title }) {
+    .map(function({ id, title, rating }) {
       const style = {
         backgroundImage: `url(${BUCKET}/movies/${id}/backdrop.jpg)`
       };
       return (
         <a href={`/movies/${id}`} class="movie-tile">
-          <div style={style}></div>
-          <span>{title}</span>
+          <div class="movie-tile-poster" style={style}></div>
+          <div class="movie-tile-description">
+            <div class="movie-tile-description-title">{title}</div>
+            {!!rating && <div class="movie-tile-description-rating">
+              <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  <path d="M0 0h24v24H0z" fill="none"/>
+              </svg>
+              {rating}
+            </div>}
+          </div>
         </a>
       );
     });
