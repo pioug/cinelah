@@ -11,24 +11,25 @@ import './style.scss';
 
 const BUCKET = 'https://storage.googleapis.com/cinelah-92dbb.appspot.com';
 
-const scrollTops = [];
-
+const scrollTop = {};
 const pushState = history.pushState;
 
 history.pushState = function(a, b, url) {
-  scrollTops.push(document.body.scrollTop);
   pushState.call(history, a, b, url);
   if (url.indexOf('#') < 0) {
     scrollTo(0, 0);
   }
-  console.log(scrollTops);
 };
 
 window.onpopstate = function() {
   setTimeout(function() {
-    document.body.scrollTop = scrollTops.pop();
+    document.body.scrollTop = scrollTop[location.pathname] || 0;
   });
 };
+
+window.addEventListener('scroll', function() {
+  scrollTop[location.pathname] = document.body.scrollTop;
+}, { passive: true });
 
 class Cinelah extends Component {
   componentDidMount() {
@@ -57,7 +58,6 @@ class Cinelah extends Component {
     const header = function({ path }) {
       const title = getTitle(path);
       document.title = title || document.title;
-      debugger;
       return (
         <header>
           <div>{title}</div>
