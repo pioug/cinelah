@@ -1,8 +1,11 @@
 import { h, render, Component } from 'preact';
 import Router from 'preact-router';
 import Match from 'preact-router/match';
-import isAfter from 'date-fns/is_after';
 import addDays from 'date-fns/add_days';
+import isAfter from 'date-fns/is_after';
+import isToday from 'date-fns/is_today';
+import isTomorrow from 'date-fns/is_tomorrow';
+import format from 'date-fns/format';
 
 import './style.scss';
 
@@ -51,27 +54,29 @@ class Cinelah extends Component {
       });
   }
   render(children, { showtimes = [], cinemas = {}, movies = {} }) {
-    const nav = function({ path }) {
-      const link = path.includes('movies') || path === '/' ?
-        <a href="/cinemas">
-          <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-            <path d="M0 0h24v24H0z" fill="none"/>
-          </svg>
-        </a> :
-        <a href="/movies">
-          <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
-            <path d="M0 0h24v24H0z" fill="none"/>
-          </svg>
-        </a>;
-      return <nav>{link}</nav>;
-    };
-
     const header = function({ path }) {
       const title = getTitle(path);
-      document.title = title;
-      return <header>{title}</header>;
+      document.title = title || document.title;
+      debugger;
+      return (
+        <header>
+          <div>{title}</div>
+          <div>
+            <a href="/movies" class={path.includes('/movies') || path === '/' ? 'active' : ''}>
+              <svg fill="#000000" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+              </svg>
+            </a>
+            <a href="/cinemas" class={path.includes('/cinemas') ? 'active' : ''}>
+              <svg fill="#000000" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+              </svg>
+            </a>
+          </div>
+        </header>
+      );
 
       function getTitle(url) {
         const id = url.split('/').pop();
@@ -85,11 +90,23 @@ class Cinelah extends Component {
             return 'Cinelah.sg';
         }
       }
+
+      function getParentPath(url) {
+        const id = url.split('/').pop();
+
+        switch (true) {
+          case id && /movies\/+/gi.test(url):
+            return '/movies';
+          case id && /cinemas\/+/gi.test(url):
+            return '/cinemas';
+          default:
+            return false;
+        }
+      }
     };
     return (
       <main>
         <Match>{header}</Match>
-        <Match>{nav}</Match>
         <Router>
           <Movies default movies={movies} />
           <Movies path="/movies/" movies={movies} />
@@ -210,7 +227,7 @@ function Movie({ id, showtimes }) {
         });
       return (
         <article>
-          <h1>{date}</h1>
+          <h1>{displayDate(date)}</h1>
           <article>{list}</article>
         </article>
       );
@@ -329,7 +346,7 @@ function Cinema({ id, showtimes }) {
         });
       return (
         <article>
-          <h1>{date}</h1>
+          <h1>{displayDate(date)}</h1>
           <article>{list}</article>
         </article>
       );
@@ -339,4 +356,14 @@ function Cinema({ id, showtimes }) {
 
 function Time({ showtime = {} }) {
   return <a class="time" href={showtime.url}>{showtime.time}</a>;
+}
+
+function displayDate(date) {
+  if (isToday(date)) {
+    return 'Today';
+  } else if (isTomorrow(date)) {
+    return 'Tomorrow';
+  } else {
+    return format(date, 'dddd D MMM');
+  }
 }

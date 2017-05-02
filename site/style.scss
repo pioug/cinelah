@@ -6,10 +6,11 @@
 
 html {
   background-image: radial-gradient(ellipse at -100% 100%, #815A81, #3E86C6);
-  min-height: 100%;
+  min-height: 100vh;
 }
 
 body {
+  color: #363637;
   font-family:
    -apple-system,
     BlinkMacSystemFont,
@@ -22,22 +23,57 @@ body {
     sans-serif;
   margin: 0;
   padding: 0;
-  padding-bottom: 100px;
+  padding-bottom: 200px;
 }
 
 header {
+  align-items: center;
   background-color: #fff;
   box-shadow: 0 0 4px rgba(#000, 0.3);
+  display: flex;
   font-size: 24px;
   font-weight: bold;
-  padding: 12px;
+  padding: 12px 0;
   position: sticky;
   top: 0;
   z-index: 3;
+
+  a {
+    display: flex;
+    justify-content: center;
+  }
+
+  div {
+
+    &:nth-child(1) {
+      flex: 1;
+      margin: 0 12px;
+    }
+
+    &:nth-child(2) {
+      display: flex;
+      text-align: center;
+    }
+  }
+
+  a {
+    margin-right: 12px;
+
+    &.active svg {
+      fill: #FF4459;
+    }
+  }
+
+  svg {
+    height: 28px;
+    width: 28px;
+  }
 }
 
 h1 {
-  background-color: #000;
+  backdrop-filter: blur(1px);
+  background-image: radial-gradient(ellipse at -100% 100%, rgba(#3A3F52, 0.99), rgba(#3A3F52, 1));
+  box-shadow: 0 0 4px rgba(#000, 0.3);
   color: #fff;
   font-weight: bold;
   padding: 6px 12px;
@@ -113,8 +149,9 @@ h1 {
 }
 
 .cinema-tile-description-column-1 {
-  min-width: 64px;
+  margin-top: -1px;
   margin-right: 12px;
+  min-width: 64px;
   text-align: right;
 }
 
@@ -177,12 +214,13 @@ h1 {
 
 .time {
   background: #fff;
-  border-radius: 3px;
+  border-radius: 1px;
+  box-shadow: inset 0 -2px 0 #ddd;
   color: #000;
   display: inline-block;
   font-feature-settings: 'tnum';
-  margin-bottom: 4px;
-  margin-right: 4px;
+  margin-bottom: 6px;
+  margin-right: 6px;
   min-width: 50px;
   padding: 6px;
   text-align: center;
@@ -192,30 +230,3 @@ a {
   text-decoration: none;
   color: inherit;
 }
-
-nav {
-  bottom: 24px;
-  position: fixed;
-  right: 24px;
-  z-index: 4;
-
-  a {
-    align-items: center;
-    background-image: radial-gradient(ellipse at 0 bottom, #FF4459, #FF9842);
-    border-radius: 50%;
-    color: #fff;
-    display: flex;
-    font-size: 34px;
-    font-weight: bolder;
-    height: 64px;
-    justify-content: center;
-    text-align: center;
-    text-shadow: 0 0 2px rgba(#000, 0.5);
-    width: 64px;
-  }
-
-  svg {
-    height: 40px;
-  }
-}
-
