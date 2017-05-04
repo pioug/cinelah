@@ -1,5 +1,6 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
@@ -7,9 +8,8 @@ module.exports = {
     './index.js'
   ],
   output: {
-    filename: process.env.NODE_ENV === 'production' ?
-      '../public/bundle.js' :
-      'bundle.js'
+    path: path.resolve(__dirname, '../public'),
+    filename: 'bundle.js'
   },
   devServer: {
     disableHostCheck: true,
@@ -35,12 +35,23 @@ module.exports = {
   },
   plugins: (() => {
     return process.env.NODE_ENV === 'production' ? [
-      new ExtractTextPlugin('../public/style.css'),
-      new CopyWebpackPlugin([
-        { from: 'index.html', to: '../public/index.html' },
-      ])
+      new ExtractTextPlugin('style.css'),
+      new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: 'index.ejs',
+        title: 'Cinelah',
+
+        minify: {
+          collapseWhitespace: true
+        }
+      })
     ] : [
       new webpack.HotModuleReplacementPlugin(),
+      new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: 'index.ejs',
+        title: 'Cinelah'
+      })
     ];
   })()
 };
