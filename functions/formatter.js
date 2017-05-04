@@ -80,17 +80,6 @@ function formatTitle(originalStr) {
 
   return searchTitleOnTmbd(cleanStr)
     .then(function(response) {
-      if (!response.data.total_results) {
-        cleanStr = cleanStr
-          .replace(/\s*\w*\.\w*\s+/gi, ' ')
-          .replace(/\s*\w*\'\w*\s+/gi, ' ')
-          .trim();
-        return searchTitleOnTmbd(cleanStr);
-      }
-
-      return response;
-    })
-    .then(function(response) {
       if (response.data.total_results) {
         return response.data.results[0].title;
       }
