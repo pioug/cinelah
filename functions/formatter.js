@@ -54,9 +54,12 @@ function formatTitle(originalStr) {
   let cleanStr = originalStr
     .replace(/Dining\sSet\*/g, '')
     .replace(/Fans\`\sSc\*/g, '')
+    .replace(/Fans\`\sPrev\*/g, '')
+    .replace(/Fans\`\sScreening*/g, '')
     .replace(/Kids\sFlix \–/g, '')
     .replace(/Mums\ \&\ Babies\ /, '')
     .replace(/the\smovie/gi, '')
+    .replace(/\bthe\b/gi, '')
     .replace(/\`/g, '\'')
     .replace(/\[/g, '(')
     .replace(/\]/g, ')')
@@ -70,6 +73,7 @@ function formatTitle(originalStr) {
     .replace(/TBA/g, '')
     .replace(/\([^)]*\)/g, '')
     .replace(/\*/g, '')
+    .replace(/(\s)+/g, ' ')
     .trim();
 
   cleanStr = Case.title(cleanStr);
