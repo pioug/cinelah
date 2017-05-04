@@ -54,16 +54,20 @@ const scrapeMovies = functions.storage.object().onChange(function(event) {
     .then(function() {
       const { movies } = JSON.parse(fs.readFileSync(temp, 'utf8'));
       return Object.keys(movies).reduce(function(res, key) {
-        return res
-          .then(function() {
-            return getMovie(movies[key].title);
-          })
-          .then(function([details, poster, backdrop]) {
-            return Promise.all([
-              storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
-              storeImageInBucket(poster, 'poster', `movies/${movies[key].id}/`),
-              storeImageInBucket(backdrop || poster, 'backdrop', `movies/${movies[key].id}/`)
-            ]);
+        return bucket.file(`movies/${movies[key].id}/details.json`).exists()
+          .then(function([exists]) {
+            if (exists) {
+              return Promise.resolve();
+            }
+
+            return getMovie(movies[key].title)
+            .then(function([details, poster, backdrop]) {
+              return Promise.all([
+                storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
+                storeImageInBucket(poster, 'poster', `movies/${movies[key].id}/`),
+                storeImageInBucket(backdrop || poster, 'backdrop', `movies/${movies[key].id}/`)
+              ]);
+            });
           })
           .catch(function(err) {
             console.error(key, err);

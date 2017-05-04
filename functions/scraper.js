@@ -16,7 +16,6 @@ module.exports = {
 const SHAW = 'http://m.shaw.sg/';
 
 function getShawJson() {
-  console.info('getShawJson started');
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
       return instance.createPage()
@@ -150,7 +149,6 @@ function parseCathay(page) {
 }
 
 function getCathayJson() {
-  console.info('getCathay started');
   return getCathay()
     .then(parseCathay)
     .then(function(json) {
@@ -273,7 +271,6 @@ function replayGVCinemaRequest(cinema) {
 }
 
 function getGVJson() {
-  console.info('getGVJson started');
   return getGVCinemaRequests()
   .then(function(cinemas) {
     return Promise.all(cinemas.map(replayGVCinemaRequest));
@@ -291,7 +288,6 @@ function getGVJson() {
 const FILMGARDE = 'http://tickets.fgcineplex.com.sg/visInternetTicketing/';
 
 function getFilmgardeJson() {
-  console.info('getFilmgardeJson started');
   return phantom.create(['--load-images=no'])
     .then(function(instance) {
       return instance.createPage()
@@ -439,7 +435,6 @@ function parseWe(page) {
 }
 
 function getWeJson() {
-  console.info('getWe started');
   return getWe()
     .then(parseWe)
     .then(function(json) {
