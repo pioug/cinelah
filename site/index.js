@@ -87,20 +87,7 @@ class Cinelah extends Component {
           case id && /cinemas\/+/gi.test(url):
             return cinemas[id] && cinemas[id].name;
           default:
-            return 'Cinelah.sg';
-        }
-      }
-
-      function getParentPath(url) {
-        const id = url.split('/').pop();
-
-        switch (true) {
-          case id && /movies\/+/gi.test(url):
-            return '/movies';
-          case id && /cinemas\/+/gi.test(url):
-            return '/cinemas';
-          default:
-            return false;
+            return 'Cinelah';
         }
       }
     };
