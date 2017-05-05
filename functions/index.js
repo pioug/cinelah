@@ -74,6 +74,10 @@ const scrapeMovies = functions.storage.object().onChange(function(event) {
             return Promise.resolve();
           });
       }, Promise.resolve());
+    })
+    .catch(function(err) {
+      console.error(err);
+      return Promise.reject();
     });
 });
 
