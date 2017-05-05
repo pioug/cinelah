@@ -30,6 +30,25 @@ module.exports = {
         use: process.env.NODE_ENV === 'production' ?
           ExtractTextPlugin.extract({ use: ['css-loader', 'sass-loader'] }) :
           ['style-loader', 'css-loader', 'sass-loader']
+      },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: process.env.NODE_ENV === 'production' ? [
+          {
+            loader: 'file-loader',
+            query: {
+              name: '[name].[ext]',
+            }
+          }, {
+            loader: 'image-webpack-loader',
+            query: {
+              optimizationLevel: 7,
+              pngquant: {
+                quality: '80-90'
+              }
+            }
+          }
+        ] : ['file-loader']
       }
     ],
   },

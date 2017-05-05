@@ -8,6 +8,7 @@ import isTomorrow from 'date-fns/is_tomorrow';
 import format from 'date-fns/format';
 
 import './style.scss';
+import './favicon.png';
 
 const BUCKET = 'https://storage.googleapis.com/cinelah-92dbb.appspot.com';
 
@@ -60,7 +61,7 @@ class Cinelah extends Component {
       document.title = title || document.title;
       return (
         <header>
-          <div>{title}</div>
+          <div><a href={getParentHref(path)}>{title}</a></div>
           <div>
             <a href="/movies" class={path.includes('/movies') || path === '/' ? 'active' : ''}>
               <svg fill="#000000" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
@@ -88,6 +89,19 @@ class Cinelah extends Component {
             return cinemas[id] && cinemas[id].name;
           default:
             return 'Cinelah';
+        }
+      }
+
+      function getParentHref(url) {
+        const id = url.split('/').pop();
+
+        switch (true) {
+          case id && /movies\/+/gi.test(url):
+            return movies[id] && movies[id].title && '/movies/';
+          case id && /cinemas\/+/gi.test(url):
+            return cinemas[id] && cinemas[id].name && '/cinemas/';
+          default:
+            return '/';
         }
       }
     };
