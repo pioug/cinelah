@@ -9,6 +9,7 @@ import format from 'date-fns/format';
 
 import './style.scss';
 import './favicon.png';
+import './open-graph.png';
 
 const BUCKET = 'https://storage.googleapis.com/cinelah-92dbb.appspot.com';
 
@@ -34,7 +35,7 @@ window.addEventListener('scroll', function() {
 
 class Cinelah extends Component {
   componentDidMount() {
-    fetch(`${BUCKET}/showtimes.json?v=0`)
+    fetch(`${BUCKET}/showtimes.json`)
       .then(body => body.json())
       .then(({ cinemas, movies, showtimes }) => {
         const now = new Date();

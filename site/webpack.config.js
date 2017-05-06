@@ -42,7 +42,9 @@ module.exports = {
           }, {
             loader: 'image-webpack-loader',
             query: {
-              optimizationLevel: 7,
+              optipng: {
+                optimizationLevel: 7
+              },
               pngquant: {
                 quality: '80-90'
               }
