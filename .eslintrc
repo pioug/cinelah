@@ -5,6 +5,10 @@
     "es6": true,
     "node": true
   },
+  "globals": {
+    "PRODUCTION": true,
+    "ga": true
+  },
   "plugins": [
     "react"
   ],

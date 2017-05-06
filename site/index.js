@@ -59,6 +59,12 @@ class Cinelah extends Component {
     const header = function({ path }) {
       const title = getTitle(path);
       document.title = title || document.title;
+
+      if (PRODUCTION) {
+        ga('set', 'page', path);
+        ga('send', 'pageview');
+      }
+
       return (
         <header>
           <div><a href={getParentHref(path)}>{title}</a></div>

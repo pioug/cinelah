@@ -54,22 +54,30 @@ module.exports = {
   },
   plugins: (() => {
     return process.env.NODE_ENV === 'production' ? [
+      new webpack.DefinePlugin({
+        PRODUCTION: 'true'
+      }),
       new ExtractTextPlugin('style.css'),
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'index.ejs',
         title: 'Cinelah',
-
+        env: process.env.NODE_ENV,
         minify: {
-          collapseWhitespace: true
+          collapseWhitespace: true,
+          minifyJS: true
         }
       })
     ] : [
+      new webpack.DefinePlugin({
+        PRODUCTION: 'false'
+      }),
       new webpack.HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'index.ejs',
-        title: 'Cinelah'
+        title: 'Cinelah',
+        env: process.env.NODE_ENV
       })
     ];
   })()
