@@ -1,7 +1,9 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
+
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -51,7 +53,16 @@ module.exports = {
             }
           }
         ] : ['file-loader']
-      }
+      },
+      {
+        test: /\.json$/,
+        use: [{
+          loader: 'file-loader',
+          query: {
+            name: '[name].[ext]'
+          }
+        }]
+      },
     ],
   },
   plugins: (() => {
@@ -59,6 +70,10 @@ module.exports = {
       new webpack.DefinePlugin({
         PRODUCTION: 'true'
       }),
+      new CopyWebpackPlugin([{
+        from: 'manifest.json',
+        transform: content => JSON.stringify(JSON.parse(content))
+      }]),
       new ExtractTextPlugin('style.css'),
       new HtmlWebpackPlugin({
         filename: 'index.html',
