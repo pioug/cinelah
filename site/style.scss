@@ -31,9 +31,9 @@ header {
   background-color: #fff;
   box-shadow: 0 0 4px rgba(#000, 0.3);
   display: flex;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
-  padding: 12px 0;
+  padding: 10px 0 9px 0;
   position: sticky;
   top: 0;
   z-index: 3;
@@ -46,7 +46,14 @@ header {
 
     &:nth-child(1) {
       flex: 1;
-      margin: 0 12px;
+      margin-left: 12px;
+
+      &, & > * {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
 
     &:nth-child(2) {
@@ -74,10 +81,11 @@ h1 {
   background-image: radial-gradient(ellipse at -100% 100%, rgba(#3A3F52, 0.99), rgba(#3A3F52, 1));
   box-shadow: 0 0 4px rgba(#000, 0.3);
   color: #fff;
+  font-size: 18px;
   font-weight: bold;
   padding: 6px 12px;
   position: sticky;
-  top: 52px;
+  top: 47px;
   z-index: 2;
 }
 
