@@ -224,11 +224,25 @@ function getMovie(title) {
       }
     })
     .then(function({ data: movie }) {
-      return Promise.all([
-        movie,
-        movie.poster_path && axios.get(movie.poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
-        movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
-      ]);
+      if (movie.poster_path) {
+        return Promise.all([
+          movie,
+          movie.poster_path && axios.get(movie.poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
+          movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
+        ]);
+      } else {
+        return axios.get(`http://www.imdb.com/title/${movie.imdb_id}/`)
+          .then(function(response) {
+            return getPosterOnImdbPage(response.data);
+          })
+          .then(function(poster_path) {
+            return Promise.all([
+              movie,
+              poster_path && axios.get(poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
+              movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
+            ]);
+          });
+      }
     });
 }
 
