@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const gcs = require('@google-cloud/storage')();
 const fs = require('fs');
 const path = require('path');
+const sharp = require('sharp');
 
 const bucket = gcs.bucket('cinelah-92dbb.appspot.com');
 const {
@@ -61,13 +62,23 @@ const scrapeMovies = functions.storage.object().onChange(function(event) {
             }
 
             return getMovie(movies[key].title)
-            .then(function([details, poster, backdrop]) {
-              return Promise.all([
-                storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
-                storeImageInBucket(poster, 'poster', `movies/${movies[key].id}/`),
-                storeImageInBucket(backdrop || poster, 'backdrop', `movies/${movies[key].id}/`)
-              ]);
-            });
+              .then(function([details, poster, backdrop]) {
+                return Promise.all([
+                  storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
+                  sharp(poster)
+                    .resize(128, 96)
+                    .toBuffer()
+                    .then(function(x) {
+                      return storeImageInBucket(x, 'poster', `movies/${movies[key].id}/`);
+                    }),
+                  sharp(backdrop || poster)
+                    .resize(128, 96)
+                    .toBuffer()
+                    .then(function(y) {
+                      return storeImageInBucket(y, 'backdrop', `movies/${movies[key].id}/`);
+                    })
+                ]);
+              });
           })
           .catch(function(err) {
             console.error(key, err);
@@ -82,8 +93,9 @@ const scrapeMovies = functions.storage.object().onChange(function(event) {
 });
 
 function storeImageInBucket(buffer, name, baseDir = '') {
-  fs.writeFileSync(`/tmp/${name}.jpg`, buffer);
-  return bucket.upload(`/tmp/${name}.jpg`, {
+  const ts = new Date().getTime();
+  fs.writeFileSync(`/tmp/${name}${ts}.jpg`, buffer);
+  return bucket.upload(`/tmp/${name}${ts}.jpg`, {
     destination: `${baseDir}${name}.jpg`,
     gzip: true,
     public: true

@@ -34,4 +34,3 @@ Promise.all([
 function gstr(obj) {
   return JSON.stringify(obj, null, 2);
 }
-
