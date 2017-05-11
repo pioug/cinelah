@@ -2,7 +2,7 @@
   "presets": [
     ["env", {
       "targets": {
-        "browsers": ["last 1 Chrome versions"]
+        "browsers": ["> 1% in SG"]
       }
     }]
   ],
