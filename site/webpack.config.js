@@ -79,6 +79,8 @@ module.exports = {
       new CopyWebpackPlugin([{
         from: 'manifest.json',
         transform: content => JSON.stringify(JSON.parse(content))
+      }, {
+        from: 'sw.js',
       }]),
       new ExtractTextPlugin('style.css'),
       new HtmlWebpackPlugin({
