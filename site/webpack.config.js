@@ -31,8 +31,13 @@ module.exports = {
       {
         test: /\.scss$/,
         use: process.env.NODE_ENV === 'production' ?
-          ExtractTextPlugin.extract({ use: ['css-loader', 'sass-loader'] }) :
-          ['style-loader', 'css-loader', 'sass-loader']
+          ExtractTextPlugin.extract({
+            use: [
+              { loader: 'css-loader', options: { sourceMap: true, importLoaders: 1 } },
+              { loader: 'postcss-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } }
+            ]
+          }) : ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
