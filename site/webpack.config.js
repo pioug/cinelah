@@ -6,13 +6,14 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: [
-    './index.js'
-  ],
+  entry: {
+    bundle: './index.js',
+    sw: './sw.js'
+  },
   output: {
     path: path.resolve(__dirname, '../public'),
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   devServer: {
     disableHostCheck: true,
@@ -79,8 +80,6 @@ module.exports = {
       new CopyWebpackPlugin([{
         from: 'manifest.json',
         transform: content => JSON.stringify(JSON.parse(content))
-      }, {
-        from: 'sw.js',
       }]),
       new ExtractTextPlugin('style.css'),
       new HtmlWebpackPlugin({
@@ -91,7 +90,8 @@ module.exports = {
         minify: {
           collapseWhitespace: true,
           minifyJS: true
-        }
+        },
+        excludeChunks: ['sw']
       })
     ] : [
       new webpack.DefinePlugin({
@@ -102,6 +102,7 @@ module.exports = {
         filename: 'index.html',
         template: 'index.ejs',
         title: 'Cinelah',
+        excludeChunks: ['sw'],
         env: process.env.NODE_ENV
       })
     ];
