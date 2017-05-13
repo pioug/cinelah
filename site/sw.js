@@ -1,9 +1,15 @@
 self.addEventListener('fetch', function(event) {
   event.respondWith(
-    fetch(event.request).catch(function() {
-      return caches.match(event.request, {
-        ignoreSearch: true
-      });
-    })
+    fetch(event.request)
+      .catch(function() {
+        return caches.match(event.request, {
+          ignoreSearch: true
+        });
+      })
+      .then(function(response) {
+        return response || caches.match('/', {
+          ignoreSearch: true
+        });
+      })
   );
 });
