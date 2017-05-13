@@ -57,6 +57,7 @@ class Cinelah extends Component {
         if (Object.keys(movies).length) {
           const posters = Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/backdrop.jpg`);
           const assets = [
+            '/favicon.png',
             '/bundle.js',
             PRODUCTION && '/style.css',
             'https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json'
