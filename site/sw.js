@@ -7,9 +7,7 @@ self.addEventListener('fetch', function(event) {
         });
       })
       .then(function(response) {
-        return response || caches.match('/', {
-          ignoreSearch: true
-        });
+        return response || caches.match('/');
       })
   );
 });
