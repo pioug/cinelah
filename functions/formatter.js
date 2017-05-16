@@ -102,7 +102,8 @@ function formatTitle(originalStr) {
 function searchTitleOnTmbd(str) {
   return axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${str}`)
     .catch(function(err) {
-      if (err.response && err.response.status === 429) {
+      if (err.response && err.response.status === 429 ||
+        err.code && err.code === 'ETIMEDOUT') {
         return new Promise(function(resolve) {
           setTimeout(function() {
             resolve(searchTitleOnTmbd(str));
@@ -124,7 +125,8 @@ function getMovieOnTmdb(id) {
       return response;
     })
     .catch(function(err) {
-      if (err.response && err.response.status === 429) {
+      if (err.response && err.response.status === 429 ||
+        err.code && err.code === 'ETIMEDOUT') {
         return new Promise(function(resolve) {
           setTimeout(function() {
             resolve(getMovieOnTmdb(id));
