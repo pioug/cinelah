@@ -110,9 +110,9 @@ class Cinelah extends Component {
 
         switch (true) {
           case id && /movies\/+/gi.test(url):
-            return movies[id] && movies[id].title;
+            return movies[id] && `Cinelah: ${movies[id].title}`;
           case id && /cinemas\/+/gi.test(url):
-            return cinemas[id] && cinemas[id].name;
+            return cinemas[id] && `Cinelah: ${cinemas[id].name}`;
           default:
             return 'Cinelah';
         }
