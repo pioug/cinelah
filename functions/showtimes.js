@@ -1,4 +1,4 @@
-const { getRating, formatTitle } = require('./formatter.js');
+const { getCountry, getGenre, getRating, formatTitle } = require('./formatter.js');
 
 module.exports = {
   getShowtimes
@@ -204,25 +204,32 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
     return formatTitle(movie.title)
       .then(function(title) {
         movie.title = title;
-        return getRating(title);
+        return Promise.all([getGenre(title), getRating(title), getCountry(title)]);
       })
-      .then(function(rating) {
+      .then(function([genre, rating, country]) {
+        movie.country = country;
         movie.rating = rating;
+        movie.genre = genre;
         return movie;
+      })
+      .catch(function(err) {
+        return Promise.reject(err);
       });
   }))
   .then(function(movies) {
-    const showtimes = movies.reduce(function(a, { title, rating, dates }) {
+    const showtimes = movies.reduce(function(a, { title, genre, rating, country, dates }) {
 
       dates.reduce(function(b, { date, cinemas }) {
 
         cinemas.reduce(function(c, { name, timings }) {
           a = [...a, ...timings.map(function({ time, url }) {
             return {
+              cinema: name,
+              country,
+              date,
+              genre,
               movie: title,
               rating,
-              cinema: name,
-              date,
               time: time,
               url
             };

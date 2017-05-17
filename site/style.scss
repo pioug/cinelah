@@ -134,19 +134,24 @@ p {
   margin-bottom: 4px;
 }
 
+.movie-tile-description-subtitle {
+  display: flex;
+}
+
 .movie-tile-description-rating {
   align-items: center;
-  display: inline-flex;
   background-color: rgba(#000, 0.2);
   border-radius: 4px;
+  display: inline-flex;
   font-size: 12px;
+  margin-right: 4px;
   padding: 2px 4px;
 
   svg {
     fill: #FFCB00;
-    height: 12px;
+    height: 14px;
     margin-right: 4px;
-    width: 12px;
+    width: 14px;
   }
 }
 

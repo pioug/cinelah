@@ -50,7 +50,9 @@ class Cinelah extends Component {
                 movieId: showtime.movie,
                 cinema: cinemas[showtime.cinema].name,
                 cinemaId: showtime.cinema,
-                rating: movies[showtime.movie].rating
+                rating: movies[showtime.movie].rating,
+                genre: movies[showtime.movie].genre,
+                country: movies[showtime.movie].country
               });
           });
 
@@ -158,10 +160,12 @@ function Movies({ movies }) {
       return {
         id: id,
         title: movies[id].title,
-        rating: movies[id].rating
+        rating: movies[id].rating,
+        country: movies[id].country,
+        genre: movies[id].genre
       };
     })
-    .map(function({ id, title, rating }) {
+    .map(function({ id, title, rating, genre, country }) {
       const style = {
         backgroundImage: `url(${BUCKET}/movies/${id}/backdrop.jpg)`
       };
@@ -170,14 +174,22 @@ function Movies({ movies }) {
           <div class="movie-tile-poster" style={style}></div>
           <div class="movie-tile-description">
             <div class="movie-tile-description-title">{title}</div>
-            {!!rating && <div class="movie-tile-description-rating">
-              <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 0h24v24H0z" fill="none"/>
-                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                  <path d="M0 0h24v24H0z" fill="none"/>
-              </svg>
-              {rating}
-            </div>}
+            <div class="movie-tile-description-subtitle">
+              {!!rating && <div class="movie-tile-description-rating">
+                <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+                {rating}
+              </div>}
+              {!!genre && <div class="movie-tile-description-rating">
+                {genre}
+              </div>}
+              {!!country && <div class="movie-tile-description-rating">
+                {country}
+              </div>}
+            </div>
           </div>
         </a>
       );
@@ -329,7 +341,7 @@ function Cinema({ id, showtimes }) {
       const { showtimes } = cinemaShowtimes.get(date);
       const showtimesByMovie = showtimes
         .reduce(function(res, showtime) {
-          const movie = res.get(showtime.movie) || { movie: showtime.movie, movieId: showtime.movieId, rating: showtime.rating, showtimes: [] };
+          const movie = res.get(showtime.movie) || { movie: showtime.movie, movieId: showtime.movieId, rating: showtime.rating, country: showtime.country, genre: showtime.genre, showtimes: [] };
 
           movie.showtimes.push(showtime);
           res.set(showtime.movie, movie);
@@ -338,7 +350,7 @@ function Cinema({ id, showtimes }) {
 
       const list = Array.from(showtimesByMovie.keys())
         .map(function(movie) {
-          const { showtimes, movieId, rating } = showtimesByMovie.get(movie);
+          const { showtimes, movieId, rating, genre, country } = showtimesByMovie.get(movie);
           const showtimesByCinemaEls = showtimes
             .sort(function(a, b) {
               if (parseInt(a.time) < 6) {
@@ -371,14 +383,22 @@ function Cinema({ id, showtimes }) {
                 <div class="movie-tile-poster" style={style}></div>
                 <div class="movie-tile-description">
                   <div class="movie-tile-description-title">{movie}</div>
-                  {!!rating && <div class="movie-tile-description-rating">
-                    <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                    </svg>
-                    {rating}
-                  </div>}
+                  <div class="movie-tile-description-subtitle">
+                    {!!rating && <div class="movie-tile-description-rating">
+                      <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 0h24v24H0z" fill="none"/>
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                          <path d="M0 0h24v24H0z" fill="none"/>
+                      </svg>
+                      {rating}
+                    </div>}
+                    {!!genre && <div class="movie-tile-description-rating">
+                      {genre}
+                    </div>}
+                    {!!country && <div class="movie-tile-description-rating">
+                      {country}
+                    </div>}
+                  </div>
                 </div>
               </div>
               <div class="times">{showtimesByCinemaEls}</div>

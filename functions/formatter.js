@@ -10,6 +10,8 @@ module.exports = {
   dateFormat: 'YYYY-MM-DD',
   formatCinema,
   formatTitle: memoize(formatTitle),
+  getCountry: memoize(getCountry),
+  getGenre: memoize(getGenre),
   getMovie,
   getRating: memoize(getRating),
   normalizeShowtimes: normalizeShowtimes,
@@ -139,7 +141,8 @@ function getMovieOnTmdb(id) {
     });
 }
 
-function searchTitleOnImdbViaGoogle(str) {
+const searchTitleOnImdbViaGoogle = memoize(searchTitleOnImdbViaGoogle_);
+function searchTitleOnImdbViaGoogle_(str) {
   return axios.get(`http://www.google.com/search?q=${str} imdb.com&btnI`)
     .then(function(response) {
       var [id] = response.data.match(/tt\d+/);
@@ -158,12 +161,14 @@ function getMovieOnImdbPage(page) {
 }
 
 function normalizeShowtimes(json) {
-  const movies = json.reduce(function(res, { movie, rating }) {
+  const movies = json.reduce(function(res, { country, genre, movie, rating }) {
     const id = kebabCase(movie);
     res[id] = {
+      country,
       id,
       title: movie,
-      rating: rating
+      genre,
+      rating
     };
     return res;
   }, {});
@@ -260,4 +265,32 @@ function getRatingOnImdbPage(page) {
     normalizeWhitespace: true
   });
   return parseFloat($('[itemprop="ratingValue"]').text()) || null;
+}
+
+function getCountry(title) {
+  return searchTitleOnImdbViaGoogle(title)
+    .then(function(response) {
+      return getCountryOnImdbPage(response.data);
+    });
+}
+
+function getCountryOnImdbPage(page) {
+  const $ = cheerio.load(page, {
+    normalizeWhitespace: true
+  });
+  return $('[href^="/search/title?country_of_origin"]').eq(0).text() || null;
+}
+
+function getGenre(title) {
+  return searchTitleOnImdbViaGoogle(title)
+    .then(function(response) {
+      return getGenreOnImdbPage(response.data);
+    });
+}
+
+function getGenreOnImdbPage(page) {
+  const $ = cheerio.load(page, {
+    normalizeWhitespace: true
+  });
+  return $('[href$="tt_stry_gnr"]').eq(0).text() || null;
 }
