@@ -78,7 +78,7 @@ class Cinelah extends Component {
   render(children, { showtimes = [], cinemas = {}, movies = {} }) {
     const header = function({ path }) {
       const title = getTitle(path);
-      document.title = title || document.title;
+      document.title = title ? `Cinelah: ${title}` : 'Cinelah';
 
       if (PRODUCTION) {
         ga('set', 'page', path);
@@ -87,7 +87,7 @@ class Cinelah extends Component {
 
       return (
         <header>
-          <div><a href={getParentHref(path)}>{title}</a></div>
+          <div><a href={getParentHref(path)}>{title || 'Cinelah'}</a></div>
           <div>
             <a href="/movies" class={path.includes('/movies') || path === '/' ? 'active' : ''}>
               <svg fill="#000000" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
@@ -110,11 +110,11 @@ class Cinelah extends Component {
 
         switch (true) {
           case id && /movies\/+/gi.test(url):
-            return movies[id] && `Cinelah: ${movies[id].title}`;
+            return movies[id] && movies[id].title;
           case id && /cinemas\/+/gi.test(url):
-            return cinemas[id] && `Cinelah: ${cinemas[id].name}`;
+            return cinemas[id] && cinemas[id].name;
           default:
-            return 'Cinelah';
+            return '';
         }
       }
 
