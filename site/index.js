@@ -183,7 +183,12 @@ function Movies({ movies }) {
       );
     });
 
-  return <div class="movies">{moviesEls}</div>;
+  return (
+    <div class="movies">
+      <h1>Now Showing</h1>
+      {moviesEls}
+    </div>
+  );
 }
 
 function Movie({ id, showtimes }) {
@@ -294,7 +299,12 @@ function Cinemas({ cinemas = {} }) {
       );
     });
 
-  return <div class="cinemas">{cinemaEls}</div>;
+  return (
+    <div class="cinemas">
+      <h1>Movie Theatres</h1>
+      {cinemaEls}
+    </div>
+  );
 }
 
 function Cinema({ id, showtimes }) {
