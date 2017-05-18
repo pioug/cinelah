@@ -1,9 +1,9 @@
 module.exports = {
   plugins: {
-    'autoprefixer': {
-      "browsers": ["> 1% in SG"]
+    autoprefixer: {
+      browsers: ['> 5% in SG']
     },
-    'cssnano': {},
-    'cssnext': {}
+    cssnano: {},
+    cssnext: {}
   }
 };

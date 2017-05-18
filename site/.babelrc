@@ -2,7 +2,7 @@
   "presets": [
     ["env", {
       "targets": {
-        "browsers": ["> 1% in SG"]
+        "browsers": ["> 5% in SG"]
       }
     }]
   ],
