@@ -9,6 +9,6 @@
     "eslint-config-bandlab-base": "1.5.0",
     "eslint-plugin-react": "7.0.1",
     "eslint-plugin-unicorn": "2.1.1",
-    "firebase-tools": "3.8.0"
+    "firebase-tools": "3.9.0"
   }
 }
