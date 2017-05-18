@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -92,6 +93,9 @@ module.exports = {
           minifyJS: true
         },
         excludeChunks: ['sw']
+      }),
+      new ScriptExtHtmlWebpackPlugin({
+        defaultAttribute: 'async'
       })
     ] : [
       new webpack.DefinePlugin({
@@ -104,6 +108,9 @@ module.exports = {
         title: 'Cinelah',
         excludeChunks: ['sw'],
         env: process.env.NODE_ENV
+      }),
+      new ScriptExtHtmlWebpackPlugin({
+        defaultAttribute: 'async'
       })
     ];
   })()
