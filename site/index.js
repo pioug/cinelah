@@ -138,10 +138,10 @@ class Cinelah extends Component {
         <Match>{header}</Match>
         <Router>
           <Movies default movies={movies} />
-          <Movies path="/movies/" movies={movies} />
-          <Movie path="/movies/:id" showtimes={showtimes} />
+          <Movies path="/movies/" movies={movies} showtimes={showtimes} />
+          <Movie path="/movies/:id" movies={movies} showtimes={showtimes} />
           <Cinemas path="/cinemas/" cinemas={cinemas} movies={movies} />
-          <Cinema path="/cinemas/:id" showtimes={showtimes} />
+          <Cinema path="/cinemas/:id" cinemas={cinemas} showtimes={showtimes} />
         </Router>
       </main>
     );
@@ -154,7 +154,7 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
 
-function Movies({ movies }) {
+function Movies({ movies, showtimes }) {
   const moviesEls = Object.keys(movies)
     .map(function(id) {
       return {
@@ -162,10 +162,11 @@ function Movies({ movies }) {
         title: movies[id].title,
         rating: movies[id].rating,
         country: movies[id].country,
-        genre: movies[id].genre
+        genre: movies[id].genre,
+        timings: showtimes.filter(({ movieId }) => movieId === id).length
       };
     })
-    .map(function({ id, title, rating, genre, country }) {
+    .map(function({ id, title, rating, genre, country, timings }) {
       const style = {
         backgroundImage: `url(${BUCKET}/movies/${id}/backdrop.jpg)`
       };
@@ -176,7 +177,7 @@ function Movies({ movies }) {
             <div class="movie-tile-description-title">{title}</div>
             <div class="movie-tile-description-subtitle">
               {!!rating && <div class="movie-tile-description-rating">
-                <svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+                <svg class="icon-star" fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 0h24v24H0z" fill="none"/>
                     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                     <path d="M0 0h24v24H0z" fill="none"/>
@@ -189,6 +190,14 @@ function Movies({ movies }) {
               {!!country && <div class="movie-tile-description-rating">
                 {country}
               </div>}
+              <div class="movie-tile-description-rating">
+                <svg class="icon-time" fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </svg>
+                {timings}
+              </div>
             </div>
           </div>
         </a>
@@ -203,7 +212,7 @@ function Movies({ movies }) {
   );
 }
 
-function Movie({ id, showtimes }) {
+function Movie({ id, movies, showtimes }) {
   const movieShowtimes = showtimes
     .filter(function({ movieId }) {
       return id === movieId;
@@ -280,7 +289,30 @@ function Movie({ id, showtimes }) {
         </article>
       );
     });
-  return <div>{list}</div>;
+
+  if (list.length || !Object.keys(movies).length) {
+    return <div>{list}</div>;
+  }
+
+  if (movies[id]) {
+    return (
+      <article>
+        <h1 class="error">No timing found</h1>
+        <section>
+          <p>Go back to <a href="/movies">Now Showing</a>.</p>
+        </section>
+      </article>
+    );
+  }
+
+  return (
+    <article>
+      <h1 class="error">Movie not found</h1>
+      <section>
+        <p>Go back to <a href="/movies">Now Showing</a>.</p>
+      </section>
+    </article>
+  );
 }
 
 function Cinemas({ cinemas = {} }) {
@@ -313,13 +345,13 @@ function Cinemas({ cinemas = {} }) {
 
   return (
     <div class="cinemas">
-      <h1>Movie Theatres</h1>
+      <h1>Movie Theaters</h1>
       {cinemaEls}
     </div>
   );
 }
 
-function Cinema({ id, showtimes }) {
+function Cinema({ cinemas, id, showtimes }) {
   const cinemaShowtimes = showtimes
     .filter(function({ cinemaId }) {
       return id === cinemaId;
@@ -412,7 +444,30 @@ function Cinema({ id, showtimes }) {
         </article>
       );
     });
-  return <div>{list}</div>;
+
+  if (list.length || !Object.keys(cinemas).length) {
+    return <div>{list}</div>;
+  }
+
+  if (cinemas[id]) {
+    return (
+      <article>
+        <h1 class="error">No timing found</h1>
+        <section>
+          <p>Go back to <a href="/cinemas">Movie Theaters</a>.</p>
+        </section>
+      </article>
+    );
+  }
+
+  return (
+    <article>
+      <h1 class="error">Cinema not found</h1>
+      <section>
+        <p>Go back to <a href="/cinemas">Movie Theaters</a>.</p>
+      </section>
+    </article>
+  );
 }
 
 function Time({ showtime = {} }) {

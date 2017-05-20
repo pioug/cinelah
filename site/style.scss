@@ -86,6 +86,10 @@ h1 {
   position: sticky;
   top: 47px;
   z-index: 2;
+
+  &.error {
+    background-image: radial-gradient(ellipse at -100% 100%, rgba(#E5A619, 0.96), rgba(#E5A619, 1));
+  }
 }
 
 section {
@@ -94,6 +98,10 @@ section {
 
 p {
   color: #fff;
+
+  a {
+    text-decoration: underline;
+  }
 }
 
 .movies {
@@ -148,10 +156,17 @@ p {
   padding: 2px 4px;
 
   svg {
-    fill: #FFCB00;
     height: 14px;
     margin-right: 4px;
     width: 14px;
+  }
+
+  .icon-star {
+    fill: #FFCB00;
+  }
+
+  .icon-time {
+    fill: #91CC7A;
   }
 }
 
