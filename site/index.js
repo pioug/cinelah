@@ -137,8 +137,7 @@ class Cinelah extends Component {
       <main>
         <Match>{header}</Match>
         <Router>
-          <Movies default movies={movies} />
-          <Movies path="/movies/" movies={movies} showtimes={showtimes} />
+          <Movies default path="/movies/" movies={movies} showtimes={showtimes} />
           <Movie path="/movies/:id" movies={movies} showtimes={showtimes} />
           <Cinemas path="/cinemas/" cinemas={cinemas} movies={movies} />
           <Cinema path="/cinemas/:id" cinemas={cinemas} showtimes={showtimes} />
