@@ -143,7 +143,7 @@ function getMovieOnTmdb(id) {
 
 const searchTitleOnImdbViaGoogle = memoize(searchTitleOnImdbViaGoogle_);
 function searchTitleOnImdbViaGoogle_(str) {
-  return axios.get(`http://www.google.com/search?q=${str} imdb.com&btnI`)
+  return axios.get(`http://www.google.com/search?q=${encodeURIComponent(str)} imdb&btnI`)
     .then(function(response) {
       var [id] = response.data.match(/tt\d+/);
       return axios.get(`http://www.imdb.com/title/${id}/`);
