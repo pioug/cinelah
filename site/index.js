@@ -203,10 +203,30 @@ function Movies({ movies, showtimes }) {
       );
     });
 
+  if (moviesEls.length) {
+    return (
+      <div class="movies">
+        <h1>Now Showing</h1>
+        {moviesEls}
+      </div>
+    );
+  }
+
+  const placeholder =
+    <a class="movie-tile">
+      <div class="movie-tile-poster"></div>
+      <div class="movie-tile-description">
+        <div class="movie-tile-description-title placeholder"></div>
+        <div class="movie-tile-description-subtitle">
+          <div class="movie-tile-description-rating placeholder"></div>
+        </div>
+      </div>
+    </a>;
+
   return (
     <div class="movies">
       <h1>Now Showing</h1>
-      {moviesEls}
+      {Array(20).fill(placeholder)}
     </div>
   );
 }
