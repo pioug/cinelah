@@ -9,6 +9,7 @@ import format from 'date-fns/format';
 
 import './style.scss';
 import './favicon.png';
+import './icon512.png';
 import './open-graph.png';
 
 const BUCKET = 'https://storage.googleapis.com/cinelah-92dbb.appspot.com';
