@@ -63,7 +63,6 @@ class Cinelah extends Component {
             '/',
             '/favicon.png',
             '/bundle.js',
-            PRODUCTION && '/style.css',
             'https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json'
           ];
           caches.open('cinelah')

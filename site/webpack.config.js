@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
@@ -32,14 +31,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: process.env.NODE_ENV === 'production' ?
-          ExtractTextPlugin.extract({
-            use: [
-              { loader: 'css-loader', options: { sourceMap: true, importLoaders: 1 } },
-              { loader: 'postcss-loader', options: { sourceMap: true } },
-              { loader: 'sass-loader', options: { sourceMap: true } }
-            ]
-          }) : ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
@@ -82,7 +74,6 @@ module.exports = {
         from: 'manifest.json',
         transform: content => JSON.stringify(JSON.parse(content))
       }]),
-      new ExtractTextPlugin('style.css'),
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'index.ejs',
