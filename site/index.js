@@ -490,7 +490,7 @@ function Cinema({ cinemas, id, showtimes }) {
 }
 
 function Time({ showtime = {} }) {
-  return <a class="time" href={showtime.url}>{showtime.time}</a>;
+  return <a class="time" target="_blank" rel="noopener" href={showtime.url}>{showtime.time}</a>;
 }
 
 function displayDate(date) {
