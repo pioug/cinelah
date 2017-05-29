@@ -3,6 +3,7 @@ const Case = require('case');
 const cheerio = require('cheerio');
 const kebabCase = require('lodash.kebabcase');
 const memoize = require('lodash.memoize');
+const tokenizeEnglish = require('tokenize-english')(require('tokenize-text')());
 
 const TMDB_API_KEY = 'bd09ff783d37c8e5a07b105ab39a7503';
 
@@ -14,6 +15,7 @@ module.exports = {
   getGenre: memoize(getGenre),
   getMovie,
   getRating: memoize(getRating),
+  getSummary: memoize(getSummary),
   normalizeShowtimes: normalizeShowtimes,
   timeFormat: 'HH:mm'
 };
@@ -89,7 +91,7 @@ function formatTitle(originalStr) {
     })
     .catch(function(err) {
       if (err.message === 'No results on TMDB') {
-        return searchTitleOnImdbViaGoogle(cleanStr)
+        return getImdbPage(cleanStr)
           .then(function(response) {
             return getMovieOnImdbPage(response.data);
           });
@@ -101,14 +103,15 @@ function formatTitle(originalStr) {
     });
 }
 
-function searchTitleOnTmbd(str) {
+const searchTitleOnTmbd = memoize(searchTitleOnTmbd_);
+function searchTitleOnTmbd_(str) {
   return axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${str}`)
     .catch(function(err) {
       if (err.response && err.response.status === 429 ||
         err.code && err.code === 'ETIMEDOUT') {
         return new Promise(function(resolve) {
           setTimeout(function() {
-            resolve(searchTitleOnTmbd(str));
+            resolve(searchTitleOnTmbd_(str));
           }, 10000);
         });
       } else {
@@ -118,7 +121,8 @@ function searchTitleOnTmbd(str) {
     });
 }
 
-function getMovieOnTmdb(id) {
+const getMovieOnTmdb = memoize(getMovieOnTmdb_);
+function getMovieOnTmdb_(id) {
   return axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}`)
     .then(function(response) {
       const baseImageUrl = 'https://image.tmdb.org/t/p/w500';
@@ -131,7 +135,7 @@ function getMovieOnTmdb(id) {
         err.code && err.code === 'ETIMEDOUT') {
         return new Promise(function(resolve) {
           setTimeout(function() {
-            resolve(getMovieOnTmdb(id));
+            resolve(getMovieOnTmdb_(id));
           }, 10000);
         });
       } else {
@@ -141,12 +145,28 @@ function getMovieOnTmdb(id) {
     });
 }
 
-const searchTitleOnImdbViaGoogle = memoize(searchTitleOnImdbViaGoogle_);
-function searchTitleOnImdbViaGoogle_(str) {
+const getImdbPage = memoize(getImdbPage_);
+function getImdbPage_(str) {
+  return getImdbId(str)
+    .then(function(id) {
+      return axios.get(`http://www.imdb.com/title/${id}/`);
+    });
+}
+
+const getImdbSummaryPage = memoize(getImdbSummaryPage_);
+function getImdbSummaryPage_(str) {
+  return getImdbId(str)
+    .then(function(id) {
+      return axios.get(`http://www.imdb.com/title/${id}/plotsummary`);
+    });
+}
+
+const getImdbId = memoize(getImdbId_);
+function getImdbId_(str) {
   return axios.get(`http://www.google.com/search?q=${encodeURIComponent(str)} imdb&btnI`)
     .then(function(response) {
-      var [id] = response.data.match(/tt\d+/);
-      return axios.get(`http://www.imdb.com/title/${id}/`);
+      const [id] = response.data.match(/tt\d+/);
+      return id;
     });
 }
 
@@ -161,11 +181,12 @@ function getMovieOnImdbPage(page) {
 }
 
 function normalizeShowtimes(json) {
-  const movies = json.reduce(function(res, { country, genre, movie, rating }) {
+  const movies = json.reduce(function(res, { country, genre, movie, rating, summary }) {
     const id = kebabCase(movie);
     res[id] = {
       country,
       id,
+      summary,
       title: movie,
       genre,
       rating
@@ -216,7 +237,7 @@ function getMovie(title) {
       if (data.results.length) {
         return getMovieOnTmdb(data.results[0].id);
       } else {
-        return searchTitleOnImdbViaGoogle(title)
+        return getImdbPage(title)
           .then(function(response) {
             return getPosterOnImdbPage(response.data);
           })
@@ -254,7 +275,7 @@ function getMovie(title) {
 }
 
 function getRating(title) {
-  return searchTitleOnImdbViaGoogle(title)
+  return getImdbPage(title)
     .then(function(response) {
       return getRatingOnImdbPage(response.data);
     });
@@ -268,7 +289,7 @@ function getRatingOnImdbPage(page) {
 }
 
 function getCountry(title) {
-  return searchTitleOnImdbViaGoogle(title)
+  return getImdbPage(title)
     .then(function(response) {
       return getCountryOnImdbPage(response.data);
     });
@@ -282,7 +303,7 @@ function getCountryOnImdbPage(page) {
 }
 
 function getGenre(title) {
-  return searchTitleOnImdbViaGoogle(title)
+  return getImdbPage(title)
     .then(function(response) {
       return getGenreOnImdbPage(response.data);
     });
@@ -293,4 +314,38 @@ function getGenreOnImdbPage(page) {
     normalizeWhitespace: true
   });
   return $('[href$="tt_stry_gnr"]').eq(0).text() || null;
+}
+
+function getSummary(title) {
+  return getImdbSummaryPage(title)
+    .then(function(response) {
+      return getSummaryOnImdbPage(response.data);
+    })
+    .then(function(summary) {
+      if (!summary) {
+        return searchTitleOnTmbd(title)
+         .then(function(response) {
+           if (response.data.total_results) {
+             return getMovieOnTmdb(response.data.results[0].id)
+               .then(function({ data: movie }) {
+                 return movie.overview || null;
+               });
+           }
+         });
+      }
+
+      return summary;
+    });
+}
+
+function getSummaryOnImdbPage(page) {
+  const $ = cheerio.load(page, {
+    normalizeWhitespace: true
+  });
+  const summary = $('.plotSummary').eq(0).text().trim();
+  return getFirstSentenses(summary);
+}
+
+function getFirstSentenses(text) {
+  return tokenizeEnglish.sentences()(text).map(token => token.value).slice(0, 2).join('').trim();
 }
