@@ -87,7 +87,7 @@ function parseShawMobileDay(page) {
                 .map(function(i, el) {
                   return {
                     time: moment($(el).text(), 'k:mmA').format(timeFormat),
-                    url: url.resolve(SHAW, $(el).attr('href'))
+                    url: url.resolve(SHAW, $(el).attr('href') || '')
                   };
                 })
                 .get()
