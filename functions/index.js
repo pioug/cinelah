@@ -66,7 +66,7 @@ const scrapeMovies = functions.storage.object().onChange(function(event) {
                 return Promise.all([
                   storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
                   sharp(poster)
-                    .resize(128, 96)
+                    .resize(200, null)
                     .toBuffer()
                     .then(function(x) {
                       return storeImageInBucket(x, 'poster', `movies/${movies[key].id}/`);
@@ -93,7 +93,7 @@ const scrapeMovies = functions.storage.object().onChange(function(event) {
 });
 
 function storeImageInBucket(buffer, name, baseDir = '') {
-  const ts = new Date().getTime();
+  const ts = Math.random();
   fs.writeFileSync(`/tmp/${name}${ts}.jpg`, buffer);
   return bucket.upload(`/tmp/${name}${ts}.jpg`, {
     destination: `${baseDir}${name}.jpg`,
@@ -103,8 +103,9 @@ function storeImageInBucket(buffer, name, baseDir = '') {
 }
 
 function storeJsonInBucket(json, name, baseDir = '') {
-  fs.writeFileSync(`/tmp/${name}.json`, JSON.stringify(json));
-  return bucket.upload(`/tmp/${name}.json`, {
+  const ts = Math.random();
+  fs.writeFileSync(`/tmp/${name}${ts}.json`, JSON.stringify(json));
+  return bucket.upload(`/tmp/${name}${ts}.json`, {
     destination: `${baseDir}${name}.json`,
     gzip: true,
     public: true

@@ -58,7 +58,8 @@ class Cinelah extends Component {
           });
 
         if (Object.keys(movies).length) {
-          const posters = Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/backdrop.jpg`);
+          const backdrops = Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/backdrop.jpg`);
+          const posters = Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/poster.jpg`);
           const assets = [
             '/',
             '/favicon.png',
@@ -69,6 +70,7 @@ class Cinelah extends Component {
             .then(function(cache) {
               return cache.addAll([
                 ...assets,
+                ...backdrops,
                 ...posters
               ]);
             });
@@ -137,9 +139,9 @@ class Cinelah extends Component {
       <main>
         <Match>{header}</Match>
         <Router>
-          <Movies default path="/movies/" movies={movies} showtimes={showtimes} />
+          <Movies default path="/movies/" movies={movies} />
           <Movie path="/movies/:id" movies={movies} showtimes={showtimes} />
-          <Cinemas path="/cinemas/" cinemas={cinemas} movies={movies} />
+          <Cinemas path="/cinemas/" cinemas={cinemas} />
           <Cinema path="/cinemas/:id" cinemas={cinemas} showtimes={showtimes} />
         </Router>
       </main>
@@ -153,7 +155,7 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
 
-function Movies({ movies, showtimes }) {
+function Movies({ movies }) {
   const moviesEls = Object.keys(movies)
     .map(function(id) {
       return {
@@ -161,11 +163,10 @@ function Movies({ movies, showtimes }) {
         title: movies[id].title,
         rating: movies[id].rating,
         country: movies[id].country,
-        genre: movies[id].genre,
-        timings: showtimes.filter(({ movieId }) => movieId === id).length
+        genre: movies[id].genre
       };
     })
-    .map(function({ id, title, rating, genre, country, timings }) {
+    .map(function({ id, title, rating, genre, country }) {
       const style = {
         backgroundImage: `url(${BUCKET}/movies/${id}/backdrop.jpg)`
       };
@@ -189,14 +190,6 @@ function Movies({ movies, showtimes }) {
               {!!country && <div class="movie-tile-description-rating">
                 {country}
               </div>}
-              <div class="movie-tile-description-rating">
-                <svg class="icon-time" fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                </svg>
-                {timings}
-              </div>
             </div>
           </div>
         </a>
@@ -310,7 +303,12 @@ function Movie({ id, movies, showtimes }) {
     });
 
   if (list.length || !Object.keys(movies).length) {
-    return <div>{list}</div>;
+    return (
+      <div>
+        <MovieHeader movie={movies[id]}></MovieHeader>
+        {list}
+      </div>
+    );
   }
 
   if (movies[id]) {
@@ -331,6 +329,65 @@ function Movie({ id, movies, showtimes }) {
         <p>Go back to <a href="/movies">Now Showing</a>.</p>
       </section>
     </article>
+  );
+}
+
+function MovieHeader({ movie = {} }) {
+  if (!movie.id) {
+    return (
+      <div class="movie-header">
+        <div class="movie-header-poster-container"></div>
+        <dl>
+          <dt>Summary</dt>
+          <dd class="placeholder large"></dd>
+          <dd class="placeholder medium"></dd>
+          <div style="display: flex; margin-top: 12px">
+            <div style="margin-right: 16px">
+              <dt>Rating</dt>
+              <dd class="placeholder"></dd>
+            </div>
+            <div style="margin-right: 16px">
+              <dt>Country</dt>
+              <dd class="placeholder"></dd>
+            </div>
+            <div style="flex: 1">
+              <dt>Genre</dt>
+              <dd class="placeholder"></dd>
+            </div>
+          </div>
+        </dl>
+      </div>
+    );
+  }
+
+  const style = {
+    backgroundImage: `url(${BUCKET}/movies/${movie.id}/poster.jpg)`
+  };
+
+  return (
+    <div class="movie-header" style={style}>
+      <div class="movie-header-poster-container">
+        <img src={`${BUCKET}/movies/${movie.id}/poster.jpg`} alt={`${movie.title} poster`}/>
+      </div>
+      <dl>
+        {movie.summary && <dt>Summary</dt>}
+        {movie.summary && <dd>{movie.summary}</dd>}
+        <div style="display: flex; margin-top: 12px">
+          {movie.rating && <div style="margin-right: 16px">
+            <dt>Rating</dt>
+            <dd>{movie.rating}</dd>
+          </div>}
+          {movie.country && <div style="margin-right: 16px">
+            <dt>Country</dt>
+            <dd>{movie.country}</dd>
+          </div>}
+          {movie.genre && <div style="flex: 1">
+            <dt>Genre</dt>
+            <dd>{movie.genre}</dd>
+          </div>}
+        </div>
+      </dl>
+    </div>
   );
 }
 

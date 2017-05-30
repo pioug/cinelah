@@ -328,7 +328,7 @@ function getSummary(title) {
            if (response.data.total_results) {
              return getMovieOnTmdb(response.data.results[0].id)
                .then(function({ data: movie }) {
-                 return movie.overview || null;
+                 return getFirstSentenses(movie.overview) || null;
                });
            }
          });
@@ -347,5 +347,14 @@ function getSummaryOnImdbPage(page) {
 }
 
 function getFirstSentenses(text) {
-  return tokenizeEnglish.sentences()(text).map(token => token.value).slice(0, 2).join('').trim();
+  return tokenizeEnglish.sentences()(text)
+    .map(token => token.value)
+    .reduce(function(res, token) {
+      if (res.length > 140) {
+        return res;
+      }
+
+      return res + token;
+    }, '')
+    .trim();
 }
