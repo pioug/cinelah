@@ -140,7 +140,7 @@ class Cinelah extends Component {
         <Match>{header}</Match>
         <Router>
           <Movies default path="/movies/" movies={movies} />
-          <Movie path="/movies/:id" movies={movies} showtimes={showtimes} />
+          <Movie path="/movies/:id" movies={movies} showtimes={showtimes} cinemas={cinemas} />
           <Cinemas path="/cinemas/" cinemas={cinemas} />
           <Cinema path="/cinemas/:id" cinemas={cinemas} showtimes={showtimes} />
         </Router>
@@ -224,7 +224,7 @@ function Movies({ movies }) {
   );
 }
 
-function Movie({ id, movies, showtimes }) {
+function Movie({ id, movies, cinemas, showtimes }) {
   const movieShowtimes = showtimes
     .filter(function({ movieId }) {
       return id === movieId;
@@ -246,9 +246,9 @@ function Movie({ id, movies, showtimes }) {
       const { showtimes } = movieShowtimes.get(date);
       const showtimesByCinema = showtimes
         .reduce(function(res, showtime) {
-          const cinema = res.get(showtime.cinema) || { cinema: showtime.cinema, showtimes: [] };
+          const cinema = res.get(showtime.cinemaId) || { cinema: showtime.cinemaId, showtimes: [] };
           cinema.showtimes.push(showtime);
-          res.set(showtime.cinema, cinema);
+          res.set(showtime.cinemaId, cinema);
           return res;
         }, new Map());
 
@@ -258,8 +258,8 @@ function Movie({ id, movies, showtimes }) {
           if (a > b) return 1;
           return 0;
         })
-        .map(function(cinema) {
-          const { showtimes } = showtimesByCinema.get(cinema);
+        .map(function(cinemaId) {
+          const { showtimes } = showtimesByCinema.get(cinemaId);
           const showtimesByCinemaEls = showtimes
             .sort(function(a, b) {
               if (parseInt(a.time) < 6) {
@@ -281,12 +281,12 @@ function Movie({ id, movies, showtimes }) {
             .map(function(showtime) {
               return <Time showtime={showtime} />;
             });
-          const [group, name] = cinema.split(' - ');
+          const [group, name] = cinemas[cinemaId].name.split(' - ');
           return (
             <article class="cinema-times">
               <div class="cinema-tile">
                 <div class="cinema-tile-description-column-1">
-                  <div class="cinema-tile-description-rating">{group}</div>
+                  <a href={`/cinemas/${cinemaId}`} class="cinema-tile-description-rating">{group}</a>
                 </div>
                 <div class="cinema-tile-description-title">{name}</div>
               </div>
@@ -488,7 +488,7 @@ function Cinema({ cinemas, id, showtimes }) {
           return (
             <article class="movie-times">
               <div class="movie-tile">
-                <div class="movie-tile-poster" style={style}></div>
+                <a href={`/movies/${movieId}`} class="movie-tile-poster" style={style}></a>
                 <div class="movie-tile-description">
                   <div class="movie-tile-description-title">{movie}</div>
                   <div class="movie-tile-description-subtitle">
