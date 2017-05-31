@@ -5,6 +5,8 @@ const kebabCase = require('lodash.kebabcase');
 const memoize = require('lodash.memoize');
 const tokenizeEnglish = require('tokenize-english')(require('tokenize-text')());
 
+const coordinates = require('./coordinates');
+
 const TMDB_API_KEY = 'bd09ff783d37c8e5a07b105ab39a7503';
 
 module.exports = {
@@ -16,7 +18,7 @@ module.exports = {
   getMovie,
   getRating: memoize(getRating),
   getSummary: memoize(getSummary),
-  normalizeShowtimes: normalizeShowtimes,
+  normalizeShowtimes,
   timeFormat: 'HH:mm'
 };
 
@@ -212,7 +214,8 @@ function normalizeShowtimes(json) {
     const id = kebabCase(cinema);
     res[id] = {
       id,
-      name: cinema
+      name: cinema,
+      coordinates: coordinates[id]
     };
     return res;
   }, {});
