@@ -163,10 +163,25 @@ function getImdbSummaryPage_(str) {
 
 const getImdbId = memoize(getImdbId_);
 function getImdbId_(str) {
-  return axios.get(`http://www.google.com/search?q=${encodeURIComponent(str)} imdb&btnI`)
-    .then(function(response) {
-      const [id] = response.data.match(/tt\d+/);
-      return id;
+  return searchTitleOnTmbd(str)
+    .then(function({ data }) {
+      if (data.total_results) {
+        return getMovieOnTmdb(data.results[0].id)
+          .then(function({ data }) {
+            return data.imdb_id ||
+              axios.get(`http://www.google.com/search?q=${encodeURIComponent(str)} imdb&btnI`)
+                .then(function(response) {
+                  const [id] = response.data.match(/tt\d+/);
+                  return id;
+                });
+          });
+      }
+
+      return axios.get(`http://www.google.com/search?q=${encodeURIComponent(str)} imdb&btnI`)
+        .then(function(response) {
+          const [id] = response.data.match(/tt\d+/);
+          return id;
+        });
     });
 }
 
