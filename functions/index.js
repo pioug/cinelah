@@ -72,7 +72,7 @@ const scrapeMovies = functions.storage.object().onChange(function(event) {
                       return storeImageInBucket(x, 'poster', `movies/${movies[key].id}/`);
                     }),
                   sharp(backdrop || poster)
-                    .resize(128, 96)
+                    .resize(144, 100)
                     .toBuffer()
                     .then(function(y) {
                       return storeImageInBucket(y, 'backdrop', `movies/${movies[key].id}/`);
