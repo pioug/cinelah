@@ -19,7 +19,7 @@
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.5.1",
     "copy-webpack-plugin": "4.0.1",
-    "css-loader": "0.28.3",
+    "css-loader": "0.28.4",
     "cssnano": "3.10.0",
     "cssnext": "1.8.4",
     "file-loader": "0.11.1",
