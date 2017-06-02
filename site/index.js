@@ -1,11 +1,12 @@
-import { h, render, Component } from 'preact';
-import Router from 'preact-router';
-import Match from 'preact-router/match';
 import addDays from 'date-fns/add_days';
+import format from 'date-fns/format';
+import haversine from 'haversine';
 import isAfter from 'date-fns/is_after';
 import isToday from 'date-fns/is_today';
 import isTomorrow from 'date-fns/is_tomorrow';
-import format from 'date-fns/format';
+import Match from 'preact-router/match';
+import Router from 'preact-router';
+import { h, render, Component } from 'preact';
 
 import './style.scss';
 import './favicon.png';
@@ -74,6 +75,29 @@ class Cinelah extends Component {
                 ...posters
               ]);
             });
+        }
+
+        if ('geolocation' in navigator) {
+          navigator.geolocation.getCurrentPosition(position => {
+            Object.keys(cinemas)
+              .map(function(cinemaId) {
+                cinemas[cinemaId].distance = Math.round(haversine({
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                }, {
+                  latitude: cinemas[cinemaId].coordinates[0],
+                  longitude: cinemas[cinemaId].coordinates[1]
+                }));
+
+                return cinemas[cinemaId];
+              });
+
+            this.setState({ cinemas });
+          }, function(error) {
+            console.error(error);
+          }, {
+            enableHighAccuracy: true
+          });
         }
 
         this.setState({ cinemas, movies, showtimes });
@@ -285,10 +309,12 @@ function Movie({ id, movies, cinemas, showtimes }) {
           return (
             <article class="cinema-times">
               <div class="cinema-tile">
-                <div class="cinema-tile-description-column-1">
-                  <a href={`/cinemas/${cinemaId}`} class="cinema-tile-description-rating">{group}</a>
+                <div class="cinema-tile-description-column-1" style="min-height: auto; padding-top: 0;">
+                  <a href={`/cinemas/${cinemaId}`} class={`cinema-tile-description-group ${group.toLowerCase()}`}>{group}</a>
                 </div>
-                <div class="cinema-tile-description-title">{name}</div>
+                <div class="cinema-tile-description">
+                  <div class="cinema-tile-description-title" style="margin-bottom: 0">{name}</div>
+                </div>
               </div>
               <div class="times">{showtimesByCinemaEls}</div>
             </article>
@@ -394,11 +420,13 @@ function MovieHeader({ movie = {} }) {
 function Cinemas({ cinemas = {} }) {
   const cinemaEls = Object.keys(cinemas)
     .map(function(id) {
+      const distance = cinemas[id].distance;
       const [group, name] = cinemas[id].name.split(' - ');
       return {
-        id,
+        id: id,
         group,
-        name
+        name,
+        distance,
       };
     })
     .sort(function(a, b) {
@@ -408,13 +436,20 @@ function Cinemas({ cinemas = {} }) {
       if (a > b) return 1;
       return 0;
     })
-    .map(function({ id, group, name }) {
+    .map(function({ id, group, name, distance }) {
       return (
         <a class="cinema-tile" href={`/cinemas/${id}`}>
           <div class="cinema-tile-description-column-1">
-            <div class="cinema-tile-description-rating">{group}</div>
+            <div class="cinema-tile-description-group" class={`cinema-tile-description-group ${group.toLowerCase()}`}>{group}</div>
           </div>
-          <div class="cinema-tile-description-title">{name}</div>
+          <div class="cinema-tile-description">
+            <div class="cinema-tile-description-title">{name}</div>
+            <div class="cinema-tile-description-subtitle">
+              {!!distance && <div class="cinema-tile-description-rating">
+                {distance} km
+              </div> || <div class="cinema-tile-description-rating placeholder"></div>}
+            </div>
+          </div>
         </a>
       );
     });

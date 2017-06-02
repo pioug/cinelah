@@ -146,11 +146,7 @@ p {
     height: 10px;
     border-radius: 4px;
     width: 140px;
-
-    &:after {
-      content: 'merci';
-      color: transparent;
-    }
+    margin-bottom: 8px;
   }
 }
 
@@ -170,11 +166,6 @@ p {
   &.placeholder {
     height: 10px;
     width: 100px;
-
-    &:after {
-      content: 'merci';
-      color: transparent;
-    }
   }
 
   svg {
@@ -271,22 +262,60 @@ p {
 
 .cinema-tile-description-title {
   @extend .movie-tile-description-title;
-  margin-bottom: 0;
+}
+
+.cinema-tile-description-subtitle {
+  @extend .movie-tile-description-subtitle;
 }
 
 .cinema-tile-description-column-1 {
-  margin-top: -1px;
   margin-right: 12px;
+  min-height: 50px;
   min-width: 72px;
+  padding-top: 3px;
   text-align: right;
+}
+
+.cinema-tile-description-group {
+  @extend .movie-tile-description-rating;
+  border-radius: 2px;
+  font-feature-settings: "smcp" on;
+  font-size: 12px;
+  margin-bottom: 1px;
+
+  &.cathay {
+    background-color: #383d64;
+    color: #fff;
+  }
+
+  &.gv {
+    background-color: #000;
+    color: #f6c637;
+  }
+
+  &.filmgarde {
+    background-color: #fff;
+    color: #d42b09;
+  }
+
+  &.shaw {
+    background-color: #7d0505;
+    color: #fff;
+  }
+
+  &.we {
+    background-color: #72599f;
+    color: #fff;
+  }
 }
 
 .cinema-tile-description-rating {
   @extend .movie-tile-description-rating;
-  border-radius: 2px;
-  font-feature-settings: "smcp" on;
-  font-weight: lighter;
-  font-size: 12px;
+
+  &.placeholder {
+    height: 19px;
+    width: 32px;
+  }
 }
 
 .cinemas {
