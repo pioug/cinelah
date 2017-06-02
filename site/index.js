@@ -58,25 +58,6 @@ class Cinelah extends Component {
               });
           });
 
-        if (Object.keys(movies).length) {
-          const backdrops = Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/backdrop.jpg`);
-          const posters = Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/poster.jpg`);
-          const assets = [
-            '/',
-            '/favicon.png',
-            '/bundle.js',
-            'https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json'
-          ];
-          caches.open('cinelah')
-            .then(function(cache) {
-              return cache.addAll([
-                ...assets,
-                ...backdrops,
-                ...posters
-              ]);
-            });
-        }
-
         if ('geolocation' in navigator) {
           navigator.geolocation.getCurrentPosition(position => {
             Object.keys(cinemas)
