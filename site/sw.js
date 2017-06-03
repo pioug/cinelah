@@ -3,11 +3,11 @@ const BUCKET = 'https://storage.googleapis.com/cinelah-92dbb.appspot.com';
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request, { ignoreSearch: true })
-      .catch(function() {
-        return fetch(event.request);
-      })
       .then(function(response) {
-        return response || caches.match('/');
+        return response || fetch(event.request);
+      })
+      .catch(function() {
+        return caches.match('/');
       })
   );
 });
