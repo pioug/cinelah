@@ -321,6 +321,7 @@ function Movie({ id, movies, cinemas, showtimes }) {
   if (movies[id]) {
     return (
       <article>
+        <MovieHeader movie={movies[id]}></MovieHeader>
         <h1 class="error">No timing found</h1>
         <section>
           <p>Go back to <a href="/movies">Now Showing</a>.</p>
