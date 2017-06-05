@@ -384,6 +384,11 @@ p {
   min-width: 50px;
   padding: 6px;
   text-align: center;
+
+  &:visited {
+    background-color: #ddd;
+    color: #551a8b;
+  }
 }
 
 a {
