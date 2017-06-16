@@ -70,6 +70,7 @@ module.exports = {
       new webpack.DefinePlugin({
         PRODUCTION: 'true'
       }),
+      new webpack.optimize.ModuleConcatenationPlugin(),
       new CopyWebpackPlugin([{
         from: 'manifest.json',
         transform: content => JSON.stringify(JSON.parse(content))
