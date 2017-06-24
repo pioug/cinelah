@@ -1,3 +1,5 @@
+const dateFns = require('date-fns');
+const { dateFormat } = require('./formatter');
 const { getCountry, getGenre, getRating, getSummary, formatTitle } = require('./formatter.js');
 
 module.exports = {
@@ -84,13 +86,27 @@ function getGvMovies(json) {
     movies.reduce(function(b, { title, dates }) {
 
       dates.reduce(function(c, { date, timings }) {
+        const stricltyToday = timings.filter(function(timing) {
+          return parseInt(timing.time) > 6;
+        });
         a[title] = a[title] || {};
         a[title].dates = a[title].dates || {};
         a[title].dates[date] = a[title].dates[date] || [];
         a[title].dates[date] = a[title].dates[date].concat({
           name,
-          timings
+          timings: stricltyToday
         });
+
+        const strictlyNextDay = timings.filter(function(timing) {
+          return parseInt(timing.time) < 6;
+        });
+        const nextDay = dateFns.format(dateFns.addDays(date, 1), dateFormat);
+        a[title].dates[nextDay] = a[title].dates[nextDay] || [];
+        a[title].dates[nextDay] = a[title].dates[nextDay].concat({
+          name,
+          timings: strictlyNextDay
+        });
+
         return c;
       }, {});
 
@@ -121,13 +137,27 @@ function getShawMovies(json) {
     cinemas.reduce(function(b, { name, movies }) {
 
       movies.reduce(function(c, { title, timings }) {
+        const stricltyToday = timings.filter(function(timing) {
+          return parseInt(timing.time) > 6;
+        });
         a[title] = a[title] || {};
         a[title].dates = a[title].dates || {};
         a[title].dates[date] = a[title].dates[date] || [];
         a[title].dates[date] = a[title].dates[date].concat({
           name,
-          timings
+          timings: stricltyToday
         });
+
+        const strictlyNextDay = timings.filter(function(timing) {
+          return parseInt(timing.time) < 6;
+        });
+        const nextDay = dateFns.format(dateFns.addDays(date, 1), dateFormat);
+        a[title].dates[nextDay] = a[title].dates[nextDay] || [];
+        a[title].dates[nextDay] = a[title].dates[nextDay].concat({
+          name,
+          timings: strictlyNextDay
+        });
+
         return c;
       }, {});
 
@@ -157,13 +187,27 @@ function getWeMovies(json) {
 
     dates.reduce(function(b, { date, movies }) {
       movies.reduce(function(c, { title, timings }) {
+        const stricltyToday = timings.filter(function(timing) {
+          return parseInt(timing.time) > 6;
+        });
         a[title] = a[title] || {};
         a[title].dates = a[title].dates || {};
         a[title].dates[date] = a[title].dates[date] || [];
         a[title].dates[date] = a[title].dates[date].concat({
           name,
-          timings
+          timings: stricltyToday
         });
+
+        const strictlyNextDay = timings.filter(function(timing) {
+          return parseInt(timing.time) < 6;
+        });
+        const nextDay = dateFns.format(dateFns.addDays(date, 1), dateFormat);
+        a[title].dates[nextDay] = a[title].dates[nextDay] || [];
+        a[title].dates[nextDay] = a[title].dates[nextDay].concat({
+          name,
+          timings: strictlyNextDay
+        });
+
         return c;
       }, {});
 

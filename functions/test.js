@@ -29,6 +29,9 @@ Promise.all([
   })
   .then(function(json) {
     fs.writeFileSync('./showtimes.json', gstr(normalizeShowtimes(json)));
+  })
+  .catch(function(err) {
+    console.log(err.stack);
   });
 
 function gstr(obj) {

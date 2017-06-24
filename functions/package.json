@@ -6,6 +6,7 @@
     "axios": "0.16.2",
     "case": "1.5.2",
     "cheerio": "0.22.0",
+    "date-fns": "2.0.0-alpha.1",
     "firebase-admin": "5.0.0",
     "firebase-functions": "0.5.7",
     "lodash.kebabcase": "4.1.1",

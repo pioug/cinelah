@@ -37,7 +37,7 @@ window.addEventListener('scroll', function() {
 
 class Cinelah extends Component {
   componentDidMount() {
-    fetch(`${BUCKET}/showtimes.json`)
+    fetch(`${BUCKET}/showtimes.json?v=2`)
       .then(body => body.json())
       .then(({ cinemas, movies, showtimes }) => {
         const now = new Date();
@@ -235,9 +235,12 @@ function Movie({ id, movies, cinemas, showtimes }) {
       return id === movieId;
     })
     .reduce(function(res, showtime) {
-      const date = res.get(showtime.date) || { date: showtime.date, showtimes: [] };
+      const showtimeDay = parseInt(showtime.time) < 6 ?
+        format(addDays(showtime.date, -1), 'YYYY-MM-DD') :
+        showtime.date;
+      const date = res.get(showtimeDay) || { date: showtimeDay, showtimes: [] };
       date.showtimes.push(showtime);
-      res.set(showtime.date, date);
+      res.set(showtimeDay, date);
       return res;
     }, new Map());
 
@@ -450,9 +453,12 @@ function Cinema({ cinemas, id, showtimes }) {
       return id === cinemaId;
     })
     .reduce(function(res, showtime) {
-      const date = res.get(showtime.date) || { date: showtime.date, showtimes: [] };
+      const showtimeDay = parseInt(showtime.time) < 6 ?
+        format(addDays(showtime.date, -1), 'YYYY-MM-DD') :
+        showtime.date;
+      const date = res.get(showtimeDay) || { date: showtimeDay, showtimes: [] };
       date.showtimes.push(showtime);
-      res.set(showtime.date, date);
+      res.set(showtimeDay, date);
       return res;
     }, new Map());
 
