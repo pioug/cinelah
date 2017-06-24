@@ -261,41 +261,41 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
         return Promise.reject(err);
       });
   }))
-  .then(function(movies) {
-    const showtimes = movies.reduce(function(a, { title, genre, rating, country, dates, summary }) {
+    .then(function(movies) {
+      const showtimes = movies.reduce(function(a, { title, genre, rating, country, dates, summary }) {
 
-      dates.reduce(function(b, { date, cinemas }) {
+        dates.reduce(function(b, { date, cinemas }) {
 
-        cinemas.reduce(function(c, { name, timings }) {
-          a = [...a, ...timings.map(function({ time, url }) {
-            return {
-              cinema: name,
-              country,
-              date,
-              genre,
-              movie: title,
-              rating,
-              summary,
-              time,
-              url
-            };
-          })];
-          return c;
+          cinemas.reduce(function(c, { name, timings }) {
+            a = [...a, ...timings.map(function({ time, url }) {
+              return {
+                cinema: name,
+                country,
+                date,
+                genre,
+                movie: title,
+                rating,
+                summary,
+                time,
+                url
+              };
+            })];
+            return c;
+          }, []);
+
+          return b;
         }, []);
 
-        return b;
-      }, []);
+        return a;
+      }, [])
+        .sort(function(a, b) {
+          return a.movie < b.movie ? -1 :
+            a.movie > b.movie ? 1 :
+              0;
+        });
 
-      return a;
-    }, [])
-      .sort(function(a, b) {
-        return a.movie < b.movie ? -1 :
-          a.movie > b.movie ? 1 :
-          0;
-      });
-
-    console.info('getShowtimes finished');
-    return showtimes;
-  });
+      console.info('getShowtimes finished');
+      return showtimes;
+    });
 }
 

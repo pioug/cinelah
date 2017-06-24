@@ -59,17 +59,17 @@ function formatCinema(originalStr) {
 function formatTitle(originalStr) {
   let cleanStr = originalStr
     .replace(/Dining\sSet\*/g, '')
-    .replace(/Fans\`\sSc\*/g, '')
-    .replace(/Fans\`\sPrev\*/g, '')
-    .replace(/Fans\`\sScreening*/g, '')
-    .replace(/Kids\sFlix \–/g, '')
-    .replace(/Mums\ \&\ Babies\ /, '')
+    .replace(/Fans`\sSc\*/g, '')
+    .replace(/Fans`\sPrev\*/g, '')
+    .replace(/Fans`\sScreening*/g, '')
+    .replace(/Kids\sFlix –/g, '')
+    .replace(/Mums & Babies /, '')
     .replace(/the\smovie/gi, '')
     .replace(/\bthe\b/gi, '')
-    .replace(/\`/g, '\'')
+    .replace(/`/g, '\'')
     .replace(/\[/g, '(')
     .replace(/\]/g, ')')
-    .replace(/\s*\:/g, ':')
+    .replace(/\s*:/g, ':')
     .replace(/\s+3D/g, '')
     .replace(/PG(\d*)/g, '')
     .replace(/NC(\d+)/g, '')
@@ -190,11 +190,11 @@ function getImdbId_(str) {
 function getMovieOnImdbPage(page) {
   const $ = cheerio.load(page);
   return $('h1[itemprop="name"]')
-     .children()
-     .remove()
-     .end()
-     .text()
-     .trim();
+    .children()
+    .remove()
+    .end()
+    .text()
+    .trim();
 }
 
 function normalizeShowtimes(json) {
@@ -244,7 +244,7 @@ function getPosterOnImdbPage(page) {
       const id = response.config.url.split('/')[6].split('?')[0];
       const start = 'window.IMDbReactInitialState.push(';
       const end = '"isModal":false}}';
-      const json = eval(`(${response.data.substr(response.data.indexOf(start) + start.length, response.data.indexOf(end) - response.data.indexOf(start) - start.length + end.length)})`);  // eslint-disable-line no-eval
+      const json = eval(`(${response.data.substr(response.data.indexOf(start) + start.length, response.data.indexOf(end) - response.data.indexOf(start) - start.length + end.length)})`); // eslint-disable-line no-eval
       return json.mediaviewer.galleries[response.config.url.split('/')[4]].allImages.find(img => img.id === id).src;
     });
 }
@@ -342,14 +342,14 @@ function getSummary(title) {
     .then(function(summary) {
       if (!summary) {
         return searchTitleOnTmbd(title)
-         .then(function(response) {
-           if (response.data.total_results) {
-             return getMovieOnTmdb(response.data.results[0].id)
-               .then(function({ data: movie }) {
-                 return getFirstSentenses(movie.overview) || null;
-               });
-           }
-         });
+          .then(function(response) {
+            if (response.data.total_results) {
+              return getMovieOnTmdb(response.data.results[0].id)
+                .then(function({ data: movie }) {
+                  return getFirstSentenses(movie.overview) || null;
+                });
+            }
+          });
       }
 
       return summary;

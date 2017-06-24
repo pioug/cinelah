@@ -36,16 +36,16 @@ function getShawJson() {
 
                     page.evaluate(function(date) {
                       document.querySelector('#globalform').ddlShowDate.value = date;
-                      return document.querySelector('[type=\"submit\"]').click();
+                      return document.querySelector('[type="submit"]').click();
                     }, date.formDate);
                   });
 
                   return promise;
                 })
-                .then(function(content) {
-                  date.cinemas = parseShawMobileDay(content);
-                  return dates;
-                });
+                  .then(function(content) {
+                    date.cinemas = parseShawMobileDay(content);
+                    return dates;
+                  });
               }, Promise.resolve());
             });
         })
@@ -234,9 +234,9 @@ function parseGVCinemaJSON(json) {
       })
     };
   })
-  .filter(function({ title }) {
-    return title !== 'Zen Zone 2017*';
-  });
+    .filter(function({ title }) {
+      return title !== 'Zen Zone 2017*';
+    });
 }
 
 function replayGVCinemasRequest(request) {
@@ -272,17 +272,17 @@ function replayGVCinemaRequest(cinema) {
 
 function getGVJson() {
   return getGVCinemaRequests()
-  .then(function(cinemas) {
-    return Promise.all(cinemas.map(replayGVCinemaRequest));
-  })
-  .then(function(json) {
-    console.info('getGVJson finished');
-    return json;
-  })
-  .catch(function(err) {
-    console.error('getGVJson failed');
-    return Promise.reject(err);
-  });
+    .then(function(cinemas) {
+      return Promise.all(cinemas.map(replayGVCinemaRequest));
+    })
+    .then(function(json) {
+      console.info('getGVJson finished');
+      return json;
+    })
+    .catch(function(err) {
+      console.error('getGVJson failed');
+      return Promise.reject(err);
+    });
 }
 
 const FILMGARDE = 'http://tickets.fgcineplex.com.sg/visInternetTicketing/';
@@ -314,10 +314,10 @@ function getFilmgardeJson() {
 
                   return promise;
                 })
-                .then(function(content) {
-                  date.cinemas = parseFilmgardeDay(content);
-                  return dates;
-                });
+                  .then(function(content) {
+                    date.cinemas = parseFilmgardeDay(content);
+                    return dates;
+                  });
               }, Promise.resolve());
             });
         })
