@@ -80,6 +80,7 @@ function formatTitle(originalStr) {
     .replace(/\([^)]*\)/g, '')
     .replace(/\*/g, '')
     .replace(/(\s)+/g, ' ')
+    .replace(/Kachikochi/, '')
     .trim();
 
   cleanStr = Case.title(cleanStr);
@@ -100,7 +101,7 @@ function formatTitle(originalStr) {
       }
     })
     .then(function(clean) {
-      // console.info(`formatTitle ${originalStr} to ${clean}`);
+      console.info(`formatTitle ${originalStr} to ${clean}`);
       return clean;
     });
 }
