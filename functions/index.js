@@ -67,12 +67,14 @@ const scrapeMovies = functions.storage.object().onChange(function(event) {
                   storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
                   sharp(poster)
                     .resize(200, null)
+                    .jpeg({ progressive: true })
                     .toBuffer()
                     .then(function(x) {
                       return storeImageInBucket(x, 'poster', `movies/${movies[key].id}/`);
                     }),
                   sharp(backdrop || poster)
                     .resize(144, 100)
+                    .jpeg({ progressive: true })
                     .toBuffer()
                     .then(function(y) {
                       return storeImageInBucket(y, 'backdrop', `movies/${movies[key].id}/`);
@@ -98,7 +100,10 @@ function storeImageInBucket(buffer, name, baseDir = '') {
   return bucket.upload(`/tmp/${name}${ts}.jpg`, {
     destination: `${baseDir}${name}.jpg`,
     gzip: true,
-    public: true
+    public: true,
+    metadata: {
+      cacheControl: 'public, max-age=86400'
+    }
   });
 }
 
@@ -108,7 +113,10 @@ function storeJsonInBucket(json, name, baseDir = '') {
   return bucket.upload(`/tmp/${name}${ts}.json`, {
     destination: `${baseDir}${name}.json`,
     gzip: true,
-    public: true
+    public: true,
+    metadata: {
+      cacheControl: 'public, max-age=21600'
+    }
   });
 }
 
