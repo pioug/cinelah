@@ -120,7 +120,19 @@ function storeJsonInBucket(json, name, baseDir = '') {
   });
 }
 
+const sitemap = functions.https.onRequest(function(req, res) {
+  bucket.file('showtimes.json').download()
+    .then(function(data) {
+      const { movies } = JSON.parse(data);
+      const urls = Object.keys(movies).map(function(movieId) {
+        return `https://www.cinelah.com/movies/${movieId}\n`;
+      });
+      res.status(200).send(urls);
+    });
+});
+
 module.exports = {
   scrapeShowtimes,
-  scrapeMovies
+  scrapeMovies,
+  sitemap
 };
