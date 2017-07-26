@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -71,6 +72,9 @@ module.exports = {
         PRODUCTION: 'true'
       }),
       new webpack.optimize.ModuleConcatenationPlugin(),
+      new UglifyJSPlugin({
+        sourceMap: true
+      }),
       new CopyWebpackPlugin([{
         from: 'manifest.json',
         transform: content => JSON.stringify(JSON.parse(content))
