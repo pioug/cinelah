@@ -46,16 +46,15 @@ class Cinelah extends Component {
             return isAfter(`${date} ${time}`, now);
           })
           .map(function(showtime) {
-            return Object.assign({}, showtime,
-              {
-                movie: movies[showtime.movie].title,
-                movieId: showtime.movie,
-                cinema: cinemas[showtime.cinema].name,
-                cinemaId: showtime.cinema,
-                rating: movies[showtime.movie].rating,
-                genre: movies[showtime.movie].genre,
-                country: movies[showtime.movie].country
-              });
+            return Object.assign(showtime, {
+              movie: movies[showtime.movie].title,
+              movieId: showtime.movie,
+              cinema: cinemas[showtime.cinema].name,
+              cinemaId: showtime.cinema,
+              rating: movies[showtime.movie].rating,
+              genre: movies[showtime.movie].genre,
+              country: movies[showtime.movie].country
+            });
           });
 
         if ('geolocation' in navigator) {
@@ -163,15 +162,7 @@ if ('serviceWorker' in navigator) {
 function Movies({ movies }) {
   const moviesEls = Object.keys(movies)
     .map(function(id) {
-      return {
-        id: id,
-        title: movies[id].title,
-        rating: movies[id].rating,
-        country: movies[id].country,
-        genre: movies[id].genre
-      };
-    })
-    .map(function({ id, title, rating, genre, country }) {
+      const { title, rating, genre, country } = movies[id];
       const style = {
         backgroundImage: `url(${BUCKET}/movies/${id}/backdrop.jpg)`
       };
