@@ -2,8 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
@@ -32,7 +34,12 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+        use: process.env.NODE_ENV === 'production' ?
+          ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: ['css-loader', 'postcss-loader', 'sass-loader']
+          }) :
+          ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
@@ -92,7 +99,9 @@ module.exports = {
       }),
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'async'
-      })
+      }),
+      new ExtractTextPlugin('style.css'),
+      new StyleExtHtmlWebpackPlugin()
     ] : [
       new webpack.DefinePlugin({
         PRODUCTION: 'false'
