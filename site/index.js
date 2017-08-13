@@ -153,6 +153,7 @@ class Cinelah extends Component {
   }
 }
 
+document.body.querySelector('main').remove();
 render(<Cinelah />, document.body);
 trackPageView();
 
