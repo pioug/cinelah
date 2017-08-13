@@ -20,14 +20,18 @@ const pushState = history.pushState;
 
 history.pushState = function(a, b, url) {
   pushState.call(history, a, b, url);
+
   if (url.indexOf('#') < 0) {
     scrollTo(0, 0);
   }
+
+  trackPageView();
 };
 
 window.onpopstate = function() {
   setTimeout(function() {
     document.body.scrollTop = scrollTop[location.pathname] || 0;
+    trackPageView();
   });
 };
 
@@ -84,14 +88,21 @@ class Cinelah extends Component {
       });
   }
   render(children, { showtimes = [], cinemas = {}, movies = {} }) {
-    const header = function({ path }) {
+    return (
+      <main>
+        <Match>{renderHeader}</Match>
+        <Router>
+          <Movies default path="/movies/" movies={movies} />
+          <Movie path="/movies/:id" movies={movies} showtimes={showtimes} cinemas={cinemas} />
+          <Cinemas path="/cinemas/" cinemas={cinemas} />
+          <Cinema path="/cinemas/:id" cinemas={cinemas} showtimes={showtimes} />
+        </Router>
+      </main>
+    );
+
+    function renderHeader({ path }) {
       const title = getTitle(path);
       document.title = title ? `Cinelah: ${title}` : 'Cinelah';
-
-      if (PRODUCTION) {
-        ga('set', 'page', path);
-        ga('send', 'pageview');
-      }
 
       return (
         <header>
@@ -138,22 +149,12 @@ class Cinelah extends Component {
             return '/';
         }
       }
-    };
-    return (
-      <main>
-        <Match>{header}</Match>
-        <Router>
-          <Movies default path="/movies/" movies={movies} />
-          <Movie path="/movies/:id" movies={movies} showtimes={showtimes} cinemas={cinemas} />
-          <Cinemas path="/cinemas/" cinemas={cinemas} />
-          <Cinema path="/cinemas/:id" cinemas={cinemas} showtimes={showtimes} />
-        </Router>
-      </main>
-    );
+    }
   }
 }
 
 render(<Cinelah />, document.body);
+trackPageView();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
@@ -571,5 +572,12 @@ function displayDate(date) {
     return 'Tomorrow';
   } else {
     return format(date, 'dddd D MMM');
+  }
+}
+
+function trackPageView() {
+  if (PRODUCTION) {
+    ga('set', 'page', location.pathname);
+    ga('send', 'pageview');
   }
 }
