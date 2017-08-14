@@ -41,7 +41,7 @@ window.addEventListener('scroll', function() {
 
 class Cinelah extends Component {
   componentDidMount() {
-    fetch(`${BUCKET}/showtimes.json`)
+    window.fetchingShowtimes
       .then(body => body.json())
       .then(({ cinemas, movies, showtimes }) => {
         const now = new Date();

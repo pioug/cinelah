@@ -246,6 +246,10 @@
       </div>
     </main>
 
+    <script>
+      window.fetchingShowtimes = fetch('https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json');
+    </script>
+
     <%if (htmlWebpackPlugin.options.env == 'production') { %>
     <script>
       window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
