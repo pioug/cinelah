@@ -1,4 +1,5 @@
 const dateFns = require('date-fns');
+const deburr = require('lodash.deburr');
 const { dateFormat } = require('./formatter');
 const { getCountry, getGenre, getRating, getSummary, formatTitle } = require('./formatter.js');
 
@@ -248,6 +249,7 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
     return formatTitle(movie.title)
       .then(function(title) {
         movie.title = title;
+        title = deburr(title);
         return Promise.all([getGenre(title), getRating(title), getCountry(title), getSummary(title)]);
       })
       .then(function([genre, rating, country, summary]) {

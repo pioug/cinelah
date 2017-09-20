@@ -1,6 +1,6 @@
+const fs = require('fs');
 const functions = require('firebase-functions');
 const gcs = require('@google-cloud/storage')();
-const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
