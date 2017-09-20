@@ -1,6 +1,7 @@
 const axios = require('axios');
 const Case = require('case');
 const cheerio = require('cheerio');
+const deburr = require('lodash.deburr');
 const kebabCase = require('lodash.kebabcase');
 const memoize = require('lodash.memoize');
 const tokenizeEnglish = require('tokenize-english')(require('tokenize-text')());
@@ -251,6 +252,7 @@ function getPosterOnImdbPage(page) {
 }
 
 function getMovie(title) {
+  title = deburr(title);
   return searchTitleOnTmbd(title)
     .then(function({ data }) {
       if (data.results.length) {
