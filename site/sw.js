@@ -1,41 +1,60 @@
 const BUCKET = 'https://storage.googleapis.com/cinelah-92dbb.appspot.com';
 
 self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    fetch(event.request)
-      .then(function(response) {
-        return response;
-      })
-      .catch(function() {
-        return caches.match(event.request, { ignoreSearch: true });
-      })
-      .then(function(response) {
-        return response || caches.match('/');
-      })
+  if (!navigator.onLine) {
+    event.respondWith(
+      caches.match(event.request, { ignoreSearch: true })
+        .then(response => response || caches.match('/'))
+    );
+    return;
+  }
+
+  if (event.request.url.includes('.json')) {
+    const fetched = fetchThenCache(event);
+
+    event.respondWith(
+      caches.match(event.request, { ignoreSearch: true })
+        .then(response => response || fetched.then(response => response.clone()))
+    );
+
+    fetched
+      .then(response => response.clone().json())
+      .then(function({ movies }) {
+        return caches.open('cinelah')
+          .then(cache => {
+            return cache.addAll([
+              ...Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/backdrop.jpg`),
+              ...Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/poster.jpg`)
+            ]);
+          });
+      });
+    return;
+  }
+
+  if (event.request.url.includes('.jpg')) {
+    event.respondWith(
+      caches.match(event.request, { ignoreSearch: true })
+        .then(response => response || fetchThenCache(event))
+    );
+    return;
+  }
+
+  event.respondWith(fetch(event.request));
+});
+
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open('cinelah').then(cache => {
+      return cache.addAll(['/', '/favicon.png', '/bundle.js']);
+    })
   );
 });
 
-self.addEventListener('activate', function(event) {
-  event.waitUntil(
-    fetch(`${BUCKET}/showtimes.json`)
-      .then(body => body.json())
-      .then(function({ movies }) {
-        const backdrops = Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/backdrop.jpg`);
-        const posters = Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/poster.jpg`);
-        const assets = [
-          '/',
-          '/favicon.png',
-          '/bundle.js',
-          'https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json'
-        ];
-        return caches.open('cinelah')
-          .then(function(cache) {
-            return cache.addAll([
-              ...assets,
-              ...backdrops,
-              ...posters
-            ]);
-          });
-      })
-  );
-});
+function fetchThenCache(event) {
+  return fetch(event.request)
+    .then(response => {
+      return caches.open('cinelah')
+        .then(cache => cache.put(event.request, response.clone()))
+        .then(() => response);
+    });
+}
