@@ -1,6 +1,5 @@
 import addDays from 'date-fns/add_days';
 import format from 'date-fns/format';
-import haversine from 'haversine';
 import isAfter from 'date-fns/is_after';
 import isToday from 'date-fns/is_today';
 import isTomorrow from 'date-fns/is_tomorrow';
@@ -60,29 +59,6 @@ class Cinelah extends Component {
               country: movies[showtime.movie].country
             });
           });
-
-        if ('geolocation' in navigator) {
-          navigator.geolocation.getCurrentPosition(position => {
-            Object.keys(cinemas)
-              .map(function(cinemaId) {
-                cinemas[cinemaId].distance = Math.round(haversine({
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                }, {
-                  latitude: cinemas[cinemaId].coordinates[0],
-                  longitude: cinemas[cinemaId].coordinates[1]
-                }));
-
-                return cinemas[cinemaId];
-              });
-
-            this.setState({ cinemas });
-          }, function(error) {
-            console.error(error);
-          }, {
-            enableHighAccuracy: true
-          });
-        }
 
         this.setState({ cinemas, movies, showtimes });
       });
@@ -398,13 +374,13 @@ function MovieHeader({ movie = {} }) {
 function Cinemas({ cinemas = {} }) {
   const cinemaEls = Object.keys(cinemas)
     .map(function(id) {
-      const distance = cinemas[id].distance;
+      const mrt = cinemas[id].mrt;
       const [group, name] = cinemas[id].name.split(' - ');
       return {
         id: id,
         group,
         name,
-        distance,
+        mrt,
       };
     })
     .sort(function(a, b) {
@@ -414,7 +390,7 @@ function Cinemas({ cinemas = {} }) {
       if (a > b) return 1;
       return 0;
     })
-    .map(function({ id, group, name, distance }) {
+    .map(function({ id, group, name, mrt }) {
       return (
         <a class="cinema-tile" href={`/cinemas/${id}`}>
           <div class="cinema-tile-description-column-1">
@@ -423,9 +399,13 @@ function Cinemas({ cinemas = {} }) {
           <div class="cinema-tile-description">
             <div class="cinema-tile-description-title">{name}</div>
             <div class="cinema-tile-description-subtitle">
-              {!!distance && <div class="cinema-tile-description-rating">
-                {distance} km
-              </div> || <div class="cinema-tile-description-rating placeholder"></div>}
+              <div class="cinema-tile-description-rating">
+                <svg fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2c-4 0-8 .5-8 4v9.5C4 17.43 5.57 19 7.5 19L6 20.5v.5h2.23l2-2H14l2 2h2v-.5L16.5 19c1.93 0 3.5-1.57 3.5-3.5V6c0-3.5-3.58-4-8-4zM7.5 17c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm3.5-7H6V6h5v4zm2 0V6h5v4h-5zm3.5 7c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                  <path d="M0 0h24v24H0V0z" fill="none"/>
+                </svg>
+                {mrt}
+              </div>
             </div>
           </div>
         </a>

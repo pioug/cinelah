@@ -1,4 +1,4 @@
-module.exports = {
+const coordinates = {
   'cathay-amk-hub': [1.369428, 103.848391],
   'cathay-causeway-point': [1.436152, 103.785703],
   'cathay-cineleisure-orchard': [1.301652, 103.836245],
@@ -20,7 +20,6 @@ module.exports = {
   'gv-vivo-city': [1.264700, 103.823108],
   'gv-yishun': [1.429891, 103.836425],
   'shaw-theatres-balestier': [1.325053, 103.851462],
-  'shaw-theatres-century': [1.352310, 103.943884],
   'shaw-theatres-j-cube': [1.333286, 103.740208],
   'shaw-theatres-lido': [1.305534, 103.831755],
   'shaw-theatres-lot-one': [1.385021, 103.745148],
@@ -28,4 +27,40 @@ module.exports = {
   'shaw-theatres-seletar': [1.391257, 103.876278],
   'shaw-theatres-waterway-point': [1.406411, 103.902078],
   'we-cinemas': [1.311917, 103.765069]
+};
+
+const mrt = {
+  'cathay-amk-hub': 'Ang Mo Kio',
+  'cathay-causeway-point': 'Woodlands',
+  'cathay-cineleisure-orchard': 'Somerset',
+  'cathay-downtown-east': 'Pasir Ris',
+  'cathay-jem': 'Jurong East',
+  'cathay-the-cathay': 'Dhoby Ghaut',
+  'cathay-west-mall': 'Bukit Batok',
+  'filmgarde-bugis': 'Bugis',
+  'filmgarde-leisure-park-kallang': 'Stadium',
+  'gv-bishan': 'Bishan',
+  'gv-city-square': 'Farrer Park',
+  'gv-gemini-grand-great-world-city': 'Orchard',
+  'gv-jurong-point': 'Boon Lay',
+  'gv-katong': 'Paya Lebar',
+  'gv-plaza': 'Dhoby Ghaut',
+  'gv-suntec-city': 'Promenade',
+  'gv-tampines': 'Tampines',
+  'gv-tiong-bahru': 'Tiong Bahru',
+  'gv-vivo-city': 'HarbourFront',
+  'gv-yishun': 'Yishun',
+  'shaw-theatres-balestier': 'Novena',
+  'shaw-theatres-j-cube': 'Jurong East',
+  'shaw-theatres-lido': 'Orchard',
+  'shaw-theatres-lot-one': 'Choa Chu Kang',
+  'shaw-theatres-nex': 'Serangoon',
+  'shaw-theatres-seletar': 'Sengkang',
+  'shaw-theatres-waterway-point': 'Punggol',
+  'we-cinemas': 'Clementi'
+};
+
+module.exports = {
+  coordinates,
+  mrt
 };
