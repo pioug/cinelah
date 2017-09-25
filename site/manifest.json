@@ -17,6 +17,6 @@
   "name": "Cinelah",
   "orientation": "portrait",
   "short_name": "Cinelah",
-  "start_url": "./?utm_source=pwa",
+  "start_url": "/?utm_source=pwa",
   "theme_color": "#3E86C6"
 }

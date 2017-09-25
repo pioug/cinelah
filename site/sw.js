@@ -1,37 +1,33 @@
-const BUCKET = 'https://storage.googleapis.com/cinelah-92dbb.appspot.com';
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open('cinelah').then(cache => {
+      return cache.addAll([
+        '/',
+        '/?utm_source=pwa',
+        '/index.html',
+        '/index.html?utm_source=pwa',
+        '/favicon.png',
+        '/bundle.js'
+      ])
+        .then(() => self.skipWaiting());
+    })
+  );
+});
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(self.clients.claim());
+});
 
 self.addEventListener('fetch', function(event) {
   if (!navigator.onLine) {
     event.respondWith(
       caches.match(event.request, { ignoreSearch: true })
-        .then(response => response || caches.match('/'))
+        .then(response => response || caches.match('/', { ignoreSearch: true }))
     );
     return;
   }
 
-  if (event.request.url.includes('.json')) {
-    const fetched = fetchThenCache(event);
-
-    event.respondWith(
-      caches.match(event.request, { ignoreSearch: true })
-        .then(response => response || fetched.then(response => response.clone()))
-    );
-
-    fetched
-      .then(response => response.clone().json())
-      .then(function({ movies }) {
-        return caches.open('cinelah')
-          .then(cache => {
-            return cache.addAll([
-              ...Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/backdrop.jpg`),
-              ...Object.keys(movies).map(movie => `${BUCKET}/movies/${movie}/poster.jpg`)
-            ]);
-          });
-      });
-    return;
-  }
-
-  if (event.request.url.includes('.jpg')) {
+  if (event.request.url.includes('.jpg') || event.request.url.includes('.json')) {
     event.respondWith(
       caches.match(event.request, { ignoreSearch: true })
         .then(response => response || fetchThenCache(event))
@@ -39,15 +35,7 @@ self.addEventListener('fetch', function(event) {
     return;
   }
 
-  event.respondWith(fetch(event.request));
-});
-
-self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open('cinelah').then(cache => {
-      return cache.addAll(['/', '/favicon.png', '/bundle.js']);
-    })
-  );
+  event.respondWith(fetchThenCache(event));
 });
 
 function fetchThenCache(event) {
