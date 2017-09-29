@@ -82,6 +82,7 @@ function formatTitle(originalStr) {
     .replace(/\*/g, '')
     .replace(/(\s)+/g, ' ')
     .replace(/Kachikochi/, '')
+    .replace(/Mahanabhavudu/, 'Mahanubhavudu')
     .trim();
 
   cleanStr = Case.title(cleanStr);
