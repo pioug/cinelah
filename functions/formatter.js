@@ -30,6 +30,7 @@ function formatCinema(originalStr) {
     'CAUSEWAY POINT': 'Cathay - Causeway Point',
     'CINELEISURE ORCHARD': 'Cathay - Cineleisure Orchard',
     'DOWNTOWN EAST': 'Cathay - Downtown East',
+    'PARKWAY PARADE': 'Cathay - Parkway Parade',
     'GV Bishan': 'GV - Bishan',
     'GV City Square': 'GV - City Square',
     'GV Grand, Great World City': 'GV - Gemini Grand, Great World City',
