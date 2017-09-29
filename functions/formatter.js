@@ -35,6 +35,7 @@ function formatCinema(originalStr) {
     'GV Grand, Great World City': 'GV - Gemini Grand, Great World City',
     'GV Jurong Point': 'GV - Jurong Point',
     'GV Katong': 'GV - Katong',
+    'GV Paya Lebar': 'GV - Paya Lebar',
     'GV Plaza': 'GV - Plaza',
     'GV Suntec City': 'GV - Suntec City',
     'GV Tampines': 'GV - Tampines',
