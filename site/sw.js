@@ -46,6 +46,7 @@ function fetchThenCache(event) {
     .then(response => {
       return caches.open('cinelah')
         .then(cache => cache.put(event.request, response.clone()))
+        .catch(() => caches.delete('cinelah'))
         .then(() => response);
     });
 }
