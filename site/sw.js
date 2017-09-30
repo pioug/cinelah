@@ -30,7 +30,10 @@ self.addEventListener('fetch', function(event) {
   if (event.request.url.includes('.jpg') || event.request.url.includes('.json')) {
     event.respondWith(
       caches.match(event.request, { ignoreSearch: true })
-        .then(response => response || fetchThenCache(event))
+        .then(response => {
+          const fetching = fetchThenCache(event);
+          return response || fetching;
+        })
     );
     return;
   }
