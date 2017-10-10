@@ -67,7 +67,6 @@ function formatTitle(originalStr) {
     .replace(/Fans`\sScreening*/g, '')
     .replace(/Kids\sFlix –/g, '')
     .replace(/Mums & Babies /, '')
-    .replace(/the\smovie/gi, '')
     .replace(/\bthe\b/gi, '')
     .replace(/`/g, '\'')
     .replace(/\[/g, '(')
@@ -83,8 +82,6 @@ function formatTitle(originalStr) {
     .replace(/\([^)]*\)/g, '')
     .replace(/\*/g, '')
     .replace(/(\s)+/g, ' ')
-    .replace(/Kachikochi/, '')
-    .replace(/Mahanabhavudu/, 'Mahanubhavudu')
     .trim();
 
   cleanStr = Case.title(cleanStr);
