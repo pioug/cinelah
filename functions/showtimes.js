@@ -260,36 +260,39 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
         return movie;
       })
       .catch(function(err) {
-        return Promise.reject(err);
+        console.error(err);
+        return false;
       });
   }))
     .then(function(movies) {
-      const showtimes = movies.reduce(function(a, { title, genre, rating, country, dates, summary }) {
+      const showtimes = movies
+        .filter(movie => movie)
+        .reduce(function(a, { title, genre, rating, country, dates, summary }) {
 
-        dates.reduce(function(b, { date, cinemas }) {
+          dates.reduce(function(b, { date, cinemas }) {
 
-          cinemas.reduce(function(c, { name, timings }) {
-            a = [...a, ...timings.map(function({ time, url }) {
-              return {
-                cinema: name,
-                country,
-                date,
-                genre,
-                movie: title,
-                rating,
-                summary,
-                time,
-                url
-              };
-            })];
-            return c;
+            cinemas.reduce(function(c, { name, timings }) {
+              a = [...a, ...timings.map(function({ time, url }) {
+                return {
+                  cinema: name,
+                  country,
+                  date,
+                  genre,
+                  movie: title,
+                  rating,
+                  summary,
+                  time,
+                  url
+                };
+              })];
+              return c;
+            }, []);
+
+            return b;
           }, []);
 
-          return b;
-        }, []);
-
-        return a;
-      }, [])
+          return a;
+        }, [])
         .sort(function(a, b) {
           return a.movie < b.movie ? -1 :
             a.movie > b.movie ? 1 :
