@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const deburr = require('lodash.deburr');
 const kebabCase = require('lodash.kebabcase');
 const memoize = require('lodash.memoize');
+const setTimeoutPromise = require('delay');
 const tokenizeEnglish = require('tokenize-english')(require('tokenize-text')());
 
 const { mrt } = require('./cinemas.js');
@@ -91,15 +92,14 @@ function formatTitle(originalStr) {
       if (response.data.total_results) {
         return response.data.results[0].title;
       }
-      return Promise.reject(new Error('No results on TMDB'));
+      return Promise.reject(new Error(`No results on TMDB for ${cleanStr}`));
     })
     .catch(function(err) {
-      if (err.message === 'No results on TMDB') {
-        return getImdbPage(cleanStr)
-          .then(function(response) {
-            return getMovieOnImdbPage(response.data);
-          });
-      }
+      console.log(err);
+      return getImdbPage(cleanStr)
+        .then(function(response) {
+          return getMovieOnImdbPage(response.data);
+        });
     })
     .then(function(clean) {
       console.info(`formatTitle ${originalStr} to ${clean}`);
@@ -111,17 +111,13 @@ const searchTitleOnTmbd = memoize(searchTitleOnTmbd_);
 function searchTitleOnTmbd_(str) {
   return axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${str}`)
     .catch(function(err) {
-      if (err.response && err.response.status === 429 ||
-        err.code && err.code === 'ETIMEDOUT') {
-        return new Promise(function(resolve) {
-          setTimeout(function() {
-            resolve(searchTitleOnTmbd_(str));
-          }, 10000);
-        });
-      } else {
-        console.error(err);
-        return Promise.reject(err);
+      if (err.response && err.response.status === 429 || err.code && err.code === 'ETIMEDOUT') {
+        return setTimeoutPromise(10000)
+          .then(() => searchTitleOnTmbd_(str));
       }
+
+      console.error(err);
+      return Promise.reject(err);
     });
 }
 
@@ -135,17 +131,13 @@ function getMovieOnTmdb_(id) {
       return response;
     })
     .catch(function(err) {
-      if (err.response && err.response.status === 429 ||
-        err.code && err.code === 'ETIMEDOUT') {
-        return new Promise(function(resolve) {
-          setTimeout(function() {
-            resolve(getMovieOnTmdb_(id));
-          }, 10000);
-        });
-      } else {
-        console.error(err);
-        return Promise.reject(err);
+      if (err.response && err.response.status === 429 || err.code && err.code === 'ETIMEDOUT') {
+        return setTimeoutPromise(10000)
+          .then(() => getMovieOnTmdb_(id));
       }
+
+      console.error(err);
+      return Promise.reject(err);
     });
 }
 
@@ -258,20 +250,20 @@ function getMovie(title) {
     .then(function({ data }) {
       if (data.results.length) {
         return getMovieOnTmdb(data.results[0].id);
-      } else {
-        return getImdbPage(title)
-          .then(function(response) {
-            return getPosterOnImdbPage(response.data);
-          })
-          .then(function(poster_path) {
-            return {
-              data: {
-                title,
-                poster_path
-              }
-            };
-          });
       }
+
+      return getImdbPage(title)
+        .then(function(response) {
+          return getPosterOnImdbPage(response.data);
+        })
+        .then(function(poster_path) {
+          return {
+            data: {
+              title,
+              poster_path
+            }
+          };
+        });
     })
     .then(function({ data: movie }) {
       if (movie.poster_path) {
@@ -280,19 +272,19 @@ function getMovie(title) {
           movie.poster_path && axios.get(movie.poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
           movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
         ]);
-      } else {
-        return axios.get(`http://www.imdb.com/title/${movie.imdb_id}/`)
-          .then(function(response) {
-            return getPosterOnImdbPage(response.data);
-          })
-          .then(function(poster_path) {
-            return Promise.all([
-              movie,
-              poster_path && axios.get(poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
-              movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
-            ]);
-          });
       }
+
+      return axios.get(`http://www.imdb.com/title/${movie.imdb_id}/`)
+        .then(function(response) {
+          return getPosterOnImdbPage(response.data);
+        })
+        .then(function(poster_path) {
+          return Promise.all([
+            movie,
+            poster_path && axios.get(poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
+            movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
+          ]);
+        });
     });
 }
 
