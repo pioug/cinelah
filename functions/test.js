@@ -18,7 +18,7 @@ Promise.all([
   getShawJson(),
   getWeJson()
 ])
-  .then(function([cathay, filmgarde, gv, shaw, we]) {
+  .then(([cathay, filmgarde, gv, shaw, we]) => {
     return getShowtimes({
       cathay,
       filmgarde,
@@ -27,10 +27,10 @@ Promise.all([
       we
     });
   })
-  .then(function(json) {
+  .then(json => {
     fs.writeFileSync('./showtimes.json', gstr(normalizeShowtimes(json)));
   })
-  .catch(function(err) {
+  .catch(err => {
     console.log(err.stack);
   });
 

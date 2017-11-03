@@ -1,4 +1,4 @@
-self.addEventListener('install', function(event) {
+self.addEventListener('install', event => {
   event.waitUntil(
     caches.open('cinelah').then(cache => {
       return cache.addAll([
@@ -14,11 +14,11 @@ self.addEventListener('install', function(event) {
   );
 });
 
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', event => {
   if (!navigator.onLine) {
     event.respondWith(
       caches.match(event.request, { ignoreSearch: true })

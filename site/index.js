@@ -28,13 +28,13 @@ history.pushState = function(a, b, url) {
 };
 
 window.onpopstate = function() {
-  setTimeout(function() {
+  setTimeout(() => {
     document.body.scrollTop = scrollTop[location.pathname] || 0;
     trackPageView();
   });
 };
 
-window.addEventListener('scroll', function() {
+window.addEventListener('scroll', () => {
   scrollTop[location.pathname] = document.body.scrollTop;
 }, { passive: true });
 
@@ -45,10 +45,10 @@ class Cinelah extends Component {
       .then(({ cinemas, movies, showtimes }) => {
         const now = new Date();
         showtimes = showtimes
-          .filter(function({ date, time }) {
+          .filter(({ date, time }) => {
             return isAfter(`${date} ${time}`, now);
           })
-          .map(function(showtime) {
+          .map(showtime => {
             return Object.assign(showtime, {
               movie: movies[showtime.movie].title,
               movieId: showtime.movie,
@@ -139,7 +139,7 @@ if ('serviceWorker' in navigator) {
 
 function Movies({ movies }) {
   const moviesEls = Object.keys(movies)
-    .map(function(id) {
+    .map(id => {
       const { title, rating, genre, country } = movies[id];
       const style = {
         backgroundImage: `url(${BUCKET}/movies/${id}/backdrop.jpg)`
@@ -200,10 +200,10 @@ function Movies({ movies }) {
 
 function Movie({ id, movies, cinemas, showtimes }) {
   const movieShowtimes = showtimes
-    .filter(function({ movieId }) {
+    .filter(({ movieId }) => {
       return id === movieId;
     })
-    .reduce(function(res, showtime) {
+    .reduce((res, showtime) => {
       const showtimeDay = parseInt(showtime.time) < 6 ?
         format(addDays(showtime.date, -1), 'YYYY-MM-DD') :
         showtime.date;
@@ -214,15 +214,15 @@ function Movie({ id, movies, cinemas, showtimes }) {
     }, new Map());
 
   const list = Array.from(movieShowtimes.keys())
-    .sort(function(a, b) {
+    .sort((a, b) => {
       if (a < b) return -1;
       if (a > b) return 1;
       return 0;
     })
-    .map(function(date) {
+    .map(date => {
       const { showtimes } = movieShowtimes.get(date);
       const showtimesByCinema = showtimes
-        .reduce(function(res, showtime) {
+        .reduce((res, showtime) => {
           const cinema = res.get(showtime.cinemaId) || { cinema: showtime.cinemaId, showtimes: [] };
           cinema.showtimes.push(showtime);
           res.set(showtime.cinemaId, cinema);
@@ -230,15 +230,15 @@ function Movie({ id, movies, cinemas, showtimes }) {
         }, new Map());
 
       const list = Array.from(showtimesByCinema.keys())
-        .sort(function(a, b) {
+        .sort((a, b) => {
           if (a < b) return -1;
           if (a > b) return 1;
           return 0;
         })
-        .map(function(cinemaId) {
+        .map(cinemaId => {
           const { showtimes } = showtimesByCinema.get(cinemaId);
           const showtimesByCinemaEls = showtimes
-            .sort(function(a, b) {
+            .sort((a, b) => {
               if (parseInt(a.time) < 6) {
                 a = addDays(`${a.date} ${a.time}`, 1);
               } else {
@@ -255,7 +255,7 @@ function Movie({ id, movies, cinemas, showtimes }) {
               if (isAfter(a, b)) return 1;
               return 0;
             })
-            .map(function(showtime) {
+            .map(showtime => {
               return <Time showtime={showtime} />;
             });
           const [group, name] = cinemas[cinemaId].name.split(' - ');
@@ -373,7 +373,7 @@ function MovieHeader({ movie = {} }) {
 
 function Cinemas({ cinemas = {} }) {
   const cinemaEls = Object.keys(cinemas)
-    .map(function(id) {
+    .map(id => {
       const mrt = cinemas[id].mrt;
       const [group, name] = cinemas[id].name.split(' - ');
       return {
@@ -383,14 +383,14 @@ function Cinemas({ cinemas = {} }) {
         mrt,
       };
     })
-    .sort(function(a, b) {
+    .sort((a, b) => {
       a = a.group.toLowerCase() + a.name.toLowerCase();
       b = b.group.toLowerCase() + b.name.toLowerCase();
       if (a < b) return -1;
       if (a > b) return 1;
       return 0;
     })
-    .map(function({ id, group, name, mrt }) {
+    .map(({ id, group, name, mrt }) => {
       return (
         <a class="cinema-tile" href={`/cinemas/${id}`}>
           <div class="cinema-tile-description-column-1">
@@ -422,10 +422,10 @@ function Cinemas({ cinemas = {} }) {
 
 function Cinema({ cinemas, id, showtimes }) {
   const cinemaShowtimes = showtimes
-    .filter(function({ cinemaId }) {
+    .filter(({ cinemaId }) => {
       return id === cinemaId;
     })
-    .reduce(function(res, showtime) {
+    .reduce((res, showtime) => {
       const showtimeDay = parseInt(showtime.time) < 6 ?
         format(addDays(showtime.date, -1), 'YYYY-MM-DD') :
         showtime.date;
@@ -436,15 +436,15 @@ function Cinema({ cinemas, id, showtimes }) {
     }, new Map());
 
   const list = Array.from(cinemaShowtimes.keys())
-    .sort(function(a, b) {
+    .sort((a, b) => {
       if (a < b) return -1;
       if (a > b) return 1;
       return 0;
     })
-    .map(function(date) {
+    .map(date => {
       const { showtimes } = cinemaShowtimes.get(date);
       const showtimesByMovie = showtimes
-        .reduce(function(res, showtime) {
+        .reduce((res, showtime) => {
           const movie = res.get(showtime.movie) || { movie: showtime.movie, movieId: showtime.movieId, rating: showtime.rating, country: showtime.country, genre: showtime.genre, showtimes: [] };
 
           movie.showtimes.push(showtime);
@@ -453,10 +453,10 @@ function Cinema({ cinemas, id, showtimes }) {
         }, new Map());
 
       const list = Array.from(showtimesByMovie.keys())
-        .map(function(movie) {
+        .map(movie => {
           const { showtimes, movieId, rating, genre, country } = showtimesByMovie.get(movie);
           const showtimesByCinemaEls = showtimes
-            .sort(function(a, b) {
+            .sort((a, b) => {
               if (parseInt(a.time) < 6) {
                 a = addDays(`${a.date} ${a.time}`, 1);
               } else {
@@ -473,7 +473,7 @@ function Cinema({ cinemas, id, showtimes }) {
               if (isAfter(a, b)) return 1;
               return 0;
             })
-            .map(function(showtime) {
+            .map(showtime => {
               return <Time showtime={showtime} />;
             });
 

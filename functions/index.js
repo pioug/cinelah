@@ -15,7 +15,7 @@ const {
 const { getShowtimes } = require('./showtimes.js');
 const { getMovie, normalizeShowtimes } = require('./formatter.js');
 
-const scrapeShowtimes = functions.https.onRequest(function(req, res) {
+const scrapeShowtimes = functions.https.onRequest((req, res) => {
   Promise.all([
     getCathayJson(),
     getFilmgardeJson(),
@@ -23,7 +23,7 @@ const scrapeShowtimes = functions.https.onRequest(function(req, res) {
     getShawJson(),
     getWeJson()
   ])
-    .then(function([cathay, filmgarde, gv, shaw, we]) {
+    .then(([cathay, filmgarde, gv, shaw, we]) => {
       return getShowtimes({
         cathay,
         filmgarde,
@@ -32,16 +32,16 @@ const scrapeShowtimes = functions.https.onRequest(function(req, res) {
         we
       });
     })
-    .then(function(showtimes) {
+    .then(showtimes => {
       const normalizedShowtimes = normalizeShowtimes(showtimes);
       return storeJsonInBucket(normalizedShowtimes, 'showtimes')
-        .then(function() {
+        .then(() => {
           return res.send(normalizedShowtimes);
         });
     });
 });
 
-const scrapeMovies = functions.storage.object().onChange(function(event) {
+const scrapeMovies = functions.storage.object().onChange(event => {
   const object = event.data;
   const temp = `/tmp/${path.basename(object.name)}`;
 
@@ -52,43 +52,43 @@ const scrapeMovies = functions.storage.object().onChange(function(event) {
   return bucket.file(object.name).download({
     destination: temp
   })
-    .then(function() {
+    .then(() => {
       const { movies } = JSON.parse(fs.readFileSync(temp, 'utf8'));
-      return Object.keys(movies).reduce(function(res, key) {
+      return Object.keys(movies).reduce((res, key) => {
         return bucket.file(`movies/${movies[key].id}/details.json`).exists()
-          .then(function([exists]) {
+          .then(([exists]) => {
             if (exists) {
               return Promise.resolve();
             }
 
             return getMovie(movies[key].title)
-              .then(function([details, poster, backdrop]) {
+              .then(([details, poster, backdrop]) => {
                 return Promise.all([
                   storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
                   sharp(poster)
                     .resize(200, null)
                     .jpeg({ progressive: true })
                     .toBuffer()
-                    .then(function(x) {
+                    .then(x => {
                       return storeImageInBucket(x, 'poster', `movies/${movies[key].id}/`);
                     }),
                   sharp(backdrop || poster)
                     .resize(144, 100)
                     .jpeg({ progressive: true })
                     .toBuffer()
-                    .then(function(y) {
+                    .then(y => {
                       return storeImageInBucket(y, 'backdrop', `movies/${movies[key].id}/`);
                     })
                 ]);
               });
           })
-          .catch(function(err) {
+          .catch(err => {
             console.error(key, err);
             return Promise.resolve();
           });
       }, Promise.resolve());
     })
-    .catch(function(err) {
+    .catch(err => {
       console.error(err);
       return Promise.reject();
     });
@@ -120,11 +120,11 @@ function storeJsonInBucket(json, name, baseDir = '') {
   });
 }
 
-const sitemap = functions.https.onRequest(function(req, res) {
+const sitemap = functions.https.onRequest((req, res) => {
   bucket.file('showtimes.json').download()
-    .then(function(data) {
+    .then(data => {
       const { movies } = JSON.parse(data);
-      const urls = Object.keys(movies).map(function(movieId) {
+      const urls = Object.keys(movies).map(movieId => {
         return `https://www.cinelah.com/movies/${movieId}\n`;
       });
       res.status(200).send(urls);

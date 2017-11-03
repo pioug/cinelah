@@ -88,20 +88,20 @@ function formatTitle(originalStr) {
   cleanStr = Case.title(cleanStr);
 
   return searchTitleOnTmbd(cleanStr)
-    .then(function(response) {
+    .then(response => {
       if (response.data.total_results) {
         return response.data.results[0].title;
       }
       return Promise.reject(new Error(`No results on TMDB for ${cleanStr}`));
     })
-    .catch(function(err) {
+    .catch(err => {
       console.log(err);
       return getImdbPage(cleanStr)
-        .then(function(response) {
+        .then(response => {
           return getMovieOnImdbPage(response.data);
         });
     })
-    .then(function(clean) {
+    .then(clean => {
       console.info(`formatTitle ${originalStr} to ${clean}`);
       return clean;
     });
@@ -110,7 +110,7 @@ function formatTitle(originalStr) {
 const searchTitleOnTmbd = memoize(searchTitleOnTmbd_);
 function searchTitleOnTmbd_(str) {
   return axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${str}`)
-    .catch(function(err) {
+    .catch(err => {
       if (err.response && err.response.status === 429 || err.code && err.code === 'ETIMEDOUT') {
         return setTimeoutPromise(10000)
           .then(() => searchTitleOnTmbd_(str));
@@ -124,13 +124,13 @@ function searchTitleOnTmbd_(str) {
 const getMovieOnTmdb = memoize(getMovieOnTmdb_);
 function getMovieOnTmdb_(id) {
   return axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}`)
-    .then(function(response) {
+    .then(response => {
       const baseImageUrl = 'https://image.tmdb.org/t/p/w500';
       response.data.poster_path = response.data.poster_path && `${baseImageUrl}${response.data.poster_path}`;
       response.data.backdrop_path = response.data.backdrop_path && `${baseImageUrl}${response.data.backdrop_path}`;
       return response;
     })
-    .catch(function(err) {
+    .catch(err => {
       if (err.response && err.response.status === 429 || err.code && err.code === 'ETIMEDOUT') {
         return setTimeoutPromise(10000)
           .then(() => getMovieOnTmdb_(id));
@@ -144,7 +144,7 @@ function getMovieOnTmdb_(id) {
 const getImdbPage = memoize(getImdbPage_);
 function getImdbPage_(str) {
   return getImdbId(str)
-    .then(function(id) {
+    .then(id => {
       return axios.get(`http://www.imdb.com/title/${id}/`);
     });
 }
@@ -152,7 +152,7 @@ function getImdbPage_(str) {
 const getImdbSummaryPage = memoize(getImdbSummaryPage_);
 function getImdbSummaryPage_(str) {
   return getImdbId(str)
-    .then(function(id) {
+    .then(id => {
       return axios.get(`http://www.imdb.com/title/${id}/plotsummary`);
     });
 }
@@ -160,13 +160,13 @@ function getImdbSummaryPage_(str) {
 const getImdbId = memoize(getImdbId_);
 function getImdbId_(str) {
   return searchTitleOnTmbd(str)
-    .then(function({ data }) {
+    .then(({ data }) => {
       if (data.total_results) {
         return getMovieOnTmdb(data.results[0].id)
-          .then(function({ data }) {
+          .then(({ data }) => {
             return data.imdb_id ||
               axios.get(`http://www.google.com/search?q=${encodeURIComponent(str)} imdb&btnI`)
-                .then(function(response) {
+                .then(response => {
                   const [id] = response.data.match(/tt\d+/);
                   return id;
                 });
@@ -174,7 +174,7 @@ function getImdbId_(str) {
       }
 
       return axios.get(`http://www.google.com/search?q=${encodeURIComponent(str)} imdb&btnI`)
-        .then(function(response) {
+        .then(response => {
           const [id] = response.data.match(/tt\d+/);
           return id;
         });
@@ -192,7 +192,7 @@ function getMovieOnImdbPage(page) {
 }
 
 function normalizeShowtimes(json) {
-  const movies = json.reduce(function(res, { country, genre, movie, rating, summary }) {
+  const movies = json.reduce((res, { country, genre, movie, rating, summary }) => {
     const id = kebabCase(movie);
     res[id] = {
       country,
@@ -204,7 +204,7 @@ function normalizeShowtimes(json) {
     };
     return res;
   }, {});
-  const cinemas = json.reduce(function(res, { cinema }) {
+  const cinemas = json.reduce((res, { cinema }) => {
     const id = kebabCase(cinema);
     res[id] = {
       id,
@@ -214,7 +214,7 @@ function normalizeShowtimes(json) {
     return res;
   }, {});
 
-  const showtimes = json.map(function({ cinema, movie, url, date, time }) {
+  const showtimes = json.map(({ cinema, movie, url, date, time }) => {
     return {
       cinema: kebabCase(cinema),
       movie: kebabCase(movie),
@@ -235,7 +235,7 @@ function getPosterOnImdbPage(page) {
     normalizeWhitespace: true
   });
   return axios.get(`http://www.imdb.com${$('.poster a').eq(0).attr('href')}`)
-    .then(function(response) {
+    .then(response => {
       const id = response.config.url.split('/')[6].split('?')[0];
       const start = 'window.IMDbReactInitialState.push(';
       const end = '"isModal":false}}';
@@ -247,16 +247,16 @@ function getPosterOnImdbPage(page) {
 function getMovie(title) {
   title = deburr(title);
   return searchTitleOnTmbd(title)
-    .then(function({ data }) {
+    .then(({ data }) => {
       if (data.results.length) {
         return getMovieOnTmdb(data.results[0].id);
       }
 
       return getImdbPage(title)
-        .then(function(response) {
+        .then(response => {
           return getPosterOnImdbPage(response.data);
         })
-        .then(function(poster_path) {
+        .then(poster_path => {
           return {
             data: {
               title,
@@ -265,7 +265,7 @@ function getMovie(title) {
           };
         });
     })
-    .then(function({ data: movie }) {
+    .then(({ data: movie }) => {
       if (movie.poster_path) {
         return Promise.all([
           movie,
@@ -275,10 +275,10 @@ function getMovie(title) {
       }
 
       return axios.get(`http://www.imdb.com/title/${movie.imdb_id}/`)
-        .then(function(response) {
+        .then(response => {
           return getPosterOnImdbPage(response.data);
         })
-        .then(function(poster_path) {
+        .then(poster_path => {
           return Promise.all([
             movie,
             poster_path && axios.get(poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
@@ -290,7 +290,7 @@ function getMovie(title) {
 
 function getRating(title) {
   return getImdbPage(title)
-    .then(function(response) {
+    .then(response => {
       return getRatingOnImdbPage(response.data);
     });
 }
@@ -304,7 +304,7 @@ function getRatingOnImdbPage(page) {
 
 function getCountry(title) {
   return getImdbPage(title)
-    .then(function(response) {
+    .then(response => {
       return getCountryOnImdbPage(response.data);
     });
 }
@@ -318,7 +318,7 @@ function getCountryOnImdbPage(page) {
 
 function getGenre(title) {
   return getImdbPage(title)
-    .then(function(response) {
+    .then(response => {
       return getGenreOnImdbPage(response.data);
     });
 }
@@ -332,16 +332,16 @@ function getGenreOnImdbPage(page) {
 
 function getSummary(title) {
   return getImdbSummaryPage(title)
-    .then(function(response) {
+    .then(response => {
       return getSummaryOnImdbPage(response.data);
     })
-    .then(function(summary) {
+    .then(summary => {
       if (!summary) {
         return searchTitleOnTmbd(title)
-          .then(function(response) {
+          .then(response => {
             if (response.data.total_results) {
               return getMovieOnTmdb(response.data.results[0].id)
-                .then(function({ data: movie }) {
+                .then(({ data: movie }) => {
                   return getFirstSentenses(movie.overview) || null;
                 });
             }
@@ -363,7 +363,7 @@ function getSummaryOnImdbPage(page) {
 function getFirstSentenses(text) {
   return tokenizeEnglish.sentences()(text)
     .map(token => token.value)
-    .reduce(function(res, token) {
+    .reduce((res, token) => {
       if (res.length > 140) {
         return res;
       }
