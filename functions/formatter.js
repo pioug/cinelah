@@ -83,22 +83,23 @@ function formatTitle(originalStr) {
     .replace(/\([^)]*\)/g, '')
     .replace(/\*/g, '')
     .replace(/(\s)+/g, ' ')
+    .replace(/&/g, 'and')
     .trim();
 
   cleanStr = Case.title(cleanStr);
 
-  return searchTitleOnTmbd(cleanStr)
+  return getImdbPage(cleanStr)
     .then(response => {
-      if (response.data.total_results) {
-        return response.data.results[0].title;
-      }
-      return Promise.reject(new Error(`No results on TMDB for ${cleanStr}`));
+      return getMovieOnImdbPage(response.data);
     })
     .catch(err => {
       console.log(err);
-      return getImdbPage(cleanStr)
+      return searchTitleOnTmbd(cleanStr)
         .then(response => {
-          return getMovieOnImdbPage(response.data);
+          if (response.data.total_results) {
+            return response.data.results[0].title;
+          }
+          return Promise.reject(new Error(`No results on TMDB for ${cleanStr}`));
         });
     })
     .then(clean => {
@@ -145,7 +146,11 @@ const getImdbPage = memoize(getImdbPage_);
 function getImdbPage_(str) {
   return getImdbId(str)
     .then(id => {
-      return axios.get(`http://www.imdb.com/title/${id}/`);
+      return axios.get(`http://www.imdb.com/title/${id}/`, {
+        headers: {
+          'Accept-Language': 'en,en-US;q=0.9,fr;q=0.8'
+        }
+      });
     });
 }
 
@@ -159,24 +164,24 @@ function getImdbSummaryPage_(str) {
 
 const getImdbId = memoize(getImdbId_);
 function getImdbId_(str) {
-  return searchTitleOnTmbd(str)
-    .then(({ data }) => {
-      if (data.total_results) {
-        return getMovieOnTmdb(data.results[0].id)
-          .then(({ data }) => {
-            return data.imdb_id ||
-              axios.get(`http://www.google.com/search?q=${encodeURIComponent(str)} imdb&btnI`)
-                .then(response => {
-                  const [id] = response.data.match(/tt\d+/);
-                  return id;
-                });
-          });
-      }
-
-      return axios.get(`http://www.google.com/search?q=${encodeURIComponent(str)} imdb&btnI`)
-        .then(response => {
-          const [id] = response.data.match(/tt\d+/);
-          return id;
+  return axios.get(`https://www.google.com.sg/search?q=${str} ${new Date().getFullYear()} movie imdb&btnI`, {
+    headers: {
+      'Accept-Language': 'en,en-US;q=0.9,fr;q=0.8'
+    }
+  })
+    .then(response => {
+      const [id] = response.data.match(/tt\d+/);
+      return id;
+    })
+    .catch(() => {
+      return searchTitleOnTmbd(str)
+        .then(({ data }) => {
+          if (data.total_results) {
+            return getMovieOnTmdb(data.results[0].id)
+              .then(({ data }) => {
+                return data.imdb_id || Promise.reject(new Error(`No results on TMDB for ${str}`));
+              });
+          }
         });
     });
 }
@@ -244,46 +249,58 @@ function getPosterOnImdbPage(page) {
     });
 }
 
-function getMovie(title) {
-  title = deburr(title);
-  return searchTitleOnTmbd(title)
-    .then(({ data }) => {
-      if (data.results.length) {
-        return getMovieOnTmdb(data.results[0].id);
-      }
-
-      return getImdbPage(title)
-        .then(response => {
-          return getPosterOnImdbPage(response.data);
-        })
-        .then(poster_path => {
-          return {
-            data: {
-              title,
-              poster_path
-            }
-          };
+function getPoster(title) {
+  return getImdbPage(title)
+    .then(response => {
+      return getPosterOnImdbPage(response.data);
+    })
+    .catch(() => {
+      return searchTitleOnTmbd(title)
+        .then(({ data }) => {
+          if (data.results.length && data.results[0].poster_path) {
+            const baseImageUrl = 'https://image.tmdb.org/t/p/w500';
+            return baseImageUrl + data.results[0].poster_path;
+          }
         });
+    });
+}
+
+function getMovie(title) {
+  return Promise.all([getPoster(title), getStill(title)])
+    .then(([poster_path, backdrop_path]) => {
+      return {
+        data: {
+          title,
+          poster_path,
+          backdrop_path
+        }
+      };
     })
     .then(({ data: movie }) => {
-      if (movie.poster_path) {
-        return Promise.all([
-          movie,
-          movie.poster_path && axios.get(movie.poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
-          movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
-        ]);
-      }
+      return Promise.all([
+        movie,
+        movie.poster_path && axios.get(movie.poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
+        movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
+      ]);
+    });
+}
 
-      return axios.get(`http://www.imdb.com/title/${movie.imdb_id}/`)
-        .then(response => {
-          return getPosterOnImdbPage(response.data);
-        })
-        .then(poster_path => {
-          return Promise.all([
-            movie,
-            poster_path && axios.get(poster_path, { responseType: 'arraybuffer' }).then(response => response.data),
-            movie.backdrop_path && axios.get(movie.backdrop_path, { responseType: 'arraybuffer' }).then(response => response.data)
-          ]);
+function getStill(title) {
+  return getImdbId(title)
+    .then(id => {
+      return axios.get(`http://www.imdb.com/title/${id}/mediaindex`);
+    })
+    .then(response => {
+      const $ = cheerio.load(response.data);
+      return `${$('.media_index_thumb_list img').eq(0).attr('src').split('_V1_')[0]}_V1_.jpg`;
+    })
+    .catch(() => {
+      return searchTitleOnTmbd(title)
+        .then(({ data }) => {
+          if (data.results.length && data.results[0].backdrop_path) {
+            const baseImageUrl = 'https://image.tmdb.org/t/p/w500';
+            return baseImageUrl + data.results[0].backdrop_path;
+          }
         });
     });
 }
@@ -356,7 +373,7 @@ function getSummaryOnImdbPage(page) {
   const $ = cheerio.load(page, {
     normalizeWhitespace: true
   });
-  const summary = $('.plotSummary').eq(0).text().trim();
+  const summary = $('.ipl-zebra-list__item').eq(0).find('p').text().trim();
   return getFirstSentenses(summary);
 }
 

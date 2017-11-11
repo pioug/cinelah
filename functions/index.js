@@ -94,6 +94,48 @@ const scrapeMovies = functions.storage.object().onChange(event => {
     });
 });
 
+const fixMovies = functions.https.onRequest((req, res) => {
+  return bucket.file('showtimes.json').download()
+    .then(data => {
+      const { movies } = JSON.parse(data);
+      const promises = Object.keys(movies).map(key => {
+        return getMovie(movies[key].title)
+          .then(([details, poster, backdrop]) => {
+            console.log(JSON.stringify(details));
+            return Promise.all([
+              storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
+              sharp(poster)
+                .resize(200, null)
+                .jpeg({ progressive: true })
+                .toBuffer()
+                .then(x => {
+                  return storeImageInBucket(x, 'poster', `movies/${movies[key].id}/`);
+                }),
+              sharp(backdrop || poster)
+                .resize(144, 100)
+                .jpeg({ progressive: true })
+                .toBuffer()
+                .then(y => {
+                  return storeImageInBucket(y, 'backdrop', `movies/${movies[key].id}/`);
+                })
+            ]);
+          })
+          .catch(err => {
+            console.error(key, err);
+            return Promise.resolve();
+          });
+      });
+      return Promise.all(promises);
+    })
+    .catch(err => {
+      console.error(err);
+      return Promise.reject();
+    })
+    .then(() => {
+      res.status(200).send('Merci');
+    });
+});
+
 function storeImageInBucket(buffer, name, baseDir = '') {
   const ts = Math.random();
   fs.writeFileSync(`/tmp/${name}${ts}.jpg`, buffer);
@@ -132,6 +174,7 @@ const sitemap = functions.https.onRequest((req, res) => {
 });
 
 module.exports = {
+  fixMovies,
   scrapeShowtimes,
   scrapeMovies,
   sitemap
