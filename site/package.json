@@ -10,7 +10,7 @@
   "dependencies": {
     "date-fns": "1.29.0",
     "preact": "8.2.6",
-    "preact-router": "2.5.7"
+    "preact-router": "2.6.0"
   },
   "devDependencies": {
     "autoprefixer": "7.1.6",
@@ -18,7 +18,7 @@
     "babel-loader": "7.1.2",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.6.1",
-    "copy-webpack-plugin": "4.2.0",
+    "copy-webpack-plugin": "4.2.3",
     "css-loader": "0.28.7",
     "cssnano": "3.10.0",
     "cssnext": "1.8.4",
@@ -26,13 +26,13 @@
     "file-loader": "1.1.5",
     "html-webpack-plugin": "2.30.1",
     "image-webpack-loader": "3.4.2",
-    "node-sass": "4.6.0",
+    "node-sass": "4.7.2",
     "postcss-loader": "2.0.8",
     "sass-loader": "6.0.6",
     "script-ext-html-webpack-plugin": "1.8.8",
-    "style-ext-html-webpack-plugin": "3.4.4",
+    "style-ext-html-webpack-plugin": "3.4.5",
     "style-loader": "0.19.0",
-    "uglifyjs-webpack-plugin": "1.0.1",
+    "uglifyjs-webpack-plugin": "1.1.0",
     "webpack": "3.8.1",
     "webpack-dev-server": "2.9.4"
   }
