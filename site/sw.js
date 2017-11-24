@@ -27,7 +27,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  if (event.request.url.includes('.jpg') || event.request.url.includes('.json')) {
+  if (event.request.url.includes('.webp') || event.request.url.includes('.jpg') || event.request.url.includes('.json')) {
     event.respondWith(
       caches.match(event.request, { ignoreSearch: true })
         .then(response => {

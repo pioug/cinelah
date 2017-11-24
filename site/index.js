@@ -13,6 +13,7 @@ import './icon512.png';
 import './open-graph.png';
 
 const BUCKET = 'https://storage.googleapis.com/cinelah-92dbb.appspot.com';
+const IMG_FORMAT = navigator.userAgent.includes('Chrome') ? 'webp' : 'jpg';
 
 const scrollTop = {};
 const pushState = history.pushState;
@@ -142,7 +143,7 @@ function Movies({ movies }) {
     .map(id => {
       const { title, rating, genre, country } = movies[id];
       const style = {
-        backgroundImage: `url(${BUCKET}/movies/${id}/backdrop.jpg)`
+        backgroundImage: `url(${BUCKET}/movies/${id}/backdrop.${IMG_FORMAT})`
       };
       return (
         <a href={`/movies/${id}`} class="movie-tile">
@@ -341,13 +342,13 @@ function MovieHeader({ movie = {} }) {
   }
 
   const style = {
-    backgroundImage: `url(${BUCKET}/movies/${movie.id}/poster.jpg)`
+    backgroundImage: `url(${BUCKET}/movies/${movie.id}/poster.${IMG_FORMAT})`
   };
 
   return (
     <div class="movie-header" style={style}>
       <div class="movie-header-poster-container">
-        <img src={`${BUCKET}/movies/${movie.id}/poster.jpg`} alt={`${movie.title} poster`}/>
+        <img src={`${BUCKET}/movies/${movie.id}/poster.${IMG_FORMAT}`} alt={`${movie.title} poster`}/>
       </div>
       <dl>
         {movie.summary && <dt>Summary</dt>}
@@ -478,7 +479,7 @@ function Cinema({ cinemas, id, showtimes }) {
             });
 
           const style = {
-            backgroundImage: `url(${BUCKET}/movies/${movieId}/backdrop.jpg)`
+            backgroundImage: `url(${BUCKET}/movies/${movieId}/backdrop.${IMG_FORMAT})`
           };
 
           return (

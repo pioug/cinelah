@@ -70,14 +70,28 @@ const scrapeMovies = functions.storage.object().onChange(event => {
                     .jpeg({ progressive: true })
                     .toBuffer()
                     .then(x => {
-                      return storeImageInBucket(x, 'poster', `movies/${movies[key].id}/`);
+                      return storeImageInBucket(x, 'poster', 'jpg', `movies/${movies[key].id}/`);
                     }),
                   sharp(backdrop || poster)
                     .resize(144, 100)
                     .jpeg({ progressive: true })
                     .toBuffer()
                     .then(y => {
-                      return storeImageInBucket(y, 'backdrop', `movies/${movies[key].id}/`);
+                      return storeImageInBucket(y, 'backdrop', 'jpg', `movies/${movies[key].id}/`);
+                    }),
+                  sharp(poster)
+                    .resize(200, null)
+                    .webp()
+                    .toBuffer()
+                    .then(x => {
+                      return storeImageInBucket(x, 'poster', 'webp', `movies/${movies[key].id}/`);
+                    }),
+                  sharp(backdrop || poster)
+                    .resize(144, 100)
+                    .webp()
+                    .toBuffer()
+                    .then(y => {
+                      return storeImageInBucket(y, 'backdrop', 'webp', `movies/${movies[key].id}/`);
                     })
                 ]);
               });
@@ -109,14 +123,28 @@ const fixMovies = functions.https.onRequest((req, res) => {
                 .jpeg({ progressive: true })
                 .toBuffer()
                 .then(x => {
-                  return storeImageInBucket(x, 'poster', `movies/${movies[key].id}/`);
+                  return storeImageInBucket(x, 'poster', 'jpg', `movies/${movies[key].id}/`);
                 }),
               sharp(backdrop || poster)
                 .resize(144, 100)
                 .jpeg({ progressive: true })
                 .toBuffer()
                 .then(y => {
-                  return storeImageInBucket(y, 'backdrop', `movies/${movies[key].id}/`);
+                  return storeImageInBucket(y, 'backdrop', 'jpg', `movies/${movies[key].id}/`);
+                }),
+              sharp(poster)
+                .resize(200, null)
+                .webp()
+                .toBuffer()
+                .then(x => {
+                  return storeImageInBucket(x, 'poster', 'webp', `movies/${movies[key].id}/`);
+                }),
+              sharp(backdrop || poster)
+                .resize(144, 100)
+                .webp()
+                .toBuffer()
+                .then(y => {
+                  return storeImageInBucket(y, 'backdrop', 'webp', `movies/${movies[key].id}/`);
                 })
             ]);
           })
@@ -136,11 +164,11 @@ const fixMovies = functions.https.onRequest((req, res) => {
     });
 });
 
-function storeImageInBucket(buffer, name, baseDir = '') {
+function storeImageInBucket(buffer, name, ext, baseDir = '') {
   const ts = Math.random();
-  fs.writeFileSync(`/tmp/${name}${ts}.jpg`, buffer);
-  return bucket.upload(`/tmp/${name}${ts}.jpg`, {
-    destination: `${baseDir}${name}.jpg`,
+  fs.writeFileSync(`/tmp/${name}${ts}.${ext}`, buffer);
+  return bucket.upload(`/tmp/${name}${ts}.${ext}`, {
+    destination: `${baseDir}${name}.${ext}`,
     gzip: true,
     public: true,
     metadata: {
