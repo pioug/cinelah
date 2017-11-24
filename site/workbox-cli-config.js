@@ -10,6 +10,7 @@ module.exports = {
     '*.png'
   ],
   navigateFallback: 'index.html',
+  navigateFallbackWhitelist: ['/robots.txt', '/sitemap.xml'],
   runtimeCaching: [{
     urlPattern: 'https://storage.googleapis.com/cinelah-92dbb.appspot.com/movies/:title/:type.webp',
     handler: 'cacheFirst'

@@ -194,10 +194,21 @@ const sitemap = functions.https.onRequest((req, res) => {
   bucket.file('showtimes.json').download()
     .then(data => {
       const { movies } = JSON.parse(data);
-      const urls = Object.keys(movies).map(movieId => {
-        return `https://www.cinelah.com/movies/${movieId}\n`;
-      });
-      res.status(200).send(urls);
+      const xml = `
+        <?xml version="1.0" encoding="UTF-8"?>
+        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+          ${Object.keys(movies).map(movieId => `
+            <url>
+              <loc>https://www.cinelah.com/movies/${movieId}</loc>
+            </url>
+          `).join('')}
+        </urlset>
+      `.trim();
+      res
+        .set('Cache-Control', 'public, max-age=604800, s-maxage=604800')
+        .set('Content-Type', 'text/xml')
+        .status(200)
+        .send(xml);
     });
 });
 

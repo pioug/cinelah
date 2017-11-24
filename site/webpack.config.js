@@ -84,6 +84,8 @@ module.exports = {
       new CopyWebpackPlugin([{
         from: 'manifest.json',
         transform: content => JSON.stringify(JSON.parse(content))
+      }, {
+        from: 'robots.txt'
       }]),
       new HtmlWebpackPlugin({
         filename: 'index.html',
