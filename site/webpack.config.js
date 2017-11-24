@@ -11,7 +11,6 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 module.exports = {
   entry: {
     bundle: './index.js',
-    sw: './sw.js'
   },
   output: {
     path: path.resolve(__dirname, '../public'),
@@ -95,7 +94,6 @@ module.exports = {
           collapseWhitespace: true,
           minifyJS: true
         },
-        excludeChunks: ['sw']
       }),
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'async'
@@ -111,7 +109,6 @@ module.exports = {
         filename: 'index.html',
         template: 'index.ejs',
         title: 'Cinelah',
-        excludeChunks: ['sw'],
         env: process.env.NODE_ENV
       }),
       new ScriptExtHtmlWebpackPlugin({
