@@ -4,6 +4,6 @@ module.exports = {
       browsers: ['> 5% in SG']
     },
     cssnano: {},
-    cssnext: {}
+    'postcss-cssnext': {}
   }
 };
