@@ -172,7 +172,7 @@ function storeImageInBucket(buffer, name, ext, baseDir = '') {
     gzip: true,
     public: true,
     metadata: {
-      cacheControl: 'public, max-age=86400'
+      cacheControl: 'max-age=604800'
     }
   });
 }
@@ -185,7 +185,7 @@ function storeJsonInBucket(json, name, baseDir = '') {
     gzip: true,
     public: true,
     metadata: {
-      cacheControl: 'public, max-age=21600'
+      cacheControl: 'no-cache'
     }
   });
 }

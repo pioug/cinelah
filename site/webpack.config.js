@@ -24,7 +24,7 @@ module.exports = {
     host: '0.0.0.0',
     hot: true
   },
-  devtool: 'source-map',
+  devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
   module: {
     rules: [
       {

@@ -3,9 +3,6 @@ self.addEventListener('install', event => {
     caches.open('cinelah').then(cache => {
       return cache.addAll([
         '/',
-        '/?utm_source=pwa',
-        '/index.html',
-        '/index.html?utm_source=pwa',
         '/favicon.png',
         '/bundle.js'
       ])
@@ -38,7 +35,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  event.respondWith(fetchThenCache(event));
+  event.respondWith(fetch(event.request));
 });
 
 function fetchThenCache(event) {

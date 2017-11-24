@@ -3,6 +3,25 @@
     "rules": "database.rules.json"
   },
   "hosting": {
+    "headers": [{
+      "source": "/sw.js",
+      "headers": [{
+        "key": "Cache-Control",
+        "value": "no-cache"
+      }]
+    }, {
+      "source" : "**/*.@(jpg|jpeg|js|gif|png)",
+      "headers" : [{
+        "key" : "Cache-Control",
+        "value" : "max-age=604800"
+      }]
+    }, {
+      "source" : "**",
+      "headers" : [{
+        "key" : "Cache-Control",
+        "value" : "no-cache"
+      }]
+    }],
     "public": "public",
     "rewrites": [{
       "source": "/sitemap.xml",
