@@ -7,7 +7,7 @@
   },
   "globals": {
     "PRODUCTION": true,
-    "ga": true
+    "gtag": true
   },
   "plugins": [
     "react"

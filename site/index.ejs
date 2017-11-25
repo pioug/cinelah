@@ -22,6 +22,17 @@
     <meta property="og:title" content="Cinelah"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://www.cinelah.com/"/>
+
+    <%if (htmlWebpackPlugin.options.env == 'production') { %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-40932161-7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-40932161-7');
+    </script>
+    <% } %>
+
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
@@ -249,14 +260,5 @@
     <script>
       window.fetchingShowtimes = fetch('https://storage.googleapis.com/cinelah-92dbb.appspot.com/showtimes.json');
     </script>
-
-    <%if (htmlWebpackPlugin.options.env == 'production') { %>
-    <script>
-      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-      ga('create', 'UA-40932161-7', 'auto');
-    </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-    <% } %>
-
   </body>
 </html>

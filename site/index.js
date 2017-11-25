@@ -132,7 +132,6 @@ class Cinelah extends Component {
 
 document.body.querySelector('main').remove();
 render(<Cinelah />, document.body);
-trackPageView();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
@@ -559,7 +558,10 @@ function displayDate(date) {
 
 function trackPageView() {
   if (PRODUCTION) {
-    ga('set', 'page', location.pathname);
-    ga('send', 'pageview');
+    gtag('event', 'page_view', {
+      page_location: location.href,
+      page_path: location.pathname,
+      send_to: 'UA-40932161-7'
+    });
   }
 }
