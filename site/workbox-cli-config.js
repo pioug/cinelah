@@ -16,7 +16,7 @@ module.exports = {
     handler: 'cacheFirst'
   }, {
     urlPattern: 'https://storage.googleapis.com/cinelah-92dbb.appspot.com/(.*).json',
-    handler: 'staleWhileRevalidate'
+    handler: 'NetworkFirst'
   }],
   swDest: '../public/sw.js',
 };
