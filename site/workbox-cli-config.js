@@ -12,11 +12,11 @@ module.exports = {
   navigateFallback: 'index.html',
   navigateFallbackWhitelist: [/^(?!.*(sitemap|robots))/],
   runtimeCaching: [{
-    urlPattern: 'https://storage.googleapis.com/cinelah-92dbb.appspot.com/movies/:title/:type.webp',
+    urlPattern: /https:\/\/storage.googleapis.com\/cinelah-92dbb.appspot.com\/movies\/.*\/.*\.webp/,
     handler: 'cacheFirst'
   }, {
-    urlPattern: 'https://storage.googleapis.com/cinelah-92dbb.appspot.com/(.*).json',
-    handler: 'NetworkFirst'
+    urlPattern: /https:\/\/storage.googleapis.com\/cinelah-92dbb.appspot.com\/.*\.json/,
+    handler: 'networkFirst'
   }],
   swDest: '../public/sw.js',
 };
