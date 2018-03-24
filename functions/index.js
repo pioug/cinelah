@@ -55,46 +55,39 @@ const scrapeMovies = functions.storage.object().onChange(event => {
     .then(() => {
       const { movies } = JSON.parse(fs.readFileSync(temp, 'utf8'));
       return Object.keys(movies).reduce((res, key) => {
-        return bucket.file(`movies/${movies[key].id}/details.json`).exists()
-          .then(([exists]) => {
-            if (exists) {
-              return Promise.resolve();
-            }
-
-            return getMovie(movies[key].title)
-              .then(([details, poster, backdrop]) => {
-                return Promise.all([
-                  storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
-                  sharp(poster)
-                    .resize(200, null)
-                    .jpeg({ progressive: true })
-                    .toBuffer()
-                    .then(x => {
-                      return storeImageInBucket(x, 'poster', 'jpg', `movies/${movies[key].id}/`);
-                    }),
-                  sharp(backdrop || poster)
-                    .resize(144, 100)
-                    .jpeg({ progressive: true })
-                    .toBuffer()
-                    .then(y => {
-                      return storeImageInBucket(y, 'backdrop', 'jpg', `movies/${movies[key].id}/`);
-                    }),
-                  sharp(poster)
-                    .resize(200, null)
-                    .webp()
-                    .toBuffer()
-                    .then(x => {
-                      return storeImageInBucket(x, 'poster', 'webp', `movies/${movies[key].id}/`);
-                    }),
-                  sharp(backdrop || poster)
-                    .resize(144, 100)
-                    .webp()
-                    .toBuffer()
-                    .then(y => {
-                      return storeImageInBucket(y, 'backdrop', 'webp', `movies/${movies[key].id}/`);
-                    })
-                ]);
-              });
+        return getMovie(movies[key].title)
+          .then(([details, poster, backdrop]) => {
+            return Promise.all([
+              storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
+              sharp(poster)
+                .resize(200, null)
+                .jpeg({ progressive: true })
+                .toBuffer()
+                .then(x => {
+                  return storeImageInBucket(x, 'poster', 'jpg', `movies/${movies[key].id}/`);
+                }),
+              sharp(backdrop || poster)
+                .resize(144, 100)
+                .jpeg({ progressive: true })
+                .toBuffer()
+                .then(y => {
+                  return storeImageInBucket(y, 'backdrop', 'jpg', `movies/${movies[key].id}/`);
+                }),
+              sharp(poster)
+                .resize(200, null)
+                .webp()
+                .toBuffer()
+                .then(x => {
+                  return storeImageInBucket(x, 'poster', 'webp', `movies/${movies[key].id}/`);
+                }),
+              sharp(backdrop || poster)
+                .resize(144, 100)
+                .webp()
+                .toBuffer()
+                .then(y => {
+                  return storeImageInBucket(y, 'backdrop', 'webp', `movies/${movies[key].id}/`);
+                })
+            ]);
           })
           .catch(err => {
             console.error(key, err);
