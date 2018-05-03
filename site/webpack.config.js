@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin');
@@ -23,6 +23,7 @@ module.exports = {
     host: '0.0.0.0',
     hot: true
   },
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
   module: {
     rules: [
@@ -34,10 +35,7 @@ module.exports = {
       {
         test: /\.scss$/,
         use: process.env.NODE_ENV === 'production' ?
-          ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: ['css-loader', 'postcss-loader', 'sass-loader']
-          }) :
+          [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'] :
           ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
       },
       {
@@ -100,7 +98,9 @@ module.exports = {
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'async'
       }),
-      new ExtractTextPlugin('style.css'),
+      new MiniCssExtractPlugin({
+        filename: 'style.css'
+      }),
       new StyleExtHtmlWebpackPlugin()
     ] : [
       new webpack.DefinePlugin({

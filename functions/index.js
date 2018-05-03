@@ -41,12 +41,11 @@ const scrapeShowtimes = functions.https.onRequest((req, res) => {
     });
 });
 
-const scrapeMovies = functions.storage.object().onChange(event => {
-  const object = event.data;
+const scrapeMovies = functions.storage.object().onFinalize(object => {
   const temp = `/tmp/${path.basename(object.name)}`;
 
   if (!object.name.includes('showtimes.json')) {
-    return;
+    return Promise.resolve();
   }
 
   return bucket.file(object.name).download({
