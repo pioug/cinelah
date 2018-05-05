@@ -67,7 +67,7 @@ function formatTitle(originalStr) {
     .replace(/Fans`\sPrev\*/g, '')
     .replace(/Fans`\sScreening*/g, '')
     .replace(/Kids\sFlix –/g, '')
-    .replace(/Mums & Babies /, '')
+    .replace(/Mums\s&\sBabies –/, '')
     .replace(/\bthe\b/gi, '')
     .replace(/`/g, '\'')
     .replace(/\[/g, '(')
