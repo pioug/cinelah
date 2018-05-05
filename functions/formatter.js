@@ -68,6 +68,7 @@ function formatTitle(originalStr) {
     .replace(/Fans`\sScreening*/g, '')
     .replace(/Kids\sFlix –/g, '')
     .replace(/Mums\s&\sBabies –/, '')
+    .replace(/Zen\sZone\s\d+.*/, '')
     .replace(/\bthe\b/gi, '')
     .replace(/`/g, '\'')
     .replace(/\[/g, '(')
@@ -85,6 +86,10 @@ function formatTitle(originalStr) {
     .replace(/(\s)+/g, ' ')
     .replace(/&/g, 'and')
     .trim();
+
+  if (!cleanStr) {
+    return Promise.reject(`${originalStr} is not a movie title`);
+  }
 
   cleanStr = Case.title(cleanStr);
 
