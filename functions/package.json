@@ -4,7 +4,7 @@
   "dependencies": {
     "@google-cloud/storage": "1.6.0",
     "axios": "0.18.0",
-    "case": "1.5.4",
+    "case": "1.5.5",
     "cheerio": "0.22.0",
     "date-fns": "2.0.0-alpha.1",
     "delay": "2.0.0",

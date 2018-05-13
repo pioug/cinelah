@@ -1,12 +1,22 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "browsers": ["> 5% in SG"]
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            "> 5% in SG"
+          ]
+        }
       }
-    }]
+    ]
   ],
   "plugins": [
-    ["transform-react-jsx", { "pragma":"h" }]
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "pragma": "h"
+      }
+    ]
   ]
 }
