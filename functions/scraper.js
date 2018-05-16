@@ -132,7 +132,9 @@ function parseCathay(page) {
                     timings: $('.cine_time', el)
                       .map((i, el) => {
                         return {
-                          time: $(el).text(),
+                          time: $(el).contents().filter(function() {
+                            return this.type === 'text';
+                          }).text(),
                           url: url.resolve(CATHAY, $(el).attr('data-href'))
                         };
                       })
