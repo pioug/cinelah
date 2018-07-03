@@ -32,6 +32,7 @@ function formatCinema(originalStr) {
     'Century Square': 'Filmgarde - Century Square',
     'CINELEISURE ORCHARD': 'Cathay - Cineleisure Orchard',
     'DOWNTOWN EAST': 'Cathay - Downtown East',
+    'GV Bedok': 'GV - Bedok',
     'GV Bishan': 'GV - Bishan',
     'GV City Square': 'GV - City Square',
     'GV Grand, Great World City': 'GV - Gemini Grand, Great World City',
