@@ -265,6 +265,7 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
       });
   }))
     .then(movies => {
+      const now = new Date();
       const showtimes = movies
         .filter(movie => movie)
         .reduce((a, { title, genre, rating, country, dates, summary }) => {
@@ -297,6 +298,9 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
           return a.movie < b.movie ? -1 :
             a.movie > b.movie ? 1 :
               0;
+        })
+        .filter(({ date, time }) => {
+          return dateFns.isAfter(`${date} ${time}`, now);
         });
 
       console.info('getShowtimes finished');
