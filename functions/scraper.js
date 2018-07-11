@@ -129,7 +129,7 @@ function parseCathay(page) {
                   return {
                     name: formatCinema($('.M_movietitle', a).text().trim() || $('.mobileLink', el).prevAll('strong').text().trim()),
                     title: $('.mobileLink', el).text(),
-                    timings: $('.cine_time', el)
+                    timings: $('.cine_time .st', el)
                       .map((i, el) => {
                         return {
                           time: $(el).contents().filter(function() {
