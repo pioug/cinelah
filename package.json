@@ -5,7 +5,7 @@
     "deploy:hosting": "rm -rf public && cd site && npm run build && cd .. && firebase deploy --only hosting"
   },
   "dependencies": {
-    "eslint": "5.0.1",
+    "eslint": "5.1.0",
     "eslint-config-bandlab-base": "2.3.0",
     "eslint-plugin-react": "7.10.0",
     "eslint-plugin-unicorn": "4.0.3",
