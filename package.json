@@ -6,9 +6,10 @@
   },
   "dependencies": {
     "eslint": "5.1.0",
-    "eslint-config-bandlab-base": "2.3.0",
     "eslint-plugin-react": "7.10.0",
-    "eslint-plugin-unicorn": "4.0.3",
     "firebase-tools": "3.19.3"
+  },
+  "devDependencies": {
+    "prettier": "1.13.7"
   }
 }

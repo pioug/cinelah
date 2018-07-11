@@ -1,9 +1,9 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const moment = require('moment');
-const phantom = require('phantom');
-const url = require('url');
-const { dateFormat, formatCinema, timeFormat } = require('./formatter');
+const axios = require("axios");
+const cheerio = require("cheerio");
+const moment = require("moment");
+const phantom = require("phantom");
+const url = require("url");
+const { dateFormat, formatCinema, timeFormat } = require("./formatter");
 
 module.exports = {
   getCathayJson,
@@ -13,58 +13,64 @@ module.exports = {
   getWeJson
 };
 
-const SHAW = 'http://m.shaw.sg/';
+const SHAW = "http://m.shaw.sg/";
 
 function getShawJson() {
-  return phantom.create(['--load-images=no'])
-    .then(instance => {
-      return instance.createPage()
-        .then(page => {
-          return page.open(SHAW)
-            .then(() => {
-              return page.property('content');
-            })
-            .then(content => {
-              const dates = parseShawMobileDates(content);
-              return dates.reduce((res, date) => {
-                return res.then(() => {
+  return phantom.create(["--load-images=no"]).then(instance => {
+    return instance
+      .createPage()
+      .then(page => {
+        return page
+          .open(SHAW)
+          .then(() => {
+            return page.property("content");
+          })
+          .then(content => {
+            const dates = parseShawMobileDates(content);
+            return dates.reduce((res, date) => {
+              return res
+                .then(() => {
                   const promise = new Promise(resolve => {
-                    page.on('onLoadFinished', () => {
-                      page.off('onLoadFinished');
-                      resolve(page.property('content'));
+                    page.on("onLoadFinished", () => {
+                      page.off("onLoadFinished");
+                      resolve(page.property("content"));
                     });
 
-                    page.evaluate(function(date) { // eslint-disable-line prefer-arrow-callback
-                      document.querySelector('#globalform').ddlShowDate.value = date;
+                    page.evaluate(function(date) {
+                      // eslint-disable-line prefer-arrow-callback
+                      document.querySelector(
+                        "#globalform"
+                      ).ddlShowDate.value = date;
                       return document.querySelector('[type="submit"]').click();
                     }, date.formDate);
                   });
 
                   return promise;
                 })
-                  .then(content => {
-                    date.cinemas = parseShawMobileDay(content);
-                    return dates;
-                  });
-              }, Promise.resolve());
-            });
-        })
-        .then(content => {
-          return instance.exit()
-            .then(() => {
-              console.info('getShawJson finished');
-              return content;
-            });
+                .then(content => {
+                  date.cinemas = parseShawMobileDay(content);
+                  return dates;
+                });
+            }, Promise.resolve());
+          });
+      })
+      .then(content => {
+        return instance.exit().then(() => {
+          console.info("getShawJson finished");
+          return content;
         });
-    });
+      });
+  });
 }
 
 function parseShawMobileDates(page) {
   const $ = cheerio.load(page);
-  return $('#ddlShowDate option')
+  return $("#ddlShowDate option")
     .map((i, el) => {
-      const date = $(el).attr('value');
-      const formattedDate = moment(date, 'M/DD/YYYY').utcOffset('+08:00').format(dateFormat);
+      const date = $(el).attr("value");
+      const formattedDate = moment(date, "M/DD/YYYY")
+        .utcOffset("+08:00")
+        .format(dateFormat);
       return {
         date: formattedDate,
         formDate: date
@@ -75,19 +81,21 @@ function parseShawMobileDates(page) {
 
 function parseShawMobileDay(page) {
   const $ = cheerio.load(page);
-  return $('.persist-area')
+  return $(".persist-area")
     .map((i, el) => {
       return {
-        name: formatCinema($('.floatingHeader .category.cplex.header', el).text()),
-        movies: $('.filminfo', el)
+        name: formatCinema(
+          $(".floatingHeader .category.cplex.header", el).text()
+        ),
+        movies: $(".filminfo", el)
           .map((i, el) => {
             return {
-              title: $('.filmtitle', el).text(),
-              timings: $('.filmshowtime a', el)
+              title: $(".filmtitle", el).text(),
+              timings: $(".filmshowtime a", el)
                 .map((i, el) => {
                   return {
-                    time: moment($(el).text(), 'k:mmA').format(timeFormat),
-                    url: url.resolve(SHAW, $(el).attr('href') || '')
+                    time: moment($(el).text(), "k:mmA").format(timeFormat),
+                    url: url.resolve(SHAW, $(el).attr("href") || "")
                   };
                 })
                 .get()
@@ -99,43 +107,62 @@ function parseShawMobileDay(page) {
     .get();
 }
 
-const CATHAY = 'http://www.cathaycineplexes.com.sg/showtimes/';
+const CATHAY = "http://www.cathaycineplexes.com.sg/showtimes/";
 
 function getCathay() {
-  return axios.get(CATHAY)
-    .then(res => {
-      return res.data;
-    });
+  return axios.get(CATHAY).then(res => {
+    return res.data;
+  });
 }
 
 function parseCathay(page) {
   const $ = cheerio.load(page, {
     normalizeWhitespace: true
   });
-  return $('.tabs')
+  return $(".tabs")
     .map((i, a) => {
       return {
-        dates: $('.tabbers', a)
+        dates: $(".tabbers", a)
           .map((i, el) => {
-            const date = $(`[value=${$(el).attr('id')}]`).eq(0).text().split(',')[1].trim();
-            const formattedDate = moment(date, 'D MMM').utcOffset('+08:00').format(dateFormat);
+            const date = $(`[value=${$(el).attr("id")}]`)
+              .eq(0)
+              .text()
+              .split(",")[1]
+              .trim();
+            const formattedDate = moment(date, "D MMM")
+              .utcOffset("+08:00")
+              .format(dateFormat);
             return {
               date: formattedDate,
-              movies: $('.movie-container', el)
+              movies: $(".movie-container", el)
                 .filter((i, el) => {
-                  return $('.mobileLink', el).text();
+                  return $(".mobileLink", el).text();
                 })
                 .map((i, el) => {
                   return {
-                    name: formatCinema($('.M_movietitle', a).text().trim() || $('.mobileLink', el).prevAll('strong').text().trim()),
-                    title: $('.mobileLink', el).text(),
-                    timings: $('.cine_time .st', el)
+                    name: formatCinema(
+                      $(".M_movietitle", a)
+                        .text()
+                        .trim() ||
+                        $(".mobileLink", el)
+                          .prevAll("strong")
+                          .text()
+                          .trim()
+                    ),
+                    title: $(".mobileLink", el).text(),
+                    timings: $(".cine_time .st", el)
                       .map((i, el) => {
                         return {
-                          time: $(el).contents().filter(function() {
-                            return this.type === 'text';
-                          }).text(),
-                          url: url.resolve(CATHAY, $(el).attr('data-href') || '')
+                          time: $(el)
+                            .contents()
+                            .filter(function() {
+                              return this.type === "text";
+                            })
+                            .text(),
+                          url: url.resolve(
+                            CATHAY,
+                            $(el).attr("data-href") || ""
+                          )
                         };
                       })
                       .get()
@@ -154,100 +181,107 @@ function getCathayJson() {
   return getCathay()
     .then(parseCathay)
     .then(json => {
-      console.info('getCathay finished');
+      console.info("getCathay finished");
       return json;
     })
     .catch(err => {
-      console.error('getCathay failed');
+      console.error("getCathay failed");
       return Promise.reject(err);
     });
 }
 
-const GV_CINEMAS = 'https://www.gv.com.sg/GVCinemas';
+const GV_CINEMAS = "https://www.gv.com.sg/GVCinemas";
 
 function getGVCinemaRequests() {
-  return phantom.create(['--load-images=no'])
-    .then(instance => {
-      return instance.createPage()
-        .then(page => {
-          const promise = new Promise((resolve, reject) => {
-            page.on('onResourceRequested', request => {
-              if (!request.url.includes('cinemasbytype')) {
-                return;
-              }
-              page.off('onResourceRequested');
-              page.stop();
-              resolve(request);
+  return phantom.create(["--load-images=no"]).then(instance => {
+    return instance.createPage().then(page => {
+      const promise = new Promise((resolve, reject) => {
+        page.on("onResourceRequested", request => {
+          if (!request.url.includes("cinemasbytype")) {
+            return;
+          }
+          page.off("onResourceRequested");
+          page.stop();
+          resolve(request);
+        });
+        page.open(GV_CINEMAS).then(reject);
+      });
+      return promise
+        .then(replayGVCinemasRequest)
+        .then(cinemas => {
+          return cinemas.reduce((res, cinema) => {
+            return res.then(() => {
+              const promise = new Promise((resolve, reject) => {
+                page.on("onResourceRequested", request => {
+                  if (!request.url.includes("session")) {
+                    return;
+                  }
+                  page.off("onResourceRequested");
+                  page.stop();
+                  cinema.request = request;
+                  resolve(cinemas);
+                });
+                page.open(cinema.url).then(reject);
+              });
+              return promise;
             });
-            page.open(GV_CINEMAS)
-              .then(reject);
-          });
-          return promise
-            .then(replayGVCinemasRequest)
-            .then(cinemas => {
-              return cinemas.reduce((res, cinema) => {
-                return res.then(() => {
-                  const promise = new Promise((resolve, reject) => {
-                    page.on('onResourceRequested', request => {
-                      if (!request.url.includes('session')) {
-                        return;
-                      }
-                      page.off('onResourceRequested');
-                      page.stop();
-                      cinema.request = request;
-                      resolve(cinemas);
-                    });
-                    page.open(cinema.url)
-                      .then(reject);
-                  });
-                  return promise;
-                });
-              }, Promise.resolve());
+          }, Promise.resolve());
+        })
+        .then(content => {
+          return page
+            .close()
+            .then(() => {
+              return instance.exit();
             })
-            .then(content => {
-              return page.close()
-                .then(() => {
-                  return instance.exit();
-                })
-                .then(() => {
-                  return content;
-                });
+            .then(() => {
+              return content;
             });
         });
     });
+  });
 }
 
 function parseGVCinemaJSON(json) {
-  return json.films.map(film => {
-    return {
-      title: film.filmTitle,
-      dates: film.dates.map(({ date, times }) => {
-        const ddmmyyyy = moment(date).utcOffset('+08:00').format('DD-MM-YYYY');
-        const yyyymdd = moment(date).utcOffset('+08:00').format(dateFormat);
-        return {
-          date: yyyymdd,
-          timings: times.map(timing => {
-            return {
-              time: moment(timing.time12, 'kk:mmA').format(timeFormat),
-              url: `https://www.gv.com.sg/GVSeatSelection#/cinemaId/${json.id}/filmCode/${film.filmCd}/showDate/${ddmmyyyy}/showTime/${timing.time24}/hallNumber/${timing.hallNumber}`
-            };
-          })
-        };
-      })
-    };
-  })
+  return json.films
+    .map(film => {
+      return {
+        title: film.filmTitle,
+        dates: film.dates.map(({ date, times }) => {
+          const ddmmyyyy = moment(date)
+            .utcOffset("+08:00")
+            .format("DD-MM-YYYY");
+          const yyyymdd = moment(date)
+            .utcOffset("+08:00")
+            .format(dateFormat);
+          return {
+            date: yyyymdd,
+            timings: times.map(timing => {
+              return {
+                time: moment(timing.time12, "kk:mmA").format(timeFormat),
+                url: `https://www.gv.com.sg/GVSeatSelection#/cinemaId/${
+                  json.id
+                }/filmCode/${film.filmCd}/showDate/${ddmmyyyy}/showTime/${
+                  timing.time24
+                }/hallNumber/${timing.hallNumber}`
+              };
+            })
+          };
+        })
+      };
+    })
     .filter(({ title }) => {
-      return title !== 'Zen Zone 2017*';
+      return title !== "Zen Zone 2017*";
     });
 }
 
 function replayGVCinemasRequest(request) {
-  return axios.post(request.url, request.postData, {
-    headers: request.headers.reduce((res, item) => {
-      res[item.name] = item.value;
-      return res;
-    }, {})
-  })
+  return axios
+    .post(request.url, request.postData, {
+      headers: request.headers.reduce((res, item) => {
+        res[item.name] = item.value;
+        return res;
+      }, {})
+    })
     .then(({ data: { data } }) => {
       return data.map(({ name, id }) => {
         return {
@@ -259,12 +293,13 @@ function replayGVCinemasRequest(request) {
 }
 
 function replayGVCinemaRequest(cinema) {
-  return axios.post(cinema.request.url, cinema.request.postData, {
-    headers: cinema.request.headers.reduce((res, item) => {
-      res[item.name] = item.value;
-      return res;
-    }, {})
-  })
+  return axios
+    .post(cinema.request.url, cinema.request.postData, {
+      headers: cinema.request.headers.reduce((res, item) => {
+        res[item.name] = item.value;
+        return res;
+      }, {})
+    })
     .then(response => {
       delete cinema.request;
       cinema.movies = parseGVCinemaJSON(response.data.data[0]);
@@ -278,44 +313,53 @@ function getGVJson() {
       return Promise.all(cinemas.map(replayGVCinemaRequest));
     })
     .then(json => {
-      console.info('getGVJson finished');
+      console.info("getGVJson finished");
       return json;
     })
     .catch(err => {
-      console.error('getGVJson failed');
+      console.error("getGVJson failed");
       return Promise.reject(err);
     });
 }
 
-const FILMGARDE = 'http://tickets.fgcineplex.com.sg/visInternetTicketing/';
+const FILMGARDE = "http://tickets.fgcineplex.com.sg/visInternetTicketing/";
 
 function getFilmgardeJson() {
-  return phantom.create(['--load-images=no'])
+  return phantom
+    .create(["--load-images=no"])
     .then(instance => {
-      return instance.createPage()
+      return instance
+        .createPage()
         .then(page => {
-          return page.open(FILMGARDE)
+          return page
+            .open(FILMGARDE)
             .then(() => {
-              return page.property('content');
+              return page.property("content");
             })
             .then(content => {
               const dates = parseFilmgardeDates(content);
               return dates.reduce((res, date) => {
-                return res.then(() => {
-                  const promise = new Promise(resolve => {
-                    page.on('onLoadFinished', () => {
-                      page.off('onLoadFinished');
-                      resolve(page.property('content'));
+                return res
+                  .then(() => {
+                    const promise = new Promise(resolve => {
+                      page.on("onLoadFinished", () => {
+                        page.off("onLoadFinished");
+                        resolve(page.property("content"));
+                      });
                     });
-                  });
 
-                  page.evaluate(function(date) { // eslint-disable-line prefer-arrow-callback
-                    document.querySelector('[name="ddlFilterDate"]').value = date;
-                    return document.querySelector('[name="ddlFilterDate"]').onchange();
-                  }, date.date);
+                    page.evaluate(function(date) {
+                      // eslint-disable-line prefer-arrow-callback
+                      document.querySelector(
+                        '[name="ddlFilterDate"]'
+                      ).value = date;
+                      return document
+                        .querySelector('[name="ddlFilterDate"]')
+                        .onchange();
+                    }, date.date);
 
-                  return promise;
-                })
+                    return promise;
+                  })
                   .then(content => {
                     date.cinemas = parseFilmgardeDay(content);
                     return dates;
@@ -324,25 +368,26 @@ function getFilmgardeJson() {
             });
         })
         .then(content => {
-          return instance.exit()
-            .then(() => {
-              console.info('getFilmgardeJson finished');
-              return content;
-            });
+          return instance.exit().then(() => {
+            console.info("getFilmgardeJson finished");
+            return content;
+          });
         });
     })
     .catch(err => {
-      console.error('getFilmgardeJson failed');
+      console.error("getFilmgardeJson failed");
       return Promise.reject(err);
     });
 }
 
 function parseFilmgardeDates(page) {
   const $ = cheerio.load(page);
-  return $('#ddlFilterDate option')
+  return $("#ddlFilterDate option")
     .map((i, el) => {
-      const date = $(el).attr('value');
-      const formattedDate = moment(date, 'DD MMM').utcOffset('+08:00').format(dateFormat);
+      const date = $(el).attr("value");
+      const formattedDate = moment(date, "DD MMM")
+        .utcOffset("+08:00")
+        .format(dateFormat);
       return {
         date: formattedDate
       };
@@ -354,19 +399,24 @@ function parseFilmgardeDay(page) {
   const $ = cheerio.load(page, {
     normalizeWhitespace: true
   });
-  return $('.ShowtimesCinemaRow')
+  return $(".ShowtimesCinemaRow")
     .map((i, el) => {
       return {
-        name: formatCinema($(el).text().trim()),
-        movies: $(el).nextUntil('.ShowtimesCinemaRow')
+        name: formatCinema(
+          $(el)
+            .text()
+            .trim()
+        ),
+        movies: $(el)
+          .nextUntil(".ShowtimesCinemaRow")
           .map((i, el) => {
             return {
-              title: $('.ShowtimesMovieLink', el).text(),
-              timings: $('.ShowtimesSessionLink', el)
+              title: $(".ShowtimesMovieLink", el).text(),
+              timings: $(".ShowtimesSessionLink", el)
                 .map((i, el) => {
                   return {
                     time: $(el).text(),
-                    url: url.resolve(FILMGARDE, $(el).attr('href'))
+                    url: url.resolve(FILMGARDE, $(el).attr("href"))
                   };
                 })
                 .get()
@@ -378,50 +428,63 @@ function parseFilmgardeDay(page) {
     .get();
 }
 
-const WE_CINEMAS = 'https://www.wecinemas.com.sg/buy-ticket.aspx';
+const WE_CINEMAS = "https://www.wecinemas.com.sg/buy-ticket.aspx";
 
 function getWe() {
-  return phantom.create(['--load-images=no'])
-    .then(instance => {
-      return instance.createPage()
-        .then(page => {
-          return page.open(WE_CINEMAS)
-            .then(() => {
-              return page.property('content');
-            });
-        })
-        .then(content => {
-          return instance.exit()
-            .then(() => {
-              return content;
-            });
+  return phantom.create(["--load-images=no"]).then(instance => {
+    return instance
+      .createPage()
+      .then(page => {
+        return page.open(WE_CINEMAS).then(() => {
+          return page.property("content");
         });
-    });
+      })
+      .then(content => {
+        return instance.exit().then(() => {
+          return content;
+        });
+      });
+  });
 }
 
 function parseWe(page) {
   const $ = cheerio.load(page, {
     normalizeWhitespace: true
   });
-  return $('#DataListCinemas h2')
+  return $("#DataListCinemas h2")
     .map((i, el) => {
       return {
-        name: formatCinema($(el).text().trim()),
-        dates: $('.showtime-date-con', $(el).closest('table'))
+        name: formatCinema(
+          $(el)
+            .text()
+            .trim()
+        ),
+        dates: $(".showtime-date-con", $(el).closest("table"))
           .map((i, el) => {
-            const date = $('.showtime-date', el).text();
-            const formattedDate = moment(date, 'D MMMM YYYY, dddd').utcOffset('+08:00').format(dateFormat);
+            const date = $(".showtime-date", el).text();
+            const formattedDate = moment(date, "D MMMM YYYY, dddd")
+              .utcOffset("+08:00")
+              .format(dateFormat);
             return {
               date: formattedDate,
-              movies: $('h3', $(el).closest('table'))
+              movies: $("h3", $(el).closest("table"))
                 .map((i, el) => {
                   return {
                     title: $(el).text(),
-                    timings: $('.showtimes-but', $(el).closest('tr').next().next().next())
+                    timings: $(
+                      ".showtimes-but",
+                      $(el)
+                        .closest("tr")
+                        .next()
+                        .next()
+                        .next()
+                    )
                       .map((i, el) => {
                         return {
-                          time: moment($(el).text(), 'k:mmA').format(timeFormat),
-                          url: url.resolve(WE_CINEMAS, $('a', el).attr('href'))
+                          time: moment($(el).text(), "k:mmA").format(
+                            timeFormat
+                          ),
+                          url: url.resolve(WE_CINEMAS, $("a", el).attr("href"))
                         };
                       })
                       .get()
@@ -440,11 +503,11 @@ function getWeJson() {
   return getWe()
     .then(parseWe)
     .then(json => {
-      console.info('getWe finished');
+      console.info("getWe finished");
       return json;
     })
     .catch(err => {
-      console.error('getWe failed');
+      console.error("getWe failed");
       return Promise.reject(err);
     });
 }

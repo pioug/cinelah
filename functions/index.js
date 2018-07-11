@@ -1,19 +1,19 @@
-const fs = require('fs');
-const functions = require('firebase-functions');
-const gcs = require('@google-cloud/storage')();
-const path = require('path');
-const sharp = require('sharp');
+const fs = require("fs");
+const functions = require("firebase-functions");
+const gcs = require("@google-cloud/storage")();
+const path = require("path");
+const sharp = require("sharp");
 
-const bucket = gcs.bucket('cinelah-92dbb.appspot.com');
+const bucket = gcs.bucket("cinelah-92dbb.appspot.com");
 const {
   getCathayJson,
   getFilmgardeJson,
   getGVJson,
   getShawJson,
   getWeJson
-} = require('./scraper.js');
-const { getShowtimes } = require('./showtimes.js');
-const { getMovie, normalizeShowtimes } = require('./formatter.js');
+} = require("./scraper.js");
+const { getShowtimes } = require("./showtimes.js");
+const { getMovie, normalizeShowtimes } = require("./formatter.js");
 
 const scrapeShowtimes = functions.https.onRequest((req, res) => {
   Promise.all([
@@ -34,57 +34,82 @@ const scrapeShowtimes = functions.https.onRequest((req, res) => {
     })
     .then(showtimes => {
       const normalizedShowtimes = normalizeShowtimes(showtimes);
-      return storeJsonInBucket(normalizedShowtimes, 'showtimes')
-        .then(() => {
-          return res.send(normalizedShowtimes);
-        });
+      return storeJsonInBucket(normalizedShowtimes, "showtimes").then(() => {
+        return res.send(normalizedShowtimes);
+      });
     });
 });
 
 const scrapeMovies = functions.storage.object().onFinalize(object => {
   const temp = `/tmp/${path.basename(object.name)}`;
 
-  if (!object.name.includes('showtimes.json')) {
+  if (!object.name.includes("showtimes.json")) {
     return Promise.resolve();
   }
 
-  return bucket.file(object.name).download({
-    destination: temp
-  })
+  return bucket
+    .file(object.name)
+    .download({
+      destination: temp
+    })
     .then(() => {
-      const { movies } = JSON.parse(fs.readFileSync(temp, 'utf8'));
+      const { movies } = JSON.parse(fs.readFileSync(temp, "utf8"));
       return Object.keys(movies).reduce((res, key) => {
         return getMovie(movies[key].title)
           .then(([details, poster, backdrop]) => {
             return Promise.all([
-              storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
+              storeJsonInBucket(
+                details,
+                "details",
+                `movies/${movies[key].id}/`
+              ),
               sharp(poster)
                 .resize(200, null)
                 .jpeg({ progressive: true })
                 .toBuffer()
                 .then(x => {
-                  return storeImageInBucket(x, 'poster', 'jpg', `movies/${movies[key].id}/`);
+                  return storeImageInBucket(
+                    x,
+                    "poster",
+                    "jpg",
+                    `movies/${movies[key].id}/`
+                  );
                 }),
               sharp(backdrop || poster)
                 .resize(144, 100)
                 .jpeg({ progressive: true })
                 .toBuffer()
                 .then(y => {
-                  return storeImageInBucket(y, 'backdrop', 'jpg', `movies/${movies[key].id}/`);
+                  return storeImageInBucket(
+                    y,
+                    "backdrop",
+                    "jpg",
+                    `movies/${movies[key].id}/`
+                  );
                 }),
               sharp(poster)
                 .resize(200, null)
                 .webp()
                 .toBuffer()
                 .then(x => {
-                  return storeImageInBucket(x, 'poster', 'webp', `movies/${movies[key].id}/`);
+                  return storeImageInBucket(
+                    x,
+                    "poster",
+                    "webp",
+                    `movies/${movies[key].id}/`
+                  );
                 }),
               sharp(backdrop || poster)
                 .resize(144, 100)
                 .webp()
                 .toBuffer()
                 .then(y => {
-                  return storeImageInBucket(y, 'backdrop', 'webp', `movies/${movies[key].id}/`);
+                  return storeImageInBucket(
+                    y,
+                    "backdrop",
+                    "webp",
+                    `movies/${movies[key].id}/`
+                  );
                 })
             ]);
           })
@@ -101,7 +126,9 @@ const scrapeMovies = functions.storage.object().onFinalize(object => {
 });
 
 const fixMovies = functions.https.onRequest((req, res) => {
-  return bucket.file('showtimes.json').download()
+  return bucket
+    .file("showtimes.json")
+    .download()
     .then(data => {
       const { movies } = JSON.parse(data);
       const promises = Object.keys(movies).map(key => {
@@ -109,34 +136,58 @@ const fixMovies = functions.https.onRequest((req, res) => {
           .then(([details, poster, backdrop]) => {
             console.log(JSON.stringify(details));
             return Promise.all([
-              storeJsonInBucket(details, 'details', `movies/${movies[key].id}/`),
+              storeJsonInBucket(
+                details,
+                "details",
+                `movies/${movies[key].id}/`
+              ),
               sharp(poster)
                 .resize(200, null)
                 .jpeg({ progressive: true })
                 .toBuffer()
                 .then(x => {
-                  return storeImageInBucket(x, 'poster', 'jpg', `movies/${movies[key].id}/`);
+                  return storeImageInBucket(
+                    x,
+                    "poster",
+                    "jpg",
+                    `movies/${movies[key].id}/`
+                  );
                 }),
               sharp(backdrop || poster)
                 .resize(144, 100)
                 .jpeg({ progressive: true })
                 .toBuffer()
                 .then(y => {
-                  return storeImageInBucket(y, 'backdrop', 'jpg', `movies/${movies[key].id}/`);
+                  return storeImageInBucket(
+                    y,
+                    "backdrop",
+                    "jpg",
+                    `movies/${movies[key].id}/`
+                  );
                 }),
               sharp(poster)
                 .resize(200, null)
                 .webp()
                 .toBuffer()
                 .then(x => {
-                  return storeImageInBucket(x, 'poster', 'webp', `movies/${movies[key].id}/`);
+                  return storeImageInBucket(
+                    x,
+                    "poster",
+                    "webp",
+                    `movies/${movies[key].id}/`
+                  );
                 }),
               sharp(backdrop || poster)
                 .resize(144, 100)
                 .webp()
                 .toBuffer()
                 .then(y => {
-                  return storeImageInBucket(y, 'backdrop', 'webp', `movies/${movies[key].id}/`);
+                  return storeImageInBucket(
+                    y,
+                    "backdrop",
+                    "webp",
+                    `movies/${movies[key].id}/`
+                  );
                 })
             ]);
           })
@@ -152,11 +203,11 @@ const fixMovies = functions.https.onRequest((req, res) => {
       return Promise.reject();
     })
     .then(() => {
-      res.status(200).send('Merci');
+      res.status(200).send("Merci");
     });
 });
 
-function storeImageInBucket(buffer, name, ext, baseDir = '') {
+function storeImageInBucket(buffer, name, ext, baseDir = "") {
   const ts = Math.random();
   fs.writeFileSync(`/tmp/${name}${ts}.${ext}`, buffer);
   return bucket.upload(`/tmp/${name}${ts}.${ext}`, {
@@ -164,12 +215,12 @@ function storeImageInBucket(buffer, name, ext, baseDir = '') {
     gzip: true,
     public: true,
     metadata: {
-      cacheControl: 'max-age=604800'
+      cacheControl: "max-age=604800"
     }
   });
 }
 
-function storeJsonInBucket(json, name, baseDir = '') {
+function storeJsonInBucket(json, name, baseDir = "") {
   const ts = Math.random();
   fs.writeFileSync(`/tmp/${name}${ts}.json`, JSON.stringify(json));
   return bucket.upload(`/tmp/${name}${ts}.json`, {
@@ -177,28 +228,34 @@ function storeJsonInBucket(json, name, baseDir = '') {
     gzip: true,
     public: true,
     metadata: {
-      cacheControl: 'no-cache'
+      cacheControl: "no-cache"
     }
   });
 }
 
 const sitemap = functions.https.onRequest((req, res) => {
-  bucket.file('showtimes.json').download()
+  bucket
+    .file("showtimes.json")
+    .download()
     .then(data => {
       const { movies } = JSON.parse(data);
       const xml = `
         <?xml version="1.0" encoding="UTF-8"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-          ${Object.keys(movies).map(movieId => `
+          ${Object.keys(movies)
+            .map(
+              movieId => `
             <url>
               <loc>https://www.cinelah.com/movies/${movieId}</loc>
             </url>
-          `).join('')}
+          `
+            )
+            .join("")}
         </urlset>
       `.trim();
       res
-        .set('Cache-Control', 'public, max-age=604800, s-maxage=604800')
-        .set('Content-Type', 'text/xml')
+        .set("Cache-Control", "public, max-age=604800, s-maxage=604800")
+        .set("Content-Type", "text/xml")
         .status(200)
         .send(xml);
     });

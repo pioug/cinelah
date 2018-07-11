@@ -4,12 +4,12 @@ const {
   getGVJson,
   getShawJson,
   getWeJson
-} = require('./scraper.js');
+} = require("./scraper.js");
 
-const { getShowtimes } = require('./showtimes.js');
-const { getMovie, normalizeShowtimes } = require('./formatter.js');
+const { getShowtimes } = require("./showtimes.js");
+const { getMovie, normalizeShowtimes } = require("./formatter.js");
 
-const fs = require('fs');
+const fs = require("fs");
 
 Promise.all([
   getCathayJson(),
@@ -28,7 +28,7 @@ Promise.all([
     });
   })
   .then(json => {
-    fs.writeFileSync('./showtimes.json', gstr(normalizeShowtimes(json)));
+    fs.writeFileSync("./showtimes.json", gstr(normalizeShowtimes(json)));
     getMovies();
   })
   .catch(err => {
@@ -38,12 +38,11 @@ Promise.all([
 // getMovies();
 
 function getMovies() {
-  const json = require('../showtimes.json');
+  const json = require("../showtimes.json");
   return Object.keys(json.movies).reduce((res, key) => {
-    return getMovie(json.movies[key].title)
-      .catch(err => {
-        console.error(key, err.stack);
-      });
+    return getMovie(json.movies[key].title).catch(err => {
+      console.error(key, err.stack);
+    });
   });
 }
 
