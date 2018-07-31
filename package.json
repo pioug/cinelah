@@ -5,11 +5,11 @@
     "deploy:hosting": "rm -rf public && cd site && npm run build && cd .. && firebase deploy --only hosting"
   },
   "dependencies": {
-    "eslint": "5.1.0",
+    "eslint": "5.2.0",
     "eslint-plugin-react": "7.10.0",
-    "firebase-tools": "3.19.3"
+    "firebase-tools": "4.0.1"
   },
   "devDependencies": {
-    "prettier": "1.13.7"
+    "prettier": "1.14.0"
   }
 }
