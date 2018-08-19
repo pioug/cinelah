@@ -211,7 +211,7 @@ function getImdbId_(str) {
 
 function getMovieOnImdbPage(page) {
   const $ = cheerio.load(page);
-  return $('h1[itemprop="name"]')
+  return $('.title_wrapper h1')
     .children()
     .remove()
     .end()
