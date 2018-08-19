@@ -365,7 +365,7 @@ function getRatingOnImdbPage(page) {
   const $ = cheerio.load(page, {
     normalizeWhitespace: true
   });
-  return parseFloat($('[itemprop="ratingValue"]').text()) || null;
+  return parseFloat($('.ratingValue strong').text()) || null;
 }
 
 function getCountry(title) {
