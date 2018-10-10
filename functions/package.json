@@ -2,12 +2,12 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "dependencies": {
-    "@google-cloud/storage": "1.7.0",
+    "@google-cloud/storage": "2.0.3",
     "axios": "0.18.0",
     "case": "1.5.5",
     "cheerio": "0.22.0",
     "date-fns": "2.0.0-alpha.1",
-    "delay": "3.0.0",
+    "delay": "4.1.0",
     "firebase-admin": "6.0.0",
     "firebase-functions": "2.0.5",
     "lodash.deburr": "4.1.0",
@@ -15,7 +15,7 @@
     "lodash.memoize": "4.1.2",
     "moment": "2.22.2",
     "phantom": "6.0.3",
-    "sharp": "0.20.5",
+    "sharp": "0.21.0",
     "tokenize-english": "1.0.3",
     "tokenize-text": "1.1.3"
   },

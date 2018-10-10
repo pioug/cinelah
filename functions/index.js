@@ -1,10 +1,12 @@
 const fs = require("fs");
 const functions = require("firebase-functions");
-const gcs = require("@google-cloud/storage")();
 const path = require("path");
 const sharp = require("sharp");
+const { Storage } = require("@google-cloud/storage");
 
-const bucket = gcs.bucket("cinelah-92dbb.appspot.com");
+const bucket = new Storage({
+  projectId: "cinelah-92dbb"
+}).bucket("cinelah-92dbb.appspot.com");
 const {
   getCathayJson,
   getFilmgardeJson,
