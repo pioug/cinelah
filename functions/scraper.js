@@ -2,6 +2,8 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const moment = require("moment");
 const phantom = require("phantom");
+const pMap = require("p-map");
+const puppeteer = require("puppeteer");
 const url = require("url");
 const { dateFormat, formatCinema, timeFormat } = require("./formatter");
 
@@ -13,106 +15,97 @@ module.exports = {
   getWeJson
 };
 
-const SHAW = "http://m.shaw.sg/";
-
-function getShawJson() {
-  return phantom.create(["--load-images=no"]).then(instance => {
-    return instance
-      .createPage()
-      .then(page => {
-        return page
-          .open(SHAW)
-          .then(() => {
-            return page.property("content");
-          })
-          .then(content => {
-            const dates = parseShawMobileDates(content);
-            return dates.reduce((res, date) => {
-              return res
-                .then(() => {
-                  const promise = new Promise(resolve => {
-                    page.on("onLoadFinished", () => {
-                      page.off("onLoadFinished");
-                      resolve(page.property("content"));
-                    });
-
-                    page.evaluate(function(date) {
-                      // eslint-disable-line prefer-arrow-callback
-                      document.querySelector(
-                        "#globalform"
-                      ).ddlShowDate.value = date;
-                      return document.querySelector('[type="submit"]').click();
-                    }, date.formDate);
-                  });
-
-                  return promise;
-                })
-                .then(content => {
-                  date.cinemas = parseShawMobileDay(content);
-                  return dates;
-                });
-            }, Promise.resolve());
-          });
-      })
-      .then(content => {
-        return instance.exit().then(() => {
-          console.info("getShawJson finished");
-          return content;
-        });
-      });
+async function getHtmlBody(url) {
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox"],
+    timeout: 0
   });
+  const page = await browser.newPage();
+  await page.setUserAgent(
+    "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
+  );
+  await page.goto(url);
+  const body = await page.evaluate(() => document.body.innerHTML);
+  await browser.close();
+  return body;
 }
 
-function parseShawMobileDates(page) {
-  const $ = cheerio.load(page);
-  return $("#ddlShowDate option")
+const SHAW = "https://www.shaw.sg";
+
+async function getShawShowtimesUrls() {
+  const body = await getHtmlBody(SHAW);
+  const $ = cheerio.load(body);
+  return $(".date-top-selector option")
     .map((i, el) => {
-      const date = $(el).attr("value");
-      const formattedDate = moment(date, "M/DD/YYYY")
+      return moment($(el).attr("value"), "YYYY-MM-DD")
         .utcOffset("+08:00")
         .format(dateFormat);
-      return {
-        date: formattedDate,
-        formDate: date
-      };
     })
     .get();
 }
 
-function parseShawMobileDay(page) {
-  const $ = cheerio.load(page);
-  return $(".persist-area")
+async function getShawJson() {
+  const dates = await getShawShowtimesUrls();
+  let json = dates.map(date => {
+    return {
+      date,
+      url: `${SHAW}/Showtimes/${date}/All/All`
+    };
+  });
+  json = await pMap(json, async showtimesPage => {
+    const body = await getHtmlBody(showtimesPage.url);
+    return { ...showtimesPage, body };
+  });
+  json = json.map(showtimesPage => {
+    const { body, ...rest } = showtimesPage;
+    return {
+      ...rest,
+      cinemas: parseShowtimesPage(body)
+    };
+  });
+
+  console.info("getShawJson finished");
+  return json;
+}
+
+function parseShowtimesPage(body) {
+  const $ = cheerio.load(body);
+  return $(".location-area-persist")
     .map((i, el) => {
-      return {
-        name: formatCinema(
-          $(".floatingHeader .category.cplex.header", el).text()
-        ),
-        movies: $(".filminfo", el)
-          .map((i, el) => {
-            return {
-              title: $(".filmtitle", el).text(),
-              timings: $(".filmshowtime a", el)
-                .map((i, el) => {
-                  return {
-                    time: moment($(el).text(), "k:mmA").format(timeFormat),
-                    url: url.resolve(SHAW, $(el).attr("href") || "")
-                  };
-                })
-                .get()
-            };
-          })
-          .get()
-      };
+      const name = formatCinema(
+        $(el)
+          .find(".theatre-title")
+          .eq(0)
+          .text()
+      );
+      const movies = $(el)
+        .find(".movies_item-movie")
+        .map((i, movieEl) => {
+          const title = $(movieEl)
+            .find(".title")
+            .text();
+          const timings = $(".showtimes-block", movieEl)
+            .map((i, showtimeEl) => {
+              return {
+                time: moment($("a", showtimeEl).text(), ["h:mm A"]).format(
+                  timeFormat
+                ),
+                url: url.resolve(SHAW, $("a", showtimeEl).attr("href"))
+              };
+            })
+            .get();
+          return { title, timings };
+        })
+        .get();
+      return { name, movies };
     })
     .get();
 }
 
-const CATHAY = "http://www.cathaycineplexes.com.sg/showtimes/";
+const CATHAY = "https://www.cathaycineplexes.com.sg/showtimes/";
 
 function getCathay() {
-  return axios.get(CATHAY).then(res => {
-    return res.data;
-  });
+  return getHtmlBody(CATHAY);
 }
 
 function parseCathay(page) {
@@ -322,129 +315,58 @@ function getGVJson() {
     });
 }
 
-const FILMGARDE = "http://tickets.fgcineplex.com.sg/visInternetTicketing/";
+const FILMGARDE = "http://fgcineplex.com.sg/buyticket";
 
-function getFilmgardeJson() {
-  return phantom
-    .create(["--load-images=no"])
-    .then(instance => {
-      return instance
-        .createPage()
-        .then(page => {
-          return page
-            .open(FILMGARDE)
-            .then(() => {
-              return page.property("content");
-            })
-            .then(content => {
-              const dates = parseFilmgardeDates(content);
-              return dates.reduce((res, date) => {
-                return res
-                  .then(() => {
-                    const promise = new Promise(resolve => {
-                      page.on("onLoadFinished", () => {
-                        page.off("onLoadFinished");
-                        resolve(page.property("content"));
-                      });
-                    });
-
-                    page.evaluate(function(date) {
-                      // eslint-disable-line prefer-arrow-callback
-                      document.querySelector(
-                        '[name="ddlFilterDate"]'
-                      ).value = date;
-                      return document
-                        .querySelector('[name="ddlFilterDate"]')
-                        .onchange();
-                    }, date.date);
-
-                    return promise;
-                  })
-                  .then(content => {
-                    date.cinemas = parseFilmgardeDay(content);
-                    return dates;
-                  });
-              }, Promise.resolve());
-            });
-        })
-        .then(content => {
-          return instance.exit().then(() => {
-            console.info("getFilmgardeJson finished");
-            return content;
-          });
-        });
-    })
-    .catch(err => {
-      console.error("getFilmgardeJson failed");
-      return Promise.reject(err);
-    });
-}
-
-function parseFilmgardeDates(page) {
-  const $ = cheerio.load(page);
-  return $("#ddlFilterDate option")
+async function getFilmgardeJson() {
+  const body = await getHtmlBody(FILMGARDE);
+  const $ = cheerio.load(body);
+  const json = $(".mobile-hide.hidden-xs .container.p-0.bread-comb")
     .map((i, el) => {
-      const date = $(el).attr("value");
-      const formattedDate = moment(date, "DD MMM")
-        .utcOffset("+08:00")
-        .format(dateFormat);
-      return {
-        date: formattedDate
-      };
-    })
-    .get();
-}
-
-function parseFilmgardeDay(page) {
-  const $ = cheerio.load(page, {
-    normalizeWhitespace: true
-  });
-  return $(".ShowtimesCinemaRow")
-    .map((i, el) => {
-      return {
-        name: formatCinema(
-          $(el)
-            .text()
-            .trim()
-        ),
-        movies: $(el)
-          .nextUntil(".ShowtimesCinemaRow")
-          .map((i, el) => {
-            return {
-              title: $(".ShowtimesMovieLink", el).text(),
-              timings: $(".ShowtimesSessionLink", el)
+      const name = formatCinema(
+        $(el)
+          .text()
+          .trim()
+      );
+      const cinemaEl = $(el).next();
+      const dates = $('[data-toggle="tab"]', cinemaEl)
+        .map((i, el) => {
+          const date = moment($(el).text(), "ddd DD/MMM")
+            .utcOffset("+08:00")
+            .format(dateFormat);
+          const id = $(el).attr("href");
+          const movies = $(`${id} .ticket-cinem-list`)
+            .map((i, movieEl) => {
+              const title = $(".cinema-title h2 a", movieEl).text();
+              const timings = $(".cinema-time-table li", movieEl)
                 .map((i, el) => {
-                  return {
-                    time: $(el).text(),
-                    url: url.resolve(FILMGARDE, $(el).attr("href"))
-                  };
+                  const time = moment(
+                    $("a", el)
+                      .text()
+                      .trim(),
+                    "h:mm A"
+                  ).format(timeFormat);
+                  const url = $("a", el).attr("href");
+                  return { time, url };
                 })
-                .get()
-            };
-          })
-          .get()
-      };
+                .get();
+              return { title, timings };
+            })
+            .get();
+          return { date, movies };
+        })
+        .get();
+      return { name, dates };
     })
     .get();
+
+  console.info("getFilmgardeJson finished");
+  return json;
 }
 
 const WE_CINEMAS = "https://www.wecinemas.com.sg/buy-ticket.aspx";
 
 function getWe() {
-  return phantom.create(["--load-images=no"]).then(instance => {
-    return instance
-      .createPage()
-      .then(page => {
-        return page.open(WE_CINEMAS).then(() => {
-          return page.property("content");
-        });
-      })
-      .then(content => {
-        return instance.exit().then(() => {
-          return content;
-        });
-      });
-  });
+  return getHtmlBody(WE_CINEMAS);
 }
 
 function parseWe(page) {

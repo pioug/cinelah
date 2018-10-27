@@ -49,8 +49,8 @@ function getCathayMovies(json) {
 }
 
 function getFilmgardeMovies(json) {
-  const hash = json.reduce((a, { date, cinemas }) => {
-    cinemas.reduce((b, { name, movies }) => {
+  const hash = json.reduce((a, { name, dates }) => {
+    dates.reduce((b, { date, movies }) => {
       movies.reduce((c, { title, timings }) => {
         a[title] = a[title] || {};
         a[title].dates = a[title].dates || {};

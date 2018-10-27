@@ -1,6 +1,7 @@
 const fs = require("fs");
 const functions = require("firebase-functions");
 const path = require("path");
+const pMap = require("p-map");
 const sharp = require("sharp");
 const { Storage } = require("@google-cloud/storage");
 
@@ -18,13 +19,10 @@ const { getShowtimes } = require("./showtimes.js");
 const { getMovie, normalizeShowtimes } = require("./formatter.js");
 
 const scrapeShowtimes = functions.https.onRequest((req, res) => {
-  Promise.all([
-    getCathayJson(),
-    getFilmgardeJson(),
-    getGVJson(),
-    getShawJson(),
-    getWeJson()
-  ])
+  pMap(
+    [getCathayJson, getFilmgardeJson, getGVJson, getShawJson, getWeJson],
+    fn => fn()
+  )
     .then(([cathay, filmgarde, gv, shaw, we]) => {
       return getShowtimes({
         cathay,

@@ -30,7 +30,7 @@ function formatCinema(originalStr) {
       "AMK HUB": "Cathay - AMK Hub",
       "Bugis+": "Filmgarde - Bugis+",
       "CAUSEWAY POINT": "Cathay - Causeway Point",
-      "Century Square": "Filmgarde - Century Square",
+      "Century Sq": "Filmgarde - Century Square",
       "CINELEISURE ORCHARD": "Cathay - Cineleisure Orchard",
       "DOWNTOWN EAST": "Cathay - Downtown East",
       "GV Bedok": "GV - Bedok",
