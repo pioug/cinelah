@@ -1,7 +1,5 @@
-const axios = require("axios");
 const cheerio = require("cheerio");
 const moment = require("moment");
-const phantom = require("phantom");
 const pMap = require("p-map");
 const puppeteer = require("puppeteer");
 const url = require("url");
@@ -22,7 +20,7 @@ async function getHtmlBody(url) {
   });
   const page = await browser.newPage();
   await page.setUserAgent(
-    "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
   );
   await page.goto(url);
   const body = await page.evaluate(() => document.body.innerHTML);
@@ -185,53 +183,61 @@ function getCathayJson() {
 
 const GV_CINEMAS = "https://www.gv.com.sg/GVCinemas";
 
-function getGVCinemaRequests() {
-  return phantom.create(["--load-images=no"]).then(instance => {
-    return instance.createPage().then(page => {
-      const promise = new Promise((resolve, reject) => {
-        page.on("onResourceRequested", request => {
-          if (!request.url.includes("cinemasbytype")) {
-            return;
-          }
-          page.off("onResourceRequested");
-          page.stop();
-          resolve(request);
-        });
-        page.open(GV_CINEMAS).then(reject);
-      });
-      return promise
-        .then(replayGVCinemasRequest)
-        .then(cinemas => {
-          return cinemas.reduce((res, cinema) => {
-            return res.then(() => {
-              const promise = new Promise((resolve, reject) => {
-                page.on("onResourceRequested", request => {
-                  if (!request.url.includes("session")) {
-                    return;
-                  }
-                  page.off("onResourceRequested");
-                  page.stop();
-                  cinema.request = request;
-                  resolve(cinemas);
-                });
-                page.open(cinema.url).then(reject);
-              });
-              return promise;
-            });
-          }, Promise.resolve());
-        })
-        .then(content => {
-          return page
-            .close()
-            .then(() => {
-              return instance.exit();
-            })
-            .then(() => {
-              return content;
-            });
-        });
-    });
+async function getGVCinemaRequests() {
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox"],
+    timeout: 0
   });
+  const page = await browser.newPage();
+  await page.setUserAgent(
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
+  );
+  const goingTo = page.goto(GV_CINEMAS);
+  const cinemasResponse = await page.waitForResponse(response =>
+    response.url().includes("cinemasbytype")
+  );
+
+  const { data } = await cinemasResponse.json();
+
+  await goingTo;
+  await page.close();
+  await browser.close();
+
+  const cinemas = data.map(({ name, id }) => {
+    return {
+      name: formatCinema(name),
+      url: `https://www.gv.com.sg/GVCinemaDetails#/cinema/${id}`
+    };
+  });
+
+  await pMap(cinemas, async cinema => {
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox"],
+      timeout: 0
+    });
+    const page = await browser.newPage();
+    await page.setUserAgent(
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
+    );
+    const goingTo = page.goto(cinema.url);
+    const moviesResponse = await page.waitForResponse(response =>
+      response.url().includes("session")
+    );
+
+    const {
+      data: [movies]
+    } = await moviesResponse.json();
+
+    cinema.movies = parseGVCinemaJSON(movies);
+
+    await goingTo;
+    await page.close();
+    await browser.close();
+
+    return cinema;
+  });
+
+  return cinemas;
 }
 
 function parseGVCinemaJSON(json) {
@@ -267,44 +273,8 @@ function parseGVCinemaJSON(json) {
     });
 }
 
-function replayGVCinemasRequest(request) {
-  return axios
-    .post(request.url, request.postData, {
-      headers: request.headers.reduce((res, item) => {
-        res[item.name] = item.value;
-        return res;
-      }, {})
-    })
-    .then(({ data: { data } }) => {
-      return data.map(({ name, id }) => {
-        return {
-          name: formatCinema(name),
-          url: `https://www.gv.com.sg/GVCinemaDetails#/cinema/${id}`
-        };
-      });
-    });
-}
-
-function replayGVCinemaRequest(cinema) {
-  return axios
-    .post(cinema.request.url, cinema.request.postData, {
-      headers: cinema.request.headers.reduce((res, item) => {
-        res[item.name] = item.value;
-        return res;
-      }, {})
-    })
-    .then(response => {
-      delete cinema.request;
-      cinema.movies = parseGVCinemaJSON(response.data.data[0]);
-      return cinema;
-    });
-}
-
 function getGVJson() {
   return getGVCinemaRequests()
-    .then(cinemas => {
-      return Promise.all(cinemas.map(replayGVCinemaRequest));
-    })
     .then(json => {
       console.info("getGVJson finished");
       return json;
