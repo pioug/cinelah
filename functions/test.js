@@ -1,3 +1,5 @@
+const pMap = require("p-map");
+
 const {
   getCathayJson,
   getFilmgardeJson,
@@ -11,13 +13,11 @@ const { getMovie, normalizeShowtimes } = require("./formatter.js");
 
 const fs = require("fs");
 
-Promise.all([
-  getCathayJson(),
-  getFilmgardeJson(),
-  getGVJson(),
-  getShawJson(),
-  getWeJson()
-])
+pMap(
+  [getCathayJson, getFilmgardeJson, getGVJson, getShawJson, getWeJson],
+  fn => fn(),
+  { concurrency: 1 }
+)
   .then(([cathay, filmgarde, gv, shaw, we]) => {
     return getShowtimes({
       cathay,

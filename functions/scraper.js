@@ -50,10 +50,14 @@ async function getShawJson() {
       url: `${SHAW}/Showtimes/${date}/All/All`
     };
   });
-  json = await pMap(json, async showtimesPage => {
-    const body = await getHtmlBody(showtimesPage.url);
-    return { ...showtimesPage, body };
-  });
+  json = await pMap(
+    json,
+    async showtimesPage => {
+      const body = await getHtmlBody(showtimesPage.url);
+      return { ...showtimesPage, body };
+    },
+    { concurrency: 1 }
+  );
   json = json.map(showtimesPage => {
     const { body, ...rest } = showtimesPage;
     return {
@@ -210,32 +214,36 @@ async function getGVCinemaRequests() {
     };
   });
 
-  await pMap(cinemas, async cinema => {
-    const browser = await puppeteer.launch({
-      args: ["--no-sandbox"],
-      timeout: 0
-    });
-    const page = await browser.newPage();
-    await page.setUserAgent(
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
-    );
-    const goingTo = page.goto(cinema.url);
-    const moviesResponse = await page.waitForResponse(response =>
-      response.url().includes("session")
-    );
+  await pMap(
+    cinemas,
+    async cinema => {
+      const browser = await puppeteer.launch({
+        args: ["--no-sandbox"],
+        timeout: 0
+      });
+      const page = await browser.newPage();
+      await page.setUserAgent(
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
+      );
+      const goingTo = page.goto(cinema.url);
+      const moviesResponse = await page.waitForResponse(response =>
+        response.url().includes("session")
+      );
 
-    const {
-      data: [movies]
-    } = await moviesResponse.json();
+      const {
+        data: [movies]
+      } = await moviesResponse.json();
 
-    cinema.movies = parseGVCinemaJSON(movies);
+      cinema.movies = parseGVCinemaJSON(movies);
 
-    await goingTo;
-    await page.close();
-    await browser.close();
+      await goingTo;
+      await page.close();
+      await browser.close();
 
-    return cinema;
-  });
+      return cinema;
+    },
+    { concurrency: 1 }
+  );
 
   return cinemas;
 }

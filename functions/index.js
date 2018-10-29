@@ -21,7 +21,8 @@ const { getMovie, normalizeShowtimes } = require("./formatter.js");
 const scrapeShowtimes = functions.https.onRequest((req, res) => {
   pMap(
     [getCathayJson, getFilmgardeJson, getGVJson, getShawJson, getWeJson],
-    fn => fn()
+    fn => fn(),
+    { concurrency: 1 }
   )
     .then(([cathay, filmgarde, gv, shaw, we]) => {
       return getShowtimes({
