@@ -66,6 +66,7 @@ function formatCinema(originalStr) {
 
 function formatTitle(originalStr) {
   let cleanStr = originalStr
+    .replace(/GFF\*/g, "")
     .replace(/Dining\sSet\*/g, "")
     .replace(/Fans`\sSc\*/g, "")
     .replace(/Fans`\sPrev\*/g, "")
