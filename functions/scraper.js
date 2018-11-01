@@ -196,14 +196,14 @@ async function getGVCinemaRequests() {
   await page.setUserAgent(
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
   );
-  const goingTo = page.goto(GV_CINEMAS);
-  const cinemasResponse = await page.waitForResponse(response =>
+  const cinemasResponse = page.waitForResponse(response =>
     response.url().includes("cinemasbytype")
   );
 
-  const { data } = await cinemasResponse.json();
+  await page.goto(GV_CINEMAS);
 
-  await goingTo;
+  const { data } = await (await cinemasResponse).json();
+
   await page.close();
   await browser.close();
 
@@ -225,18 +225,18 @@ async function getGVCinemaRequests() {
       await page.setUserAgent(
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
       );
-      const goingTo = page.goto(cinema.url);
-      const moviesResponse = await page.waitForResponse(response =>
+      const moviesResponse = page.waitForResponse(response =>
         response.url().includes("session")
       );
 
+      await page.goto(cinema.url);
+
       const {
         data: [movies]
-      } = await moviesResponse.json();
+      } = await (await moviesResponse).json();
 
       cinema.movies = parseGVCinemaJSON(movies);
 
-      await goingTo;
       await page.close();
       await browser.close();
 
