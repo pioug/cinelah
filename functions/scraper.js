@@ -231,11 +231,9 @@ async function getGVCinemaRequests() {
 
       await page.goto(cinema.url);
 
-      const {
-        data: [movies]
-      } = await (await moviesResponse).json();
+      const { data: categories } = await (await moviesResponse).json();
 
-      cinema.movies = parseGVCinemaJSON(movies);
+      cinema.movies = parseGVCinemaJSON(categories);
 
       await page.close();
       await browser.close();
@@ -249,33 +247,38 @@ async function getGVCinemaRequests() {
 }
 
 function parseGVCinemaJSON(json) {
-  return json.films
-    .map(film => {
-      return {
-        title: film.filmTitle,
-        dates: film.dates.map(({ date, times }) => {
-          const ddmmyyyy = moment(date)
-            .utcOffset("+08:00")
-            .format("DD-MM-YYYY");
-          const yyyymdd = moment(date)
-            .utcOffset("+08:00")
-            .format(dateFormat);
+  return json
+    .reduce((acc, category) => {
+      return [
+        ...acc,
+        ...category.films.map(film => {
           return {
-            date: yyyymdd,
-            timings: times.map(timing => {
+            title: film.filmTitle,
+            dates: film.dates.map(({ date, times }) => {
+              const ddmmyyyy = moment(date)
+                .utcOffset("+08:00")
+                .format("DD-MM-YYYY");
+              const yyyymdd = moment(date)
+                .utcOffset("+08:00")
+                .format(dateFormat);
               return {
-                time: moment(timing.time12, "kk:mmA").format(timeFormat),
-                url: `https://www.gv.com.sg/GVSeatSelection#/cinemaId/${
-                  json.id
-                }/filmCode/${film.filmCd}/showDate/${ddmmyyyy}/showTime/${
-                  timing.time24
-                }/hallNumber/${timing.hallNumber}`
+                date: yyyymdd,
+                timings: times.map(timing => {
+                  return {
+                    time: moment(timing.time12, "kk:mmA").format(timeFormat),
+                    url: `https://www.gv.com.sg/GVSeatSelection#/cinemaId/${
+                      json.id
+                    }/filmCode/${film.filmCd}/showDate/${ddmmyyyy}/showTime/${
+                      timing.time24
+                    }/hallNumber/${timing.hallNumber}`
+                  };
+                })
               };
             })
           };
         })
-      };
-    })
+      ];
+    }, [])
     .filter(({ title }) => {
       return title !== "Zen Zone 2017*";
     });
