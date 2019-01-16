@@ -44,7 +44,7 @@ const mrt = {
   "cathay-west-mall": "Bukit Batok",
   "filmgarde-bugis": "Bugis",
   "filmgarde-century-square": "Tampines",
-  "filmgarde-leisure-park-kallang": "Stadium",
+  "filmgarde-kallang": "Stadium",
   "gv-bedok": "Bedok",
   "gv-bishan": "Bishan",
   "gv-city-square": "Farrer Park",

@@ -28,11 +28,12 @@ function formatCinema(originalStr) {
   return (
     {
       "AMK HUB": "Cathay - AMK Hub",
-      "Bugis+": "Filmgarde - Bugis+",
       "CAUSEWAY POINT": "Cathay - Causeway Point",
-      "Century Sq": "Filmgarde - Century Square",
       "CINELEISURE ORCHARD": "Cathay - Cineleisure Orchard",
       "DOWNTOWN EAST": "Cathay - Downtown East",
+      "Filmgarde Cineplex - Bugis": "Filmgarde - Bugis",
+      "Filmgarde Cineplex - Century Square": "Filmgarde - Century Square",
+      "Filmgarde Cineplex - Kallang": "Filmgarde - Kallang",
       "GV Bedok": "GV - Bedok",
       "GV Bishan": "GV - Bishan",
       "GV City Square": "GV - City Square",
@@ -46,8 +47,6 @@ function formatCinema(originalStr) {
       "GV Tiong Bahru": "GV - Tiong Bahru",
       "GV VivoCity": "GV - VivoCity",
       "GV Yishun": "GV - Yishun",
-      JEM: "Cathay - Jem",
-      "Leisure Park Kallang": "Filmgarde - Leisure Park Kallang",
       "PARKWAY PARADE": "Cathay - Parkway Parade",
       "Shaw Theatres Balestier": "Shaw - Theatres Balestier",
       "Shaw Theatres Century": "Shaw - Theatres Century",
@@ -59,7 +58,8 @@ function formatCinema(originalStr) {
       "Shaw Theatres Waterway Point": "Shaw - Theatres Waterway Point",
       "THE CATHAY": "Cathay - The Cathay",
       "WE Cinemas, Clementi": "WE - Cinemas",
-      "WEST MALL": "Cathay - West Mall"
+      "WEST MALL": "Cathay - West Mall",
+      JEM: "Cathay - Jem"
     }[originalStr] || originalStr
   );
 }
