@@ -145,7 +145,7 @@ function parseCathay(page) {
                           .trim()
                     ),
                     title: $(".mobileLink", el).text(),
-                    timings: $(".cine_time .st", el)
+                    timings: $(".cine_time", el)
                       .map((i, el) => {
                         return {
                           time: $(el)
