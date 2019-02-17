@@ -15,7 +15,7 @@
     "lodash.memoize": "4.1.2",
     "moment": "2.24.0",
     "p-map": "2.0.0",
-    "puppeteer": "1.12.1",
+    "puppeteer": "1.12.2",
     "sharp": "0.21.3",
     "tokenize-english": "1.0.3",
     "tokenize-text": "1.1.3"

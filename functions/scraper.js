@@ -19,9 +19,6 @@ async function getHtmlBody(url) {
     timeout: 0
   });
   const page = await browser.newPage();
-  await page.setUserAgent(
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
-  );
   await page.goto(url);
   const body = await page.evaluate(() => document.body.innerHTML);
   await browser.close();
@@ -193,9 +190,6 @@ async function getGVCinemaRequests() {
     timeout: 0
   });
   const page = await browser.newPage();
-  await page.setUserAgent(
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
-  );
   const cinemasResponse = page.waitForResponse(response =>
     response.url().includes("cinemasbytype")
   );
@@ -203,9 +197,6 @@ async function getGVCinemaRequests() {
   await page.goto(GV_CINEMAS);
 
   const { data } = await (await cinemasResponse).json();
-
-  await page.close();
-  await browser.close();
 
   const cinemas = data.map(({ name, id }) => {
     return {
@@ -217,14 +208,6 @@ async function getGVCinemaRequests() {
   await pMap(
     cinemas,
     async cinema => {
-      const browser = await puppeteer.launch({
-        args: ["--no-sandbox"],
-        timeout: 0
-      });
-      const page = await browser.newPage();
-      await page.setUserAgent(
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
-      );
       const moviesResponse = page.waitForResponse(response =>
         response.url().includes("session")
       );
@@ -235,13 +218,12 @@ async function getGVCinemaRequests() {
 
       cinema.movies = parseGVCinemaJSON(categories);
 
-      await page.close();
-      await browser.close();
-
       return cinema;
     },
     { concurrency: 1 }
   );
+
+  await browser.close();
 
   return cinemas;
 }
