@@ -103,10 +103,6 @@ function parseShowtimesPage(body) {
 
 const CATHAY = "https://www.cathaycineplexes.com.sg/showtimes/";
 
-function getCathay() {
-  return getHtmlBody(CATHAY);
-}
-
 function parseCathay(page) {
   const $ = cheerio.load(page, {
     normalizeWhitespace: true
@@ -170,7 +166,7 @@ function parseCathay(page) {
 }
 
 function getCathayJson() {
-  return getCathay()
+  return getHtmlBody(CATHAY)
     .then(parseCathay)
     .then(json => {
       console.info("getCathay finished");
@@ -328,10 +324,6 @@ async function getFilmgardeJson() {
 
 const WE_CINEMAS = "https://www.wecinemas.com.sg/buy-ticket.aspx";
 
-function getWe() {
-  return getHtmlBody(WE_CINEMAS);
-}
-
 function parseWe(page) {
   const $ = cheerio.load(page, {
     normalizeWhitespace: true
@@ -385,7 +377,7 @@ function parseWe(page) {
 }
 
 function getWeJson() {
-  return getWe()
+  return getHtmlBody(WE_CINEMAS)
     .then(parseWe)
     .then(json => {
       console.info("getWe finished");
