@@ -53,6 +53,7 @@ function formatCinema(originalStr) {
       "Shaw Theatres Balestier": "Shaw - Theatres Balestier",
       "Shaw Theatres Century": "Shaw - Theatres Century",
       "Shaw Theatres JCube": "Shaw - Theatres JCube",
+      "Shaw Theatres Jewel": "Shaw - Theatres Jewel",
       "Shaw Theatres Lido": "Shaw - Theatres Lido",
       "Shaw Theatres Lot One": "Shaw - Theatres Lot One",
       "Shaw Theatres nex": "Shaw - Theatres nex",
