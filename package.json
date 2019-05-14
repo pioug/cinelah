@@ -7,9 +7,9 @@
   "dependencies": {
     "eslint": "5.16.0",
     "eslint-plugin-react": "7.13.0",
-    "firebase-tools": "6.9.1"
+    "firebase-tools": "6.9.2"
   },
   "devDependencies": {
-    "prettier": "1.17.0"
+    "prettier": "1.17.1"
   }
 }
