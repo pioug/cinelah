@@ -245,7 +245,7 @@ function parseGVCinemaJSON(json) {
                   return {
                     time: moment(timing.time12, "kk:mmA").format(timeFormat),
                     url: `https://www.gv.com.sg/GVSeatSelection#/cinemaId/${
-                      json.id
+                      category.id
                     }/filmCode/${film.filmCd}/showDate/${ddmmyyyy}/showTime/${
                       timing.time24
                     }/hallNumber/${timing.hallNumber}`
