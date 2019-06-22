@@ -12,7 +12,7 @@ const coordinates = {
   "filmgarde-leisure-park-kallang": [1.302154, 103.87651],
   "gv-bedok": [1.326195, 103.929661],
   "gv-bishan": [1.350523, 103.848585],
-  "gv-capitol-theatre": [1.293214,103.8509554],
+  "gv-capitol-theatre": [1.293214, 103.8509554],
   "gv-city-square": [1.311598, 103.856693],
   "gv-gemini-grand-great-world-city": [1.293774, 103.831826],
   "gv-jurong-point": [1.339998, 103.70636],

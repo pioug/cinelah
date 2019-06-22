@@ -215,7 +215,7 @@ function getImdbId_(str) {
 
 function getMovieOnImdbPage(page) {
   const $ = cheerio.load(page);
-  return $('.title_wrapper h1')
+  return $(".title_wrapper h1")
     .children()
     .remove()
     .end()
@@ -369,7 +369,7 @@ function getRatingOnImdbPage(page) {
   const $ = cheerio.load(page, {
     normalizeWhitespace: true
   });
-  return parseFloat($('.ratingValue strong').text()) || null;
+  return parseFloat($(".ratingValue strong").text()) || null;
 }
 
 function getCountry(title) {
