@@ -7,11 +7,11 @@ module.exports = {
   runtimeCaching: [
     {
       urlPattern: /https:\/\/storage.googleapis.com\/cinelah-92dbb.appspot.com\/movies\/.*\/.*\.webp/,
-      handler: "cacheFirst"
+      handler: "CacheFirst"
     },
     {
       urlPattern: /https:\/\/storage.googleapis.com\/cinelah-92dbb.appspot.com\/.*\.json/,
-      handler: "networkFirst"
+      handler: "NetworkFirst"
     }
   ],
   swDest: "../public/sw.js"
