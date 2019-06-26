@@ -39,6 +39,7 @@ function formatCinema(originalStr) {
       "GV @ Capitol (Stall: Level 1)": "GV - Capitol Theatre",
       "GV @ Capitol (Dress: Level 3)": "GV - Capitol Theatre",
       "GV @ Capitol (Upper Circle: Level 4)": "GV - Capitol Theatre",
+      "GV Funan": "GV - Funan",
       "GV Grand, Great World City": "GV - Gemini Grand, Great World City",
       "GV Jurong Point": "GV - Jurong Point",
       "GV Katong": "GV - Katong",
