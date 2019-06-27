@@ -87,8 +87,30 @@ class Cinelah extends Component {
     );
 
     function renderHeader({ path }) {
-      const title = getTitle(path);
-      document.title = title ? `Cinelah: ${title}` : "Cinelah";
+      const {
+        title,
+        name,
+        summary,
+        description = "Find out now showing movies in Singapore and get showtimes for local cinemas. Cinelah aggregates timings from Cathay, Filmgarde, GV, Shaw and WE."
+      } = getTitle(path);
+
+      let pageTitle = "";
+
+      if (title) {
+        pageTitle += `${title} • `;
+      }
+
+      if (name) {
+        pageTitle += `${name} • `;
+      }
+
+      document.title = `${pageTitle}Cinelah`;
+
+      const metaDescription = document.head.querySelector(
+        '[name="description"]'
+      );
+
+      metaDescription.content = `${summary || title || name} | ${description}` || description;
 
       return (
         <header>
@@ -138,12 +160,12 @@ class Cinelah extends Component {
         const id = url.split("/").pop();
 
         switch (true) {
-          case id && /movies\/+/gi.test(url):
-            return movies[id] && movies[id].title;
-          case id && /cinemas\/+/gi.test(url):
-            return cinemas[id] && cinemas[id].name;
+          case id && movies[id] && /movies\/+/gi.test(url):
+            return movies[id];
+          case id && cinemas[id] && /cinemas\/+/gi.test(url):
+            return cinemas[id];
           default:
-            return "";
+            return {};
         }
       }
 
