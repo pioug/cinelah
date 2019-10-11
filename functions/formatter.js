@@ -58,6 +58,7 @@ function formatCinema(originalStr) {
       "Shaw Theatres Lido": "Shaw - Theatres Lido",
       "Shaw Theatres Lot One": "Shaw - Theatres Lot One",
       "Shaw Theatres nex": "Shaw - Theatres nex",
+      "Shaw Theatres Paya Lebar Quarter": "Shaw - Thatres Paya Lebar Quarter",
       "Shaw Theatres Seletar": "Shaw - Theatres Seletar",
       "Shaw Theatres Waterway Point": "Shaw - Theatres Waterway Point",
       "THE CATHAY": "Cathay - The Cathay",
