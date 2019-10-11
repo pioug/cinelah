@@ -5,6 +5,7 @@ const puppeteer = require("puppeteer");
 const url = require("url");
 const { dateFormat, formatCinema, timeFormat } = require("./formatter");
 
+
 module.exports = {
   getCathayJson,
   getFilmgardeJson,
@@ -13,13 +14,14 @@ module.exports = {
   getWeJson
 };
 
-async function getHtmlBody(url) {
+async function getHtmlBody(url, timer = 0) {
   const browser = await puppeteer.launch({
     args: ["--no-sandbox"],
     timeout: 0
   });
   const page = await browser.newPage();
   await page.goto(url);
+  await page.waitFor(timer);
   const body = await page.evaluate(() => document.body.innerHTML);
   await browser.close();
   return body;
@@ -166,7 +168,7 @@ function parseCathay(page) {
 }
 
 function getCathayJson() {
-  return getHtmlBody(CATHAY)
+  return getHtmlBody(CATHAY, 10000)
     .then(parseCathay)
     .then(json => {
       console.info("getCathay finished");
