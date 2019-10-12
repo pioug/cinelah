@@ -1,8 +1,4 @@
-import addDays from "date-fns/add_days";
-import format from "date-fns/format";
-import isAfter from "date-fns/is_after";
-import isToday from "date-fns/is_today";
-import isTomorrow from "date-fns/is_tomorrow";
+import { addDays, format, isAfter, isToday, isTomorrow, parseISO } from "date-fns";
 import Match from "preact-router/match";
 import Router from "preact-router";
 import { h, render, Component } from "preact";
@@ -51,7 +47,7 @@ class Cinelah extends Component {
         const now = new Date();
         showtimes = showtimes
           .filter(({ date, time }) => {
-            return isAfter(`${date} ${time}`, now);
+            return isAfter(parseISO(`${date}T${time}`), now);
           })
           .map(showtime => {
             return Object.assign(showtime, {
@@ -270,7 +266,7 @@ function Movie({ id, movies, cinemas, showtimes }) {
     .reduce((res, showtime) => {
       const showtimeDay =
         parseInt(showtime.time) < 6
-          ? format(addDays(showtime.date, -1), "YYYY-MM-DD")
+          ? format(addDays(parseISO(showtime.date), -1), "yyyy-MM-dd")
           : showtime.date;
       const date = res.get(showtimeDay) || { date: showtimeDay, showtimes: [] };
       date.showtimes.push(showtime);
@@ -307,15 +303,15 @@ function Movie({ id, movies, cinemas, showtimes }) {
           const showtimesByCinemaEls = showtimes
             .sort((a, b) => {
               if (parseInt(a.time) < 6) {
-                a = addDays(`${a.date} ${a.time}`, 1);
+                a = addDays(parseISO(`${a.date}T${a.time}`), 1);
               } else {
-                a = addDays(`${a.date} ${a.time}`, 0);
+                a = addDays(parseISO(`${a.date}T${a.time}`), 0);
               }
 
               if (parseInt(b.time) < 6) {
-                b = addDays(`${b.date} ${b.time}`, 1);
+                b = addDays(parseISO(`${b.date}T${b.time}`), 1);
               } else {
-                b = addDays(`${b.date} ${b.time}`, 0);
+                b = addDays(parseISO(`${b.date}T${b.time}`), 0);
               }
 
               if (isAfter(b, a)) return -1;
@@ -684,12 +680,12 @@ function Time({ showtime = {} }) {
 }
 
 function displayDate(date) {
-  if (isToday(date)) {
+  if (isToday(parseISO(date))) {
     return "Today";
-  } else if (isTomorrow(date)) {
+  } else if (isTomorrow(parseISO(date))) {
     return "Tomorrow";
   } else {
-    return format(date, "dddd D MMM");
+    return format(parseISO(date), "iiii d MMMM");
   }
 }
 
