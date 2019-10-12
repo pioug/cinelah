@@ -101,7 +101,7 @@ function getGvMovies(json) {
         const strictlyNextDay = timings.filter(timing => {
           return parseInt(timing.time) < 6;
         });
-        const nextDay = dateFns.format(dateFns.addDays(date, 1), dateFormat);
+        const nextDay = dateFns.format(dateFns.addDays(dateFns.parseISO(date), 1), "yyyy-MM-dd");
         a[title].dates[nextDay] = a[title].dates[nextDay] || [];
         a[title].dates[nextDay] = a[title].dates[nextDay].concat({
           name,
@@ -150,7 +150,7 @@ function getShawMovies(json) {
         const strictlyNextDay = timings.filter(timing => {
           return parseInt(timing.time) < 6;
         });
-        const nextDay = dateFns.format(dateFns.addDays(date, 1), dateFormat);
+        const nextDay = dateFns.format(dateFns.addDays(dateFns.parseISO(date), 1), "yyyy-MM-dd");
         a[title].dates[nextDay] = a[title].dates[nextDay] || [];
         a[title].dates[nextDay] = a[title].dates[nextDay].concat({
           name,
@@ -199,7 +199,7 @@ function getWeMovies(json) {
         const strictlyNextDay = timings.filter(timing => {
           return parseInt(timing.time) < 6;
         });
-        const nextDay = dateFns.format(dateFns.addDays(date, 1), dateFormat);
+        const nextDay = dateFns.format(dateFns.addDays(dateFns.parseISO(date), 1), "yyyy-MM-dd");
         a[title].dates[nextDay] = a[title].dates[nextDay] || [];
         a[title].dates[nextDay] = a[title].dates[nextDay].concat({
           name,
@@ -302,7 +302,7 @@ function getShowtimes({ cathay, filmgarde, gv, shaw, we }) {
         return a.movie < b.movie ? -1 : a.movie > b.movie ? 1 : 0;
       })
       .filter(({ date, time }) => {
-        return dateFns.isAfter(`${date} ${time}`, now);
+        return dateFns.isAfter(dateFns.parseISO(`${date} ${time}`), now);
       });
 
     console.info("getShowtimes finished");
