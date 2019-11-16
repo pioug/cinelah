@@ -22,9 +22,18 @@ async function getHtmlBody(url, timer = 0) {
   const page = await browser.newPage();
   await page.goto(url);
   await page.waitFor(timer);
-  const body = await page.evaluate(() => document.body.innerHTML);
-  await browser.close();
-  return body;
+  try {
+    const body = await page.evaluate(() => document.body.innerHTML);
+    await browser.close();
+    return body;
+  } catch(err) {
+    const page = await browser.newPage();
+    await page.goto(url);
+    await page.waitFor(timer);
+    const body = await page.evaluate(() => document.body.innerHTML);
+    await browser.close();
+    return body;
+  }
 }
 
 const SHAW = "https://www.shaw.sg";
