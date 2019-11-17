@@ -1,4 +1,5 @@
 .firebase
+.nuxt
 node_modules
 public
 showtimes.json
