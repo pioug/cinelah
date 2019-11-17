@@ -44,7 +44,15 @@ module.exports = {
       { rel: "icon", sizes: "192x192", href: "/favicon.png" }
     ]
   },
-  modules: ["@nuxtjs/pwa"],
+  modules: [
+    "@nuxtjs/pwa",
+    [
+      "@nuxtjs/google-analytics",
+      {
+        id: "UA-40932161-7"
+      }
+    ]
+  ],
   pwa: {
     manifest: {
       background_color: "#3E86C6",
@@ -53,12 +61,12 @@ module.exports = {
       display: "standalone",
       icons: [
         {
-          src: "favicon.png",
+          src: "/favicon.png",
           sizes: "192x192",
           type: "image/png"
         },
         {
-          src: "icon512.png",
+          src: "/icon512.png",
           sizes: "512x512",
           type: "image/png"
         }

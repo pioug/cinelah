@@ -1,7 +1,7 @@
 {
   "name": "cinelah",
   "scripts": {
-    "deploy:functions": "cd nuxt-server && npx nuxt build && mv .nuxt ../functions/.nuxt && cp nuxt.config.js ../functions && cp -a static ../functions && cd .. && firebase deploy --only functions",
+    "deploy:functions": "rm -rf functions/.nuxt functions/static && cd nuxt-server && npx nuxt build && mv .nuxt ../functions/ && cp nuxt.config.js ../functions && cp -a static ../functions && cd .. && firebase deploy --only functions",
     "deploy:hosting": "firebase deploy --only hosting"
   },
   "dependencies": {
