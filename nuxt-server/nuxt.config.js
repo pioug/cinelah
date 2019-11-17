@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   head: {
     title: "Cinelah",
     meta: [
@@ -41,8 +41,33 @@ export default {
     ],
     link: [
       { rel: "apple-touch-icon", sizes: "192x192", href: "/favicon.png" },
-      { rel: "icon", sizes: "192x192", href: "/favicon.png" },
-      { rel: "manifest", href: "/manifest.json" }
+      { rel: "icon", sizes: "192x192", href: "/favicon.png" }
     ]
+  },
+  modules: ["@nuxtjs/pwa"],
+  pwa: {
+    manifest: {
+      background_color: "#3E86C6",
+      description:
+        "Find out now showing movies in Singapore and get showtimes for local cinemas.",
+      display: "standalone",
+      icons: [
+        {
+          src: "favicon.png",
+          sizes: "192x192",
+          type: "image/png"
+        },
+        {
+          src: "icon512.png",
+          sizes: "512x512",
+          type: "image/png"
+        }
+      ],
+      name: "Cinelah",
+      orientation: "portrait",
+      short_name: "Cinelah",
+      start_url: "/?utm_source=pwa",
+      theme_color: "#3E86C6"
+    }
   }
 };

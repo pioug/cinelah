@@ -1,5 +1,8 @@
 .firebase
 .nuxt
+firebase-debug.log
+functions/static
+functions/nuxt.config.js
 node_modules
 public
 showtimes.json

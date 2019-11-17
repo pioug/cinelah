@@ -1,6 +1,7 @@
 {
   "name": "nuxt-server",
   "dependencies": {
+    "@nuxtjs/pwa": "3.0.0-beta.19",
     "date-fns": "2.7.0",
     "nuxt": "2.10.2"
   },
