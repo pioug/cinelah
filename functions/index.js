@@ -264,7 +264,8 @@ const sitemap = functions.https.onRequest((req, res) => {
 });
 
 const nuxt = new Nuxt({
-  dev: false
+  dev: false,
+  ...require("./nuxt.config.js")
 });
 const ssr = functions.https.onRequest(async (req, res) => {
   await nuxt.ready();

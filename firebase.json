@@ -3,26 +3,26 @@
     "rules": "database.rules.json"
   },
   "hosting": {
-    "headers": [{
-      "source": "/sw.js",
-      "headers": [{
-        "key": "Cache-Control",
-        "value": "no-cache"
-      }]
-    }, {
-      "source" : "**/*.@(jpg|jpeg|js|gif|png)",
-      "headers" : [{
-        "key" : "Cache-Control",
-        "value" : "max-age=604800"
-      }]
-    }],
-    "public": "public",
-    "rewrites": [{
-      "source": "/sitemap.xml",
-      "function": "sitemap"
-    }, {
-      "source": "**",
-      "function": "ssr"
-    }]
+    "headers": [
+      {
+        "source": "**/*.@(jpg|jpeg|js|gif|png)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=604800"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/sitemap.xml",
+        "function": "sitemap"
+      },
+      {
+        "source": "**",
+        "function": "ssr"
+      }
+    ]
   }
 }

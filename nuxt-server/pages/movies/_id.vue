@@ -68,10 +68,15 @@ import MovieDay from "./MovieDay.vue";
 import MovieHeader from "./MovieHeader.vue";
 
 export default {
+  head() {
+    return {
+      title: `${this.movie.title} • Cinelah`
+    };
+  },
   asyncData({ params: { id }, redirect }) {
     return getData().then(({ movies, cinemas, showtimes }) => {
       if (!movies[id]) {
-        redirect('/');
+        redirect("/");
       }
 
       const movieShowtimes = showtimes

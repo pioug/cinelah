@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:vue/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:vue/recommended"],
   "env": {
     "browser": true,
     "es6": true,
@@ -12,10 +9,7 @@
     "PRODUCTION": true,
     "gtag": true
   },
-  "plugins": [
-    "vue",
-    "react"
-  ],
+  "plugins": ["vue", "react"],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
@@ -27,9 +21,12 @@
     "arrow-parens": ["error", "as-needed"],
     "camelcase": 0,
     "no-multi-spaces": 2,
-    "no-unused-vars": [2, {
-      "varsIgnorePattern": "^h$"
-    }],
+    "no-unused-vars": [
+      2,
+      {
+        "varsIgnorePattern": "^h$"
+      }
+    ],
     "one-var-declaration-per-line": ["error", "always"],
     "prefer-arrow-callback": 2,
     "react/jsx-uses-vars": 2,

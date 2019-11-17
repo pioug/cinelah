@@ -1,13 +1,5 @@
 {
   "name": "nuxt-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Gilles Piou <gilles.piou@gmail.com> (https://www.piou.io/)",
-  "license": "MIT",
   "dependencies": {
     "date-fns": "2.7.0",
     "nuxt": "2.10.2"

@@ -1,19 +1,19 @@
 language: node_js
 node_js:
-- 10
+  - 10
 cache:
   directories:
-  - node_modules
+    - node_modules
 git:
   depth: false
 branches:
   only:
-  - master
+    - master
 before_install:
-- npm install -g npm@latest
+  - npm install -g npm@latest
 install:
-- npm install --silent
+  - npm install --silent
 script:
-- curl https://us-central1-cinelah-92dbb.cloudfunctions.net/scrapeShowtimes
+  - curl https://us-central1-cinelah-92dbb.cloudfunctions.net/scrapeShowtimes
 notifications:
   email: false

@@ -25,7 +25,7 @@
         v-for="showtime in showtimes.showtimesByCinemaEls"
         v-bind:url="showtime.showtime.url"
         v-bind:time="showtime.showtime.time"
-        v-bind:key="showtime.showtime.time"
+        v-bind:key="showtime.showtime.url"
       ></movie-time>
     </div>
   </article>

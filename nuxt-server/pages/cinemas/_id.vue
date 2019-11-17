@@ -2,7 +2,7 @@
   <main>
     <header>
       <div>
-        <NuxtLink to="/">Cinelah</NuxtLink>
+        <NuxtLink to="/">{{ cinema.name }}</NuxtLink>
       </div>
       <div>
         <NuxtLink to="/" aria-label="Go to Now Showing">
@@ -64,7 +64,7 @@ export default {
   asyncData({ params: { id }, redirect }) {
     return getData().then(({ movies, cinemas, showtimes }) => {
       if (!cinemas[id]) {
-        redirect('/');
+        redirect("/");
       }
 
       const cinemaShowtimes = showtimes
@@ -119,15 +119,15 @@ export default {
             const showtimesByCinemaEls = showtimes
               .sort((a, b) => {
                 if (parseInt(a.time) < 6) {
-                  a = addDays(`${a.date} ${a.time}`, 1);
+                  a = addDays(parseISO(`${a.date} ${a.time}`), 1);
                 } else {
-                  a = addDays(`${a.date} ${a.time}`, 0);
+                  a = addDays(parseISO(`${a.date} ${a.time}`), 0);
                 }
 
                 if (parseInt(b.time) < 6) {
-                  b = addDays(`${b.date} ${b.time}`, 1);
+                  b = addDays(parseISO(`${b.date} ${b.time}`), 1);
                 } else {
-                  b = addDays(`${b.date} ${b.time}`, 0);
+                  b = addDays(parseISO(`${b.date} ${b.time}`), 0);
                 }
 
                 if (isAfter(b, a)) return -1;
@@ -151,7 +151,14 @@ export default {
           return { displayDate: displayDate(date), list };
         });
 
-      return { movies, cinemas, showtimes, list, cinemaShowtimes };
+      return {
+        movies,
+        cinemas,
+        showtimes,
+        list,
+        cinemaShowtimes,
+        cinema: cinemas[id]
+      };
     });
   },
   components: {
