@@ -84,7 +84,7 @@ export default {
         {
           hid: "og:url",
           property: "og:url",
-          content: window.location.href
+          content: `https://www.cinelah.com/${this.$route.fullPath}`
         }
       ]
     };
@@ -156,21 +156,18 @@ export default {
                   if (isAfter(a, b)) return 1;
                   return 0;
                 })
-                .map(showtime => {
-                  return { showtime };
+                .map(({ time, url }) => {
+                  return { showtime: { time, url } };
                 });
               const [group, name] = cinemas[cinemaId].name.split(" - ");
-              return { cinemaId, group, name, showtimesByCinemaEls };
+              return { group, name, showtimesByCinemaEls };
             });
 
           return { displayDate: displayDate(date), list };
         });
+
       return {
-        movies,
-        cinemas,
-        showtimes,
         movie: movies[id],
-        movieShowtimes,
         list
       };
     });

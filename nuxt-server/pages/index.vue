@@ -55,7 +55,7 @@ export default {
     TopBar
   },
   asyncData() {
-    return getData();
+    return getData().then(({ movies }) => ({ movies }));
   }
 };
 </script>

@@ -117,11 +117,7 @@ export default {
         });
 
       return {
-        movies,
-        cinemas,
-        showtimes,
         list,
-        cinemaShowtimes,
         cinema: cinemas[id]
       };
     });
