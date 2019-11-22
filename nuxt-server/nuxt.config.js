@@ -1,4 +1,7 @@
 module.exports = {
+  build: {
+    extractCSS: true
+  },
   head: {
     title: "Cinelah",
     meta: [
