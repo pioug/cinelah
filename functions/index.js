@@ -3,6 +3,7 @@ const functions = require("firebase-functions");
 const path = require("path");
 const pMap = require("p-map");
 const sharp = require("sharp");
+const { Nuxt } = require("nuxt");
 const { Storage } = require("@google-cloud/storage");
 
 const bucket = new Storage({
@@ -262,9 +263,19 @@ const sitemap = functions.https.onRequest((req, res) => {
     });
 });
 
+const nuxt = new Nuxt({
+  dev: false,
+  ...require("./nuxt.config.js")
+});
+const ssr = functions.https.onRequest(async (req, res) => {
+  await nuxt.ready();
+  nuxt.render(req, res);
+});
+
 module.exports = {
   fixMovies,
   scrapeShowtimes,
   scrapeMovies,
-  sitemap
+  sitemap,
+  ssr
 };

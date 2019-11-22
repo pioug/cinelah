@@ -31,7 +31,7 @@ const coordinates = {
   "shaw-theatres-lido": [1.305534, 103.831755],
   "shaw-theatres-lot-one": [1.385021, 103.745148],
   "shaw-theatres-nex": [1.350495, 103.871657],
-  "shaw-theatres-paya-lebar-quarter": [1.317310, 103.893020],
+  "shaw-theatres-paya-lebar-quarter": [1.31731, 103.89302],
   "shaw-theatres-seletar": [1.391257, 103.876278],
   "shaw-theatres-waterway-point": [1.406411, 103.902078],
   "we-cinemas": [1.311917, 103.765069]

@@ -1,6 +1,5 @@
 const dateFns = require("date-fns");
 const deburr = require("lodash.deburr");
-const { dateFormat } = require("./formatter");
 const {
   getCountry,
   getGenre,
@@ -101,7 +100,10 @@ function getGvMovies(json) {
         const strictlyNextDay = timings.filter(timing => {
           return parseInt(timing.time) < 6;
         });
-        const nextDay = dateFns.format(dateFns.addDays(dateFns.parseISO(date), 1), "yyyy-MM-dd");
+        const nextDay = dateFns.format(
+          dateFns.addDays(dateFns.parseISO(date), 1),
+          "yyyy-MM-dd"
+        );
         a[title].dates[nextDay] = a[title].dates[nextDay] || [];
         a[title].dates[nextDay] = a[title].dates[nextDay].concat({
           name,
@@ -150,7 +152,10 @@ function getShawMovies(json) {
         const strictlyNextDay = timings.filter(timing => {
           return parseInt(timing.time) < 6;
         });
-        const nextDay = dateFns.format(dateFns.addDays(dateFns.parseISO(date), 1), "yyyy-MM-dd");
+        const nextDay = dateFns.format(
+          dateFns.addDays(dateFns.parseISO(date), 1),
+          "yyyy-MM-dd"
+        );
         a[title].dates[nextDay] = a[title].dates[nextDay] || [];
         a[title].dates[nextDay] = a[title].dates[nextDay].concat({
           name,
@@ -199,7 +204,10 @@ function getWeMovies(json) {
         const strictlyNextDay = timings.filter(timing => {
           return parseInt(timing.time) < 6;
         });
-        const nextDay = dateFns.format(dateFns.addDays(dateFns.parseISO(date), 1), "yyyy-MM-dd");
+        const nextDay = dateFns.format(
+          dateFns.addDays(dateFns.parseISO(date), 1),
+          "yyyy-MM-dd"
+        );
         a[title].dates[nextDay] = a[title].dates[nextDay] || [];
         a[title].dates[nextDay] = a[title].dates[nextDay].concat({
           name,

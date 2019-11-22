@@ -5,7 +5,6 @@ const puppeteer = require("puppeteer");
 const url = require("url");
 const { dateFormat, formatCinema, timeFormat } = require("./formatter");
 
-
 module.exports = {
   getCathayJson,
   getFilmgardeJson,
@@ -26,7 +25,7 @@ async function getHtmlBody(url, timer = 0) {
     const body = await page.evaluate(() => document.body.innerHTML);
     await browser.close();
     return body;
-  } catch(err) {
+  } catch (err) {
     const page = await browser.newPage();
     await page.goto(url);
     await page.waitFor(timer);
