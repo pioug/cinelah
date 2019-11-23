@@ -2,6 +2,11 @@ module.exports = {
   build: {
     extractCSS: true
   },
+  server: {
+    host: "0.0.0.0",
+    port: process.env.PORT || 8080,
+    timing: false
+  },
   head: {
     title: "Cinelah",
     meta: [

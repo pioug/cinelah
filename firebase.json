@@ -22,7 +22,10 @@
       },
       {
         "source": "**",
-        "function": "ssr"
+        "run": {
+          "serviceId": "nuxt-server",
+          "region": "asia-northeast1"
+        }
       }
     ]
   }
