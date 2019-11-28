@@ -2,6 +2,7 @@ module.exports = {
   build: {
     extractCSS: true
   },
+  css: [{ src: "assets/style.scss", lang: "scss" }],
   server: {
     host: "0.0.0.0",
     port: process.env.PORT || 8080,

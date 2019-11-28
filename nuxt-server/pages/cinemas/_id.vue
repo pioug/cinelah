@@ -138,7 +138,3 @@ function displayDate(date) {
   }
 }
 </script>
-
-<style lang="sass">
-@import '../../assets/style';
-</style>
