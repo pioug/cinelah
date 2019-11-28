@@ -160,7 +160,7 @@ export default {
                   return { showtime: { time, url } };
                 });
               const [group, name] = cinemas[cinemaId].name.split(" - ");
-              return { group, name, showtimesByCinemaEls };
+              return { cinemaId, group, name, showtimesByCinemaEls };
             });
 
           return { displayDate: displayDate(date), list };
