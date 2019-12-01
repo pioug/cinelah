@@ -2,7 +2,9 @@
   "name": "nuxt-server",
   "scripts": {
     "build": "nuxt build",
-    "start": "nuxt start"
+    "deploy": "gcloud beta run deploy --image gcr.io/cinelah-92dbb/nuxt-server",
+    "start": "nuxt start",
+    "submit": "gcloud builds submit --tag gcr.io/cinelah-92dbb/nuxt-server"
   },
   "dependencies": {
     "@nuxtjs/google-analytics": "2.2.1",

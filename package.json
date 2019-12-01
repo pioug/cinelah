@@ -1,8 +1,6 @@
 {
   "name": "cinelah",
   "scripts": {
-    "submit:container": "gcloud builds submit --tag gcr.io/cinelah-92dbb/nuxt-server",
-    "deploy:container": "gcloud beta run deploy --image gcr.io/cinelah-92dbb/nuxt-server",
     "deploy:functions": "firebase deploy --only functions",
     "deploy:hosting": "firebase deploy --only hosting"
   },
