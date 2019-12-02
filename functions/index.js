@@ -35,7 +35,10 @@ const scrapeShowtimes = functions.https.onRequest((req, res) => {
     })
     .then(showtimes => {
       const normalizedShowtimes = normalizeShowtimes(showtimes);
-      return storeJsonInBucket(normalizedShowtimes, "showtimes").then(() => {
+      return Promise.all([
+        storeJsonInBucket(normalizedShowtimes, "showtimes"),
+        storeJsonInBucket({ movies: normalizedShowtimes.movies }, "index")
+      ]).then(() => {
         return res.send(normalizedShowtimes);
       });
     });

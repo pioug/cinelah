@@ -36,3 +36,21 @@ export function getData() {
       return { cinemas, movies, showtimes };
     });
 }
+
+export function getMovies() {
+  return fetch(
+    "https://storage.googleapis.com/cinelah-92dbb.appspot.com/index.json"
+  )
+    .then(body => body.json())
+    .then(({ movies }) => {
+      movies = Object.keys(movies).reduce((acc, slug) => {
+        acc[slug] = {
+          backdrop: `url(${BUCKET}/movies/${slug}/backdrop.${IMG_FORMAT})`,
+          poster: `${BUCKET}/movies/${slug}/poster.${IMG_FORMAT}`,
+          ...movies[slug]
+        };
+        return acc;
+      }, {});
+      return { movies };
+    });
+}

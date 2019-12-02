@@ -48,14 +48,14 @@
 
 <script>
 import TopBar from "./TopBar.vue";
-import { getData } from "../Ajax.js";
+import { getMovies } from "../Ajax.js";
 
 export default {
   components: {
     TopBar
   },
   asyncData() {
-    return getData().then(({ movies }) => ({ movies }));
+    return getMovies();
   }
 };
 </script>
