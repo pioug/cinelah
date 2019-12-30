@@ -104,6 +104,7 @@ module.exports = {
           type: "image/png"
         },
         {
+          purpose: "maskable",
           src: "/icon512.png",
           sizes: "512x512",
           type: "image/png"
